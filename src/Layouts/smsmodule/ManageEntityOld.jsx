@@ -15,32 +15,7 @@ import DynamicForm from '../../helpers/formikForm';
 
 
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  // Add your form submission logic here
-  // let formsData = new FormData(event.target);
-  // formsData = Object.fromEntries(formsData.entries());
-
-
-  // console.log("formsData::", formsData);
-};
-
-
-const handleInputChange = (name, value) => {
-  // setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  // }));
-};
-
-
-
-
-
-
-
-
-export default function SendSms() {
+export default function ManageEntity() {
   const [apiData, setApiData] = useState("")
 
   useEffect(() => {
@@ -128,39 +103,6 @@ export default function SendSms() {
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
               <h6>Create Client Entity</h6>
             </SoftBox>
-            {/* <Grid spacing={2} mt={2}>
-              <form onSubmit={handleSubmit}>
-                <ValidatedTextField
-                  name="EntityID"
-                  variant="outlined"
-                  size="small"
-                  placeholder="Entity(PEID)"
-                  // value={formData.tid}
-                  onChange={(value) => handleInputChange('EntityID', value)}
-                />
-                <ValidatedTextField
-                  name="EntityID"
-                  variant="outlined"
-                  size="small"
-                  placeholder="Principal Entity name"
-                  // value={formData.tid}
-                  onChange={(value) => handleInputChange('EntityID', value)}
-                />
-                <ValidatedTextField
-                  name="remarks"
-                  variant="outlined"
-                  size="small"
-                  placeholder="Remarks"
-                  // value={formData.ttype}
-                  onChange={(value) => handleInputChange('remarks', value)}
-                />
-                <Grid item>
-                  <Button type="submit" color="primary">
-                    Submit
-                  </Button>
-                </Grid>
-              </form>
-            </Grid> */}
             <DynamicForm
               submitfunction={() => { }}
               initialValues={{}}

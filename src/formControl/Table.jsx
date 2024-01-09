@@ -1,6 +1,6 @@
 // Table.js
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
   DataGrid,
   GridToolbarColumnsButton,
@@ -9,10 +9,10 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import Stack from '@mui/material/Stack';
+import Stack from "@mui/material/Stack";
 import { gridClasses } from "@mui/material";
-import Pagination from '@mui/material/Pagination';
-import Box from '@mui/material/Box';
+import Pagination from "@mui/material/Pagination";
+import Box from "@mui/material/Box";
 
 const CustomTable = ({ rows, columns, uniquekey }) => {
   const [pageSize, setPageSize] = useState(10);
@@ -23,7 +23,6 @@ const CustomTable = ({ rows, columns, uniquekey }) => {
     // You can perform any actions here based on the selected page
     console.log(`Page changed to: ${page}`);
   };
-
 
   const handleChangePageSize = (newPageSize) => {
     setPageSize(newPageSize);
@@ -57,12 +56,11 @@ const CustomTable = ({ rows, columns, uniquekey }) => {
     );
   };
 
-
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
 
   return (
-    <>
+    <div style={{ paddingRight: "10px", paddingLeft: "10px" }}>
       <DataGrid
         getRowId={(row) => row[uniquekey]} // Fix the syntax here
         rows={rows.slice(startIndex, endIndex)}
@@ -79,11 +77,9 @@ const CustomTable = ({ rows, columns, uniquekey }) => {
         components={{
           Toolbar: CustomToolbar,
           // Footer: CustomFooter,
-          
-
         }}
       />
-    </>
+    </div>
   );
 };
 

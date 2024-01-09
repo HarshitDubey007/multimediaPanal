@@ -2,15 +2,19 @@ import api from "./api";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default async function DynamicApiCall(url, method, parameter, UserToken) {
+export default async function DynamicApiCall(url, method, UserToken, parameter) {
     try {
+        console.log("config:: ", url, method, UserToken)
+
         const headers = UserToken ? { Authorization: UserToken } : {};
         const config = {
             headers,
         };
         let apiResponse;
+
         switch (method) {
             case 'get':
+                console.log("config:: ", config)
                 apiResponse = await api.get(url, config);
                 break;
             case 'post':

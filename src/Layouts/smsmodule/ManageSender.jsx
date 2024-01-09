@@ -4,25 +4,12 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Card from "@mui/material/Card";
-import Button from '@mui/material/Button';
-import ValidatedTextField from '../../formControl/ValidatedTextField';
-import MultiSelect from '../../formControl/MultiSelect';
-import authorsTableData from '../tables/data/authorsTableData';
-import Table from '../../formControl/Table';
 import SoftTypography from '../../components/SoftTypography';
 import SoftBox from '../../components/SoftBox';
-import SoftBadge from '../../components/SoftBadge';
-import {
-  DataGrid,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
-} from "@mui/x-data-grid";
-import Stack from '@mui/material/Stack';
-import { gridClasses } from "@mui/material";
 import CustomTable from '../../formControl/Table';
+import DynamicApiCall from '../../utils/function';
+import DynamicForm from '../../helpers/formikForm';
+import * as Yup from "yup";
 
 
 const top100Films = [
@@ -117,94 +104,70 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 export default function ManageSender() {
-  // const { columns, rows } = authorsTableData;
-  const [pageSize, setPageSize] = useState(5);
-  const [filterColumn, setFilterColumn] = useState("");
-  const [filterValue, setFilterValue] = useState("");
-  const [formData, setFormData] = useState({
-    sendername: '',
-    PEID: '',
-    category: '',
-    tid: '',
-    ttype: '',
+  const [initial, setinitial] = useState({
+    peid: "",
+    peidName: "",
+    remarks: "",
   });
 
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Add your form submission logic here
+  async function formsubmit(values) {
+    const apiUrl = "";
+    const method = "post";
+    // const modifiedValues = prepareFormValues(values);
+    try {
+      const apiResponse = await DynamicApiCall(apiUrl, method, initial);
+      console.log("API Response:", apiResponse);
+    } catch (error) {
+      console.error("API Error:", error);
+    }
+  }
+
+  const JsonFields = {
+    data: [
+      {
+        multiple: false,
+        name: "peid",
+        placeholder: "Entity Id",
+        type: "multiSelect",
+        options: [
+          { value: "ADMIN", name: "ADMIN" },
+          { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
+          { value: "AGENT", name: "AGENT" },
+          { value: "TEM-LEAD", name: "TEM-LEAD" },
+        ],
+        validation: Yup.object().required("User Group is required"),
+      },
+      {
+        multiple: false,
+        name: "sender",
+        placeholder: "Entity Id",
+        type: "multiSelect",
+        options: [
+          { value: "ADMIN", name: "ADMIN" },
+          { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
+          { value: "AGENT", name: "AGENT" },
+          { value: "TEM-LEAD", name: "TEM-LEAD" },
+        ],
+        validation: Yup.object().required("User Group is required"),
+      },
+    ],
+    buttons: {
+      submitButton: {
+        style: {},
+        label: "Create Entity",
+      },
+    },
   };
-
-  const handleInputChange = (name, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-
 
 
   return (
 
     <Box sx={{ flexGrow: 1 }}>
-      {/* <Grid container>
-        <Grid item xs={4} md={3} px={1} mt={3}>
-          <SoftBox pt={2} pb={1}>
-            <SoftBox component="form" role="form">
-              <SoftBox mb={2}>
-                <SoftInput placeholder="Entity" />
-              </SoftBox>
-            </SoftBox>
-          </SoftBox>
-        </Grid>
-        <Grid item xs={4} md={3} px={1} mt={3}>
-          <SoftBox pt={2} pb={1}>
-            <SoftBox component="form" role="form">
-              <SoftBox mb={2}>
-                <SoftInput type="sender" placeholder="Sender Name" />
-              </SoftBox>
-            </SoftBox>
-          </SoftBox>
-        </Grid>
-      </Grid> */}
+
 
       <Grid container spacing={2} mt={1} alignItems="center">
-        {/* <Grid item>
-          <MultiSelect
-            options={top100Films}
-            getOptionLabel={(option) => option.title}
-            placeholder="Peid"
-            name='Peid'
-            onChange={(event, newValue) => handleInputChange('Peid', newValue)}
 
-          />
-        </Grid> */}
-        {/* <Grid item>
-          <MultiSelect
-            options={Entites}
-            getOptionLabel={(option) => option.label}
-            placeholder="Principal Entity Identifier"
-            name="entity"
-            onChange={(event, newValue) => handleInputChange('entity', newValue)}
-
-          />
-        </Grid>
-        <Grid item>
-          <ValidatedTextField
-            name="sender"
-            variant="outlined"
-            size="small"
-            placeholder="Sender Name"
-            value={formData.tid}
-            onChange={(value) => handleInputChange('sender', value)}
-          />
-        </Grid>
-        <Grid item>
-          <Button variant="contained" size='small' text='white' color="primary" onClick={handleSubmit}>
-            Search
-          </Button>
-        </Grid> */}
       </Grid>
 
 
@@ -219,14 +182,14 @@ export default function ManageSender() {
                   <SoftTypography variant="h6">Manage Sender</SoftTypography>
                 </SoftBox>
                 <SoftBox
-                  // sx={{
-                  //   "& .MuiTableRow-root:not(:last-child)": {
-                  //     "& td": {
-                  //       borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                  //         `${borderWidth[1]} solid ${borderColor}`,
-                  //     },
-                  //   },
-                  // }}
+                // sx={{
+                //   "& .MuiTableRow-root:not(:last-child)": {
+                //     "& td": {
+                //       borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                //         `${borderWidth[1]} solid ${borderColor}`,
+                //     },
+                //   },
+                // }}
                 >
                   <CustomTable rows={rows} columns={columns} uniquekey="Peid" />
                 </SoftBox>
@@ -243,7 +206,7 @@ export default function ManageSender() {
               <h6>Add Sender</h6>
             </SoftBox>
             <Grid spacing={2} mt={2}>
-              <form onSubmit={handleSubmit}>
+              {/* <form onSubmit={handleSubmit}>
 
                 <ValidatedTextField
                   name="sender"
@@ -277,7 +240,12 @@ export default function ManageSender() {
                     Submit
                   </Button>
                 </Grid>
-              </form>
+              </form> */}
+              <DynamicForm
+                submitfunction={formsubmit}
+                initialValues={initial}
+                fields={JsonFields}
+              />
             </Grid>
           </Card>
         </Grid>

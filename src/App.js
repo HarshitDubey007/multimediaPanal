@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
-
+import { useDispatch, useSelector } from "react-redux";
 import theme from "./assets/theme";
 import rtlPlugin from "stylis-plugin-rtl";
 import createCache from "@emotion/cache";
@@ -13,9 +13,11 @@ import SoftBox from "./components/SoftBox";
 import DashboardNavbar from "./components/Navbars/DashboardNavbar";
 import DashboardLayout from "./components/LayoutContainers/DashboardLayout";
 import Sidenav from "./components/Sidenav";
+import SignIn from "./Layouts/auth/SignIn";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
+  const { userInfo, isLoggedIn } = useSelector((state) => state?.user?.value);
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
@@ -97,11 +99,10 @@ export default function App() {
       </Icon>
     </SoftBox>
   );
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <>
+      {!isLoggedIn ? <SignIn /> : <>
         <Sidenav
           color={sidenavColor}
           // brand={brand}
@@ -110,17 +111,18 @@ export default function App() {
           onMouseEnter={handleOnMouseEnter}
           onMouseLeave={handleOnMouseLeave}
         />
-      </>
-      {/* {layout === "vr" && <Configurator />} */}
-      <DashboardLayout>
-        <DashboardNavbar />
-        <SoftBox py={3}>
-          <Routes>
-            {getRoutes(routes)}
-            <Route path="*" element={<Navigate to="/dashboard" />} />
-          </Routes>
-        </SoftBox>
-      </DashboardLayout>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <SoftBox py={3}>
+            <Routes>
+              {getRoutes(routes)}
+              <Route path="*" element={<Navigate to="/dashboard" />} />
+            </Routes>
+          </SoftBox>
+        </DashboardLayout>
+      </>}
+
+
     </ThemeProvider>
   );
 }
