@@ -1,9 +1,10 @@
 import ManageSender from "./Layouts/smsmodule/ManageSender";
 import CreateTemplate from "./Layouts/smsmodule/CreateTemplete";
-import ManageEntity from "./Layouts/smsmodule/ManageEntity";
+import ManageEntity from "./Layouts/Entity/ManageEntity";
 import Shop from "./components/Icons/Shop";
 import ManageUsers from "./Layouts/Users/ManageUsers";
 import SignIn from "./Layouts/auth/SignIn";
+import ManageParameter from "./Layouts/Parameter/ManageParameter";
 
 const routes = [
   // {
@@ -15,15 +16,15 @@ const routes = [
   //   component: <Dashboard />,
   //   noCollapse: true,
   // },
-  {
-    type: "collapse",
-    name: "Signin",
-    key: "signin",
-    route: "/signin",
-    icon: <Shop size="12px" />,
-    component: <SignIn />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Signin",
+  //   key: "signin",
+  //   route: "/",
+  //   icon: <Shop size="12px" />,
+  //   component: <SignIn />,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
     name: "manage Entites",
@@ -59,6 +60,15 @@ const routes = [
     route: "/manageusers",
     icon: <Shop size="12px" />,
     component: <ManageUsers />,
+    noCollapse: false,
+  },
+  {
+    type: "collapse",
+    name: "Manage Parameter",
+    key: "manageparameter",
+    route: "/manageparameter",
+    icon: <Shop size="12px" />,
+    component: <ManageParameter />,
     noCollapse: false,
   },
   // {

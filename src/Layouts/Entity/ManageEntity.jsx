@@ -10,103 +10,63 @@ import SoftButton from "../../components/SoftButton";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import UserCrud from "./UserCrud";
-import { useSelector } from "react-redux";
+import EntityCrud from "./EntityCrud";
 import DaynmicApicall from "../../utils/function";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-export default function ManageUsers() {
-  const { userInfo } = useSelector((state) => state?.user?.value);
-  const { userid, token } = userInfo
+export default function SendSms() {
   const [rowData, setRowData] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [getrows, setrows] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const handleUserModel = (row) => {
+  const handleEntityModel = (row) => {
     setRowData(row);
     setModalOpen(true);
   };
 
-  const handleSendsmsModelClose = () => {
+  const handleEntityClose = () => {
     setModalOpen(false);
   };
 
   let columns = [
     {
-      field: "userid",
-      headerName: "userid",
-      minWidth: 100,
-      renderCell: (params) =>
-        params.value && (
-          <Tooltip
-            title={<MutedCell title={params.value} />}
-            color="inherit"
-            placement="bottom-start"
-          >
-            <span>
-              <MutedCell title={params.value} />
-            </span>
-          </Tooltip>
-        ),
-    },
-    {
-      field: "campaignids",
-      headerName: "Campaign",
-      minWidth: 100,
-      flex: 1,
+      field: "peid",
+      headerName: "Peid(Principal Entity)",
+      minWidth: 200,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "userright",
-      headerName: "User Right",
-      minWidth: 150,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "loginstatus",
-      headerName: "Login status",
-      minWidth: 150,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "lockstatus",
-      headerName: "Lock Status",
-      minWidth: 150,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "userlastlogin",
-      headerName: "User Last login",
+      field: "peidName",
+      headerName: "Principal Entity name",
       minWidth: 200,
       flex: 1,
-      headerClassName: "table-header",
       renderCell: (params) =>
-        params.value && (
-          <Tooltip
-            title={<MutedCell title={params.value} />}
-            color="inherit"
-            placement="bottom-start"
-          >
-            <span>
-              <MutedCell title={params.value} />
-            </span>
-          </Tooltip>
-        ),
+        params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "usergroup",
-      headerName: "User Group",
+      field: "remarks",
+      headerName: "Username",
+      minWidth: 180,
+      flex: 1,
+      renderCell: (params) =>
+        params.value && <MutedCell title={params.value} org="Organization" />,
+    },
+    {
+      field: "created_on",
+      headerName: "Created On",
       minWidth: 100,
+      flex: 1,
+      renderCell: (params) =>
+        params.value && <MutedCell title={params.value} org="Organization" />,
+    },
+    {
+      field: "is_active",
+      headerName: "Is Active",
+      minWidth: 150,
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
@@ -122,7 +82,7 @@ export default function ManageUsers() {
           label="Edit"
           onClick={() => {
             params.row.action_name = "UPDATE";
-            handleUserModel(params.row);
+            handleEntityModel(params.row);
           }}
           showInMenu
         />,
@@ -135,9 +95,25 @@ export default function ManageUsers() {
   useEffect(() => {
     (async () => {
       try {
-        const Info = await DaynmicApicall("user/getusers", "get", token);
-        console.log("Info.results:: ", Info.data);
-        setrows(Info.data);
+        // const Info = await DaynmicApicall("sms/getentity", "get");
+        // console.log("Info.results:: ", Info.data);
+        // setrows(Info.data);
+        setrows([
+          {
+            peid: "ADMIN",
+            peidName: "ADMIN",
+            remarks: "New",
+            created_on: "2023-12-21",
+            is_active: "Y",
+          },
+          {
+            peid: "AGENT",
+            peidName: "AGENT",
+            remarks: "New1",
+            created_on: "2023-12-22",
+            is_active: "N",
+          },
+        ]);
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }
@@ -162,24 +138,25 @@ export default function ManageUsers() {
                   }}
                 >
                   <Grid container justifyContent="space-between" px={2} py={1}>
-                    <Grid item>Manage User</Grid>
+                    <Grid item>Manage Client Entity</Grid>
                     <Grid item>
                       <SoftButton
                         variant="contained"
                         size="small"
                         color="dark"
+                        py={1}
                         onClick={() => {
-                          handleUserModel(null);
+                          handleEntityModel(null);
                         }}
                       >
-                        Create user
+                        Create Client Entity
                       </SoftButton>
                     </Grid>
                   </Grid>
                   <CustomTable
                     rows={getrows ? getrows : []}
                     columns={columns}
-                    uniquekey="userid"
+                    uniquekey="peid"
                   />
                 </Card>
               </SoftBox>
@@ -189,18 +166,16 @@ export default function ManageUsers() {
             <Dialog
               sx={{ mt: 2 }}
               open={isModalOpen}
-              onClose={handleSendsmsModelClose}
+              onClose={handleEntityClose}
               maxWidth="lg"
               fullWidth
             >
               <DialogContent>
                 {/* user crud */}
-                <UserCrud userData={rowData} />
+                <EntityCrud entityData={rowData} />
               </DialogContent>
               <DialogActions>
-                <SoftButton onClick={handleSendsmsModelClose}>
-                  Cancel
-                </SoftButton>
+                <SoftButton onClick={handleEntityClose}>Cancel</SoftButton>
               </DialogActions>
             </Dialog>
           </Grid>

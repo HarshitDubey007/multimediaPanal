@@ -7,6 +7,7 @@ import ValidatedTextField from '../../formControl/ValidatedTextField';
 import SoftBox from '../../components/SoftBox';
 import Card from '@mui/material/Card';
 import Tooltip from '@mui/material/Tooltip';
+import * as Yup from "yup";
 import Table from '../../formControl/Table';
 import { getFormData } from '../../helpers/helpers';
 import {
@@ -25,6 +26,8 @@ import SoftTypography from '../../components/SoftTypography';
 import SendsmsModel from './SendsmsModel';
 import ValidatedTextArea from '../../formControl/ValidatedTextArea';
 import useForm from '../../helpers/HandelForm';
+import DynamicForm from '../../helpers/formikForm';
+import DynamicApiCall from '../../utils/function';
 
 
 function Function({ title }) {
@@ -131,6 +134,125 @@ export default function CreateTemplate() {
         const formData = getFormData(event.target);
         console.log("Uploaded File:", formData, addTemplete);
     };
+
+    const [initial, setinitial] = useState({
+        userid: "",
+        username: "",
+        usergroup: "",
+        userright: "",
+        campaignids: "",
+        userrole: "",
+        verifier: "",
+        lockstatus: true,
+        keypointer: "",
+        loginstatus: true,
+        active: true,
+        remarks: "",
+        createdby: "ADMIN",
+        languagename: "ENGLISH",
+        action_name: "INSERT",
+    });
+
+
+
+    async function formsubmit(values) {
+        const apiUrl = "user/manageuser";
+        const method = "post";
+        // const modifiedValues = prepareFormValues(values);
+        try {
+            const apiResponse = await DynamicApiCall(apiUrl, method, values);
+            console.log("API Response:", apiResponse);
+        } catch (error) {
+            console.error("API Error:", error);
+        }
+    }
+
+
+    const JsonFields = {
+        data: [
+
+            {
+                fullWidth: true,
+                multiple: true,
+                name: "sendername",
+                placeholder: "Select sender name",
+                type: "multiSelect",
+                options: [
+
+                    { value: 'AIRTEL', name: 1994 },
+                    { value: 'TATA', name: 1972 }
+                ],
+                validation: Yup.object().required("sender name is required"),
+            },
+            {
+                fullWidth: true,
+                multiple: true,
+                name: "entity",
+                placeholder: "Select Principal Entity Identifier",
+                type: "multiSelect",
+                options: [
+
+                    { value: 'AIRTEL', name: 1994 },
+                    { value: 'TATA', name: 1972 }
+                ],
+                validation: Yup.object().required("Entity name is required"),
+            },
+            {
+                fullWidth: true,
+                multiple: true,
+                name: "entity",
+                placeholder: "Select Principal Entity Identifier",
+                type: "multiSelect",
+                options: [
+
+                    { label: "112************3456", name: "112************3456" },
+                    { label: "112************3454", name: "112************3454" },
+                    { label: "112************3453", name: "112************3453" },
+                    { label: "112************3452", name: "112************3452" },
+                ],
+                validation: Yup.object().required("Entity name is required"),
+            },
+            {
+                fullWidth: true,
+                name: "tid",
+                placeholder: "Template Id",
+                validation: Yup.string().required("Template Id is required"),
+                type: "text",
+            },
+            {
+                fullWidth: true,
+                name: "ttype",
+                placeholder: "Template Type",
+                validation: Yup.string().required("Template Type is required"),
+                type: "text",
+            },
+            {
+                fullWidth: true,
+                name: "tbody",
+                placeholder: "Template Body",
+                validation: Yup.string().required("Template Body is required"),
+                type: "textarea",
+            },
+            // {
+            //     name: "active",
+            //     label: "active",
+            //     placeholder: "active",
+            //     type: "switch",
+            // },
+
+        ],
+        buttons: {
+            submitButton: {
+                style: {},
+                label: "Create User",
+            },
+        },
+    }
+
+
+
+
+
 
     function CustomToolbar() {
         return (
@@ -328,7 +450,12 @@ export default function CreateTemplate() {
                             <h6>Add Template</h6>
                         </SoftBox>
                         <Grid spacing={2} mt={2}>
-                            <form onSubmit={handleSubmit}>
+                            <DynamicForm
+                                submitfunction={formsubmit}
+                                initialValues={initial}
+                                fields={JsonFields}
+                            />
+                            {/* <form onSubmit={handleSubmit}>
                                 <MultiSelect
                                     size="small"
                                     name="sendername"
@@ -389,7 +516,8 @@ export default function CreateTemplate() {
                                         Submit
                                     </Button>
                                 </Grid>
-                            </form>
+                            </form> */}
+
                         </Grid>
                     </Card>
                 </Grid>
