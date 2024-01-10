@@ -1,35 +1,57 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import Divider from "@mui/material/Divider";
 import SoftBox from "../../components/SoftBox";
 import CustomTable from "../../formControl/Table";
 import Tooltip from "@mui/material/Tooltip";
 import { MutedCell } from "../../formControl/TableCellLayouts/tableCellLayouts";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import SoftButton from "../../components/SoftButton";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import EntityCrud from "./EntityCrud";
-import DaynmicApicall from "../../utils/function";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import DynamicForm from "../../helpers/formikForm";
+import * as Yup from "yup";
+import DynamicApiCall from "../../utils/function";
 
 export default function SendSms() {
   const [rowData, setRowData] = useState("");
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [entityData, setEntityData] = useState("");
   const [getrows, setrows] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [initial, setinitial] = useState({
+    peid: "",
+    peidName: "",
+    remarks: "",
+  });
 
-  const handleEntityModel = (row) => {
-    setRowData(row);
-    setModalOpen(true);
-  };
-
-  const handleEntityClose = () => {
-    setModalOpen(false);
-  };
+  useEffect(() => {
+    (async () => {
+      try {
+        // const Info = await DaynmicApicall("sms/getentity", "get");
+        // console.log("Info.results:: ", Info.data);
+        // setrows(Info.data);
+        setrows([
+          {
+            peid: "ADMIN",
+            peidName: "ADMIN",
+            remarks: "New",
+            created_on: "2023-12-21",
+            is_active: "Y",
+          },
+          {
+            peid: "AGENT",
+            peidName: "AGENT",
+            remarks: "New1",
+            created_on: "2023-12-22",
+            is_active: "N",
+          },
+        ]);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    })();
+  }, []);
 
   let columns = [
     {
@@ -82,7 +104,7 @@ export default function SendSms() {
           label="Edit"
           onClick={() => {
             params.row.action_name = "UPDATE";
-            handleEntityModel(params.row);
+            setEntityData(params.row);
           }}
           showInMenu
         />,
@@ -92,39 +114,58 @@ export default function SendSms() {
     },
   ];
 
-  useEffect(() => {
-    (async () => {
-      try {
-        // const Info = await DaynmicApicall("sms/getentity", "get");
-        // console.log("Info.results:: ", Info.data);
-        // setrows(Info.data);
-        setrows([
-          {
-            peid: "ADMIN",
-            peidName: "ADMIN",
-            remarks: "New",
-            created_on: "2023-12-21",
-            is_active: "Y",
-          },
-          {
-            peid: "AGENT",
-            peidName: "AGENT",
-            remarks: "New1",
-            created_on: "2023-12-22",
-            is_active: "N",
-          },
-        ]);
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
-      }
-    })();
-  }, []);
+  const JsonFields = {
+    data: [
+      {
+        multiple: false,
+        name: "peid",
+        placeholder: "Entity Id",
+        type: "multiSelect",
+        options: [
+          { value: "ADMIN", name: "ADMIN" },
+          { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
+          { value: "AGENT", name: "AGENT" },
+          { value: "TEM-LEAD", name: "TEM-LEAD" },
+        ],
+        validation: Yup.object().required("User Group is required"),
+      },
+      {
+        name: "remarks",
+        placeholder: "User Name",
+        validation: Yup.string().required("remarks is required"),
+        type: "text",
+      },
+    ],
+    buttons: {
+      className: "space-around",
+      submitButton: {
+        style: {},
+        label: "Save Entity",
+      },
+      resetButton: {
+        style: {},
+        label: "Clear",
+      },
+    },
+  };
+
+  async function formsubmit(values) {
+    const apiUrl = "";
+    const method = "post";
+    // const modifiedValues = prepareFormValues(values);
+    try {
+      const apiResponse = await DynamicApiCall(apiUrl, method, initial);
+      console.log("API Response:", apiResponse);
+    } catch (error) {
+      console.error("API Error:", error);
+    }
+  }
 
   return (
     <>
       <div>
         <Grid container spacing={2} mt={2}>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={8}>
             <SoftBox mt={1}>
               <SoftBox mb={3}>
                 <Card
@@ -139,19 +180,6 @@ export default function SendSms() {
                 >
                   <Grid container justifyContent="space-between" px={2} py={1}>
                     <Grid item>Manage Client Entity</Grid>
-                    <Grid item>
-                      <SoftButton
-                        variant="contained"
-                        size="small"
-                        color="dark"
-                        py={1}
-                        onClick={() => {
-                          handleEntityModel(null);
-                        }}
-                      >
-                        Create Client Entity
-                      </SoftButton>
-                    </Grid>
                   </Grid>
                   <CustomTable
                     rows={getrows ? getrows : []}
@@ -162,22 +190,25 @@ export default function SendSms() {
               </SoftBox>
             </SoftBox>
           </Grid>
-          <Grid>
-            <Dialog
-              sx={{ mt: 2 }}
-              open={isModalOpen}
-              onClose={handleEntityClose}
-              maxWidth="lg"
-              fullWidth
-            >
-              <DialogContent>
-                {/* user crud */}
-                <EntityCrud entityData={rowData} />
-              </DialogContent>
-              <DialogActions>
-                <SoftButton onClick={handleEntityClose}>Cancel</SoftButton>
-              </DialogActions>
-            </Dialog>
+          <Grid item xs={12} md={4}>
+            <SoftBox mt={1}>
+              <SoftBox mb={3}>
+                <Card style={{ paddingRight: "10px" }}>
+                  <Grid container justifyContent="space-between" px={2} pt={1}>
+                    <Grid item>
+                      {entityData ? entityData.action_name : "ADD"} USER ENTITY
+                    </Grid>
+                  </Grid>
+                  {/* <Divider variant="fullWidth" /> */}
+
+                  <DynamicForm
+                    submitfunction={formsubmit}
+                    initialValues={entityData ? entityData : initial}
+                    fields={JsonFields}
+                  />
+                </Card>
+              </SoftBox>
+            </SoftBox>
           </Grid>
         </Grid>
       </div>

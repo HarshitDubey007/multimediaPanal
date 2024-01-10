@@ -7,9 +7,10 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { ColorSwitch } from "../formControl/SwitchButton";
 import ValidatedTextArea from "../formControl/ValidatedTextArea";
+import SoftButton from "../components/SoftButton";
 
 const DynamicForm = ({ fields, submitfunction, initialValues }) => {
-  console.log("fields, submitfunction, initialValues:: ", initialValues)
+  console.log("fields, submitfunction, initialValues:: ", initialValues);
   const [switchValue, setSwitchValue] = useState(
     initialValues && initialValues.switchValue
   );
@@ -21,10 +22,8 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
         if (field.multiple === false)
           return { ...schema, [field.name]: field.validation || Yup.array() };
       } else if (field.type === "date") {
-        // ... (your existing date validation)
       } else if (field.type === "textarea") {
         return { ...schema, [field.name]: field.validation || Yup.string() };
-
       }
 
       return schema;
@@ -44,7 +43,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
     switch (field.type) {
       case "text":
         return (
-          // <Grid item xs={12} sm={4} key={field.name}>
           <>
             <ValidatedTextField
               fullWidth={field.fullWidth ? field.fullWidth : false}
@@ -58,11 +56,9 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
               }
             />
           </>
-          // </Grid>
         );
       case "textarea":
         return (
-          // <Grid item xs={12} sm={4} key={field.name}>
           <>
             <ValidatedTextArea
               fullWidth={field.fullWidth}
@@ -76,7 +72,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
               }
             />
           </>
-          // </Grid>
         );
       case "multiSelect":
         let fieldValues;
@@ -84,15 +79,14 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
           fieldValues =
             field.multiple === true
               ? field.options?.filter((v) =>
-                initialValues[field.name].includes(v.value)
-              )
+                  initialValues[field.name].includes(v.value)
+                )
               : field.options?.find((v) =>
-                initialValues[field.name].includes(v.value)
-              );
+                  initialValues[field.name].includes(v.value)
+                );
         }
 
         return (
-          // <Grid item xs={12} sm={4} key={field.name}>
           <>
             <MultiSelect
               key={field.name}
@@ -100,7 +94,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
               options={field.options}
               getOptionLabel={(option) => option.name}
               placeholder={field.placeholder}
-              value={fieldValues} // Set the value prop for MultiSelect
+              value={fieldValues}
               onChange={(event, value) =>
                 formik.setFieldValue(field.name, value)
               }
@@ -113,7 +107,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
         );
       case "checkbox":
         return (
-          // <Grid item xs={12} key={field.name}>
           <label>
             <input
               type="checkbox"
@@ -129,7 +122,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
         );
       case "switch":
         return (
-          // <Grid item xs={12} key={field.name}>
           <ColorSwitch
             label={field.label}
             checked={formik.values[field.name]}
@@ -143,19 +135,61 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
     }
   };
 
+  const handleReset = () => {
+    // Reset form values
+    formik.resetForm({ values: initialValues });
+
+    // Reset specific dropdown fields
+    fields.data.forEach((field) => {
+      if (field.type === "multiSelect") {
+        formik.setFieldValue(
+          field.name,
+          field.multiple ? [] : initialValues[field.name]
+        );
+
+        // If the MultiSelect component has an `onChange` prop, trigger it
+        if (field.onChange) {
+          field.onChange(field.multiple ? [] : initialValues[field.name]);
+        }
+      }
+    });
+  };
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container my={2}>
         {fields.data.map((field) => renderField(field))}
-        <Grid container justifyContent="flex-end">
-          <Button
+        <Grid container justifyContent={fields.buttons.className}>
+          <SoftButton
+            variant="contained"
+            size="small"
+            color="dark"
+            type="reset"
+            // onClick={handleReset}
+            // onClick={formik.handleReset}
+            onClick={formik.resetForm}
+          >
+            {fields.buttons.resetButton.label}
+          </SoftButton>
+          {/* <Button type="reset" variant="contained" size="small" color="dark">
+            {fields.buttons.resetButton.label}
+          </Button> */}
+          {/* <Button
             type="submit"
             variant="contained"
             size="small"
             color="primary"
           >
             {fields.buttons.submitButton.label}
-          </Button>
+          </Button> */}
+          <SoftButton
+            variant="contained"
+            size="small"
+            color="dark"
+            type="submit"
+          >
+            {fields.buttons.submitButton.label}
+          </SoftButton>
         </Grid>
       </Grid>
     </form>
