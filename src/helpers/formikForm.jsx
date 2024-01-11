@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ValidatedTextField from "../formControl/ValidatedTextField";
@@ -38,6 +38,12 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
       console.log("Form Values:", values);
     },
   });
+
+  useEffect(() => {
+    formik.setValues(initialValues);
+  }, [initialValues]);
+
+  console.log("formik", formik);
 
   const renderField = (field) => {
     switch (field.type) {
@@ -103,7 +109,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
               <div style={{ color: "red" }}>{formik.errors[field.name]}</div>
             )}
           </>
-          // </Grid>
         );
       case "checkbox":
         return (
@@ -118,7 +123,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
             />
             {field.label}
           </label>
-          // </Grid>
         );
       case "switch":
         return (
@@ -136,10 +140,8 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
   };
 
   const handleReset = () => {
-    // Reset form values
     formik.resetForm({ values: initialValues });
 
-    // Reset specific dropdown fields
     fields.data.forEach((field) => {
       if (field.type === "multiSelect") {
         formik.setFieldValue(
@@ -147,7 +149,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
           field.multiple ? [] : initialValues[field.name]
         );
 
-        // If the MultiSelect component has an `onChange` prop, trigger it
         if (field.onChange) {
           field.onChange(field.multiple ? [] : initialValues[field.name]);
         }

@@ -86,7 +86,6 @@ export default function ManageParameter() {
   const [masterParaProp, setMasterParaProp] = useState([]);
   const { userInfo } = useSelector((state) => state?.user?.value);
   const { userid, token } = userInfo;
-  // console.log("userInfo:: ", userInfo)
 
   const [rowData, setRowData] = useState("");
   const [updateRow, setUpdateRow] = useState("");
@@ -179,10 +178,10 @@ export default function ManageParameter() {
   };
 
   let columns = [
-    { field: "paracode", headerName: "paracode", minWidth: 50, flex: 1 },
-    { field: "paradesc", headerName: "paradesc", minWidth: 50, flex: 1 },
-    { field: "paravalue", headerName: "paravalue", minWidth: 50, flex: 1 },
-    { field: "paraprop", headerName: "paraprop", minWidth: 50, flex: 1 },
+    { field: "paracode", headerName: "Paracode", minWidth: 50, flex: 1 },
+    { field: "paradesc", headerName: "Paradesc", minWidth: 50, flex: 1 },
+    { field: "paraprop", headerName: "Paraprop", minWidth: 50, flex: 1 },
+    { field: "paravalue", headerName: "Paravalue", minWidth: 50, flex: 1 },
     {
       field: "actions",
       headerName: "Actions",
@@ -197,7 +196,7 @@ export default function ManageParameter() {
             let obj = {
               ...params.row,
               isactive: params.row.active_status,
-              action_name: "UPDATE",
+              action_name: "Update",
             };
             delete obj.active_status;
             setUpdateRow(obj);
@@ -226,7 +225,6 @@ export default function ManageParameter() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} mt={1} alignItems="center"></Grid>
       <MultiSelect
         key="parameter"
         multiple={false}
@@ -236,52 +234,64 @@ export default function ManageParameter() {
           getParameter(value.name);
         }}
       />
-      <Grid container spacing={2}>
-        {/* tabel */}
-        <Grid item xs={12} md={8}>
-          <Card>
-            <SoftBox>
-              <SoftBox mb={3}>
-                <SoftBox
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  p={3}
+      <Grid container spacing={2} mt={2}>
+        <Grid container spacing={2} mt={2}>
+          <Grid item xs={12} md={8}>
+            <SoftBox mt={1}>
+              <SoftBox mt={1}>
+                <Card
+                  sx={{
+                    height: 300,
+                    width: "100%",
+                    "& .table-header": {
+                      fontWeight: "bold !important",
+                      color: "#6c757d",
+                    },
+                  }}
                 >
-                  <SoftTypography variant="h6">Manage Parameter</SoftTypography>
-                </SoftBox>
-                <SoftBox>
+                  <Grid container justifyContent="space-between" px={2} py={1}>
+                    <Grid item>Manage Parameter</Grid>
+                  </Grid>
+
                   <CustomTable
                     rows={rowData}
                     columns={columns}
                     uniquekey="paracode"
                   />
-                </SoftBox>
+                </Card>
               </SoftBox>
             </SoftBox>
-          </Card>
-        </Grid>
-
-        {/* form */}
-        <Grid item xs={12} md={4}>
-          <Card>
-            <SoftBox
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              pt={2}
-              px={2}
-            >
-              <h6>Manage Parameter</h6>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <SoftBox mt={1}>
+              <SoftBox mb={3}>
+                <Card style={{ padding: "10px" }}>
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    px={2}
+                    py={0.5}
+                  >
+                    <Grid item>
+                      {updateRow ? updateRow.action_name : "Add"} Parameter
+                    </Grid>
+                  </Grid>
+                  <hr
+                    style={{
+                      backgroundColor: "#e8e5e5",
+                      margin: "0 auto",
+                      width: "100%",
+                    }}
+                  />
+                  <DynamicForm
+                    submitfunction={formsubmit}
+                    initialValues={updateRow ? updateRow : initial}
+                    fields={JsonFields}
+                  />
+                </Card>
+              </SoftBox>
             </SoftBox>
-            <Grid spacing={2} mt={2}>
-              <DynamicForm
-                submitfunction={formsubmit}
-                initialValues={updateRow ? updateRow : initial}
-                fields={JsonFields}
-              />
-            </Grid>
-          </Card>
+          </Grid>
         </Grid>
       </Grid>
     </Box>

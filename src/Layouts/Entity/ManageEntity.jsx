@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Divider from "@mui/material/Divider";
 import SoftBox from "../../components/SoftBox";
 import CustomTable from "../../formControl/Table";
 import Tooltip from "@mui/material/Tooltip";
@@ -193,13 +192,19 @@ export default function SendSms() {
           <Grid item xs={12} md={4}>
             <SoftBox mt={1}>
               <SoftBox mb={3}>
-                <Card style={{ paddingRight: "10px" }}>
+                <Card style={{ padding: "10px" }}>
                   <Grid container justifyContent="space-between" px={2} pt={1}>
                     <Grid item>
-                      {entityData ? entityData.action_name : "ADD"} USER ENTITY
+                      {entityData ? entityData.action_name : "Add"} User Entity
                     </Grid>
                   </Grid>
-                  {/* <Divider variant="fullWidth" /> */}
+                  <hr
+                    style={{
+                      backgroundColor: "#e8e5e5",
+                      margin: "0 auto",
+                      width: "100%",
+                    }}
+                  />
 
                   <DynamicForm
                     submitfunction={formsubmit}
