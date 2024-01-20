@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
 import { useDispatch, useSelector } from "react-redux";
+import { Toaster } from "react-hot-toast";
 import theme from "./assets/theme";
 import rtlPlugin from "stylis-plugin-rtl";
 import createCache from "@emotion/cache";
@@ -118,8 +119,31 @@ export default function App() {
               {getRoutes(routes)}
               <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
+            <div>
+              <Toaster position="bottom-right" toastOptions={{
+                success: {
+                  style: {
+                    background: '#05A677',
+                    color: "#fff"
+                  },
+                },
+                info: {
+                  style: {
+                    background: '#0948B3',
+                    color: "#fff"
+                  },
+                },
+                error: {
+                  style: {
+                    background: '#FA5252',
+                    color: "#fff"
+                  },
+                },
+              }} />
+            </div>
           </SoftBox>
         </DashboardLayout>
+
       </>}
 
 

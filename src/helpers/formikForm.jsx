@@ -10,7 +10,6 @@ import ValidatedTextArea from "../formControl/ValidatedTextArea";
 import SoftButton from "../components/SoftButton";
 
 const DynamicForm = ({ fields, submitfunction, initialValues }) => {
-  console.log("fields, submitfunction, initialValues:: ", initialValues);
   const [switchValue, setSwitchValue] = useState(
     initialValues && initialValues.switchValue
   );
@@ -35,7 +34,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       submitfunction(values);
-      console.log("Form Values:", values);
     },
   });
 
@@ -43,9 +41,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
     formik.setValues(initialValues);
   }, [initialValues]);
 
-  console.log("formik", formik);
-
-  const renderField = (field) => {
+   const renderField = (field) => {
     switch (field.type) {
       case "text":
         return (
