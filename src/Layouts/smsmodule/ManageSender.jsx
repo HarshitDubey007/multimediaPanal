@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+import React, { useState } from "react";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import SoftTypography from '../../components/SoftTypography';
-import SoftBox from '../../components/SoftBox';
-import CustomTable from '../../formControl/Table';
-import DynamicApiCall from '../../utils/function';
-import DynamicForm from '../../helpers/formikForm';
+import SoftTypography from "../../components/SoftTypography";
+import SoftBox from "../../components/SoftBox";
+import CustomTable from "../../formControl/Table";
+import DynamicApiCall from "../../utils/function";
+import DynamicForm from "../../helpers/formikForm";
 import * as Yup from "yup";
 
-
 const top100Films = [
-  { title: 'AIRTEL', year: 1994 },
-  { title: 'TATA', year: 1972 }
+  { title: "AIRTEL", year: 1994 },
+  { title: "TATA", year: 1972 },
 ];
-
 
 const Entites = [
   { label: "112************3456", value: "112************3456" },
@@ -26,15 +24,18 @@ const Entites = [
 ];
 
 let columns = [
-  { field: "Peid", headerName: "Principal Entity Identifier", minWidth: 50, flex: 1 },
+  {
+    field: "Peid",
+    headerName: "Principal Entity Identifier",
+    minWidth: 50,
+    flex: 1,
+  },
   { field: "Sender", headerName: "Sender", minWidth: 50, flex: 1 },
   { field: "Entity", headerName: "Entity", minWidth: 50, flex: 1 },
   { field: "ApprovedOn", headerName: "ApprovedOn", minWidth: 50, flex: 1 },
   { field: "Status", headerName: "Status", minWidth: 50, flex: 1 },
   { field: "action", headerName: "action", minWidth: 50, flex: 1 },
-
 ];
-
 
 // one Peid have multipaal sender ids
 const rows = [
@@ -42,7 +43,7 @@ const rows = [
     Peid: "2",
     Sender: "ICCSAZ",
     Entity: "120**********786",
-    ApprovedOn: `${(new Date()).toISOString().split('T')[0]}`,
+    ApprovedOn: `${new Date().toISOString().split("T")[0]}`,
     Status: "Approved",
     action: "Edit",
   },
@@ -50,11 +51,11 @@ const rows = [
     Peid: "3",
     Sender: "ICCSAZ",
     Entity: "120**********786",
-    ApprovedOn: `${(new Date()).toISOString().split('T')[0]}`,
+    ApprovedOn: `${new Date().toISOString().split("T")[0]}`,
     Status: "Approved",
     action: "Edit",
   },
-]
+];
 
 function Author({ image, name, email }) {
   return (
@@ -88,10 +89,10 @@ function Function({ job, org }) {
 }
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
 }));
 
@@ -100,16 +101,12 @@ const Item = styled(Paper)(({ theme }) => ({
 // templateBody: '',
 // pid: '',
 
-
-
-
 export default function ManageSender() {
   const [initial, setinitial] = useState({
     peid: "",
     peidName: "",
     remarks: "",
   });
-
 
   async function formsubmit(values) {
     const apiUrl = "";
@@ -153,32 +150,34 @@ export default function ManageSender() {
       },
     ],
     buttons: {
+      className: "space-around",
       submitButton: {
         style: {},
         label: "Create Entity",
       },
+      resetButton: {
+        style: {},
+        label: "Clear",
+      },
     },
   };
 
-
   return (
-
     <Box sx={{ flexGrow: 1 }}>
-
-
-      <Grid container spacing={2} mt={1} alignItems="center">
-
-      </Grid>
-
-
+      <Grid container spacing={2} mt={1} alignItems="center"></Grid>
 
       <Grid container spacing={2}>
         {/* tabel */}
         <Grid item xs={12} md={8}>
           <Card>
-            <SoftBox >
+            <SoftBox>
               <SoftBox mb={3}>
-                <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+                <SoftBox
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  p={3}
+                >
                   <SoftTypography variant="h6">Manage Sender</SoftTypography>
                 </SoftBox>
                 <SoftBox
@@ -194,7 +193,6 @@ export default function ManageSender() {
                   <CustomTable rows={rows} columns={columns} uniquekey="Peid" />
                 </SoftBox>
               </SoftBox>
-
             </SoftBox>
           </Card>
         </Grid>
@@ -202,7 +200,13 @@ export default function ManageSender() {
         {/* form */}
         <Grid item xs={12} md={4}>
           <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
+            <SoftBox
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              pt={2}
+              px={2}
+            >
               <h6>Add Sender</h6>
             </SoftBox>
             <Grid spacing={2} mt={2}>

@@ -58,8 +58,10 @@ export default function SignInSide() {
       const apiUrl = "user/login";
       const method = "post";
       try {
+        console.log("VALUEEE:: ", values)
         const apiResponse = await DynamicApiCall(apiUrl, method, '', values).then(
           (data) => {
+            console.log("datadata", data)
             if (data.status === true) {
               const uData = {
                 isLoggedIn: true,
@@ -126,30 +128,6 @@ export default function SignInSide() {
                 Sign in
               </Typography>
               <Box noValidate sx={{ mt: 1 }}>
-                {/* <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            /> */}
                 <form onSubmit={formik.handleSubmit} style={{ flexGrow: 1 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} spacing={2}>

@@ -15,10 +15,12 @@ import { useSelector } from "react-redux";
 import DaynmicApicall from "../../utils/function";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function ManageUsers() {
   const { userInfo } = useSelector((state) => state?.user?.value);
-  const { userid, token } = userInfo
+  const { userid, token } = userInfo;
   const [rowData, setRowData] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [getrows, setrows] = useState(false);
@@ -136,7 +138,6 @@ export default function ManageUsers() {
     (async () => {
       try {
         const Info = await DaynmicApicall("user/getusers", "get", token);
-        console.log("Info.results:: ", Info.data);
         setrows(Info.data);
       } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -195,13 +196,25 @@ export default function ManageUsers() {
             >
               <DialogContent>
                 {/* user crud */}
+                <IconButton
+                  aria-label="close"
+                  onClick={handleSendsmsModelClose}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
                 <UserCrud userData={rowData} />
               </DialogContent>
-              <DialogActions>
+              {/* <DialogActions>
                 <SoftButton onClick={handleSendsmsModelClose}>
                   Cancel
                 </SoftButton>
-              </DialogActions>
+              </DialogActions> */}
             </Dialog>
           </Grid>
         </Grid>

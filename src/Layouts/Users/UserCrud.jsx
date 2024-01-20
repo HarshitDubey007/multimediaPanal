@@ -102,9 +102,14 @@ export default function UserCrud({ userData }) {
       },
     ],
     buttons: {
+      className: "flex-end",
       submitButton: {
         style: {},
         label: "Create User",
+      },
+      resetButton: {
+        style: {},
+        label: "Clear",
       },
     },
   };

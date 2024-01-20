@@ -7,14 +7,20 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
+import IconButton from "@mui/material/IconButton";
+
 // Images
 import team2 from "../../../assets/images/team-2.jpg";
 import logoSpotify from "../../../assets/images/small-logos/logo-spotify.svg";
 import SoftBox from "../../SoftBox";
 import NotificationItem from "../../Items/NotificationItem";
 import Breadcrumbs from "../../Breadcrumbs";
-import { navbar, navbarContainer, navbarRow } from "./styles";
+import {
+  navbar, navbarContainer, navbarRow, navbarIconButton,
+  navbarMobileMenu
+} from "./styles";
 import { setMiniSidenav, setOpenConfigurator, setTransparentNavbar, useSoftUIController } from "../../../context";
+import SoftTypography from "../../SoftTypography";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -100,9 +106,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 icon={{ component: "search", direction: "left" }}
               /> */}
             </SoftBox>
-            {/* <SoftBox color={light ? "white" : "inherit"}>
+            <SoftBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in">
-                <IconButton sx={navbarIconButton} size="small">
+                <IconButton size="small">
                   <Icon
                     sx={({ palette: { dark, white } }) => ({
                       color: light ? white.main : dark.main,
@@ -137,7 +143,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon>settings</Icon>
               </IconButton>
-              <IconButton
+              {/* <IconButton
                 size="small"
                 color="inherit"
                 sx={navbarIconButton}
@@ -147,9 +153,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 onClick={handleOpenMenu}
               >
                 <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
-              </IconButton>
+              </IconButton> */}
               {renderMenu()}
-            </SoftBox> */}
+            </SoftBox>
           </SoftBox>
         )}
       </Toolbar>
