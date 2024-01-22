@@ -23,6 +23,7 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  
 
   // Cache for the rtl
   useMemo(() => {
@@ -103,7 +104,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {!isLoggedIn ? <SignIn /> : <>
+      {/* {!isLoggedIn ? <SignIn /> : <> */}
         <Sidenav
           color={sidenavColor}
           // brand={brand}
@@ -117,7 +118,7 @@ export default function App() {
           <SoftBox py={3}>
             <Routes>
               {getRoutes(routes)}
-              <Route path="*" element={<Navigate to="/dashboard" />} />
+              <Route path="*" element={<Navigate to={!isLoggedIn ? "/dashboard" : "/"} />} />
             </Routes>
             <div>
               <Toaster position="bottom-right" toastOptions={{
@@ -144,7 +145,7 @@ export default function App() {
           </SoftBox>
         </DashboardLayout>
 
-      </>}
+      {/* </>} */}
 
 
     </ThemeProvider>

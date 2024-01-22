@@ -10,9 +10,11 @@ function ValidatedTextField({
   error,
   helperText,
   validate,
+  fullWidth,
   ...props
 }) {
   const [isValid, setIsValid] = React.useState(true);
+
 
   const handleValidation = (inputValue) => {
     if (validate) {
@@ -37,7 +39,8 @@ function ValidatedTextField({
 
   return (
     <TextField
-      style={{ margin: "10px", width: "100%" }}
+      style={{ margin: "10px" }}
+      fullWidth={fullWidth ? fullWidth : false}
       label={label}
       value={value}
       onChange={handleChange}

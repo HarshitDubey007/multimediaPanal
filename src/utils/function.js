@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 export default async function DynamicApiCall(url, method, UserToken, parameter) {
     try {
         console.log("url, method, UserToken, parameter", url, method, UserToken, parameter)
-        const headers = UserToken ? { Authorization: UserToken } : {};
+        const headers = { Authorization: UserToken }
         const config = {
             headers: headers,
         };
@@ -12,12 +12,13 @@ export default async function DynamicApiCall(url, method, UserToken, parameter) 
 
         switch (method) {
             case 'get':
-                console.log("config:: ", config)
                 apiResponse = await api.get(url, config);
                 break;
             case 'post':
-                console.log("parameter:: ", parameter);
-                apiResponse = await api.post(url, parameter);
+                // console.log("parameter:: ", parameter);
+                console.log("config:: ", parameter, config)
+                apiResponse = await api.post(url, parameter, config);
+                // api.post("dialer/callerhangup", parameter, { headers: { Authorization: userInfo.data[0].UserToken } });
                 console.log("API apiResponse:: ", apiResponse.data)
                 break;
             default:

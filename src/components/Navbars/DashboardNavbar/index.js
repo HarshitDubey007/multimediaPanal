@@ -9,6 +9,7 @@ import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 
+
 // Images
 import team2 from "../../../assets/images/team-2.jpg";
 import logoSpotify from "../../../assets/images/small-logos/logo-spotify.svg";
@@ -21,6 +22,10 @@ import {
 } from "./styles";
 import { setMiniSidenav, setOpenConfigurator, setTransparentNavbar, useSoftUIController } from "../../../context";
 import SoftTypography from "../../SoftTypography";
+import SoftInput from "../../../assets/theme/components/SoftInput";
+import { login } from "../../../redux/User";
+
+
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -28,6 +33,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  // const navigate = useNavigate();
 
   useEffect(() => {
     if (fixedNavbar) {
@@ -88,6 +94,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
     </Menu>
   );
 
+
+  async function userLogout() {
+    try {
+      // e.preventDefault();
+      // userLogout();
+      // localStorage.removeItem("support_user");
+      // localStorage.removeItem("currentcall");
+      // dispatch(logout());
+      dispatch(login());
+
+      // navigate("/", { replace: true });
+      // window.history.go();
+    } catch (error) {
+
+    }
+  }
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -101,48 +124,49 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
             <SoftBox pr={1}>
-              {/* <SoftInput
+              <SoftInput
                 placeholder="Type here..."
-                icon={{ component: "search", direction: "left" }}
-              /> */}
+              // icon={{ component: "search", direction: "left" }}
+              />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in">
-                <IconButton size="small">
-                  <Icon
+              {/* <Link to="/authentication/sign-in"> */}
+                <IconButton sx={navbarIconButton} size="small">
+                  {/* <Icon
                     sx={({ palette: { dark, white } }) => ({
                       color: light ? white.main : dark.main,
                     })}
                   >
                     account_circle
-                  </Icon>
+                  </Icon> */}
                   <SoftTypography
                     variant="button"
                     fontWeight="medium"
                     color={light ? "white" : "dark"}
+                    onClick={userLogout}
                   >
-                    Sign in
+                    Sign Out
                   </SoftTypography>
                 </IconButton>
-              </Link>
+              {/* </Link> */}
               <IconButton
                 size="small"
                 color="inherit"
                 sx={navbarMobileMenu}
                 onClick={handleMiniSidenav}
               >
-                <Icon className={light ? "text-white" : "text-dark"}>
+                {/* <Icon className={light ? "text-white" : "text-dark"}>
                   {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
+                </Icon> */}
               </IconButton>
-              <IconButton
+              {/* <IconButton
                 size="small"
                 color="inherit"
                 sx={navbarIconButton}
                 onClick={handleConfiguratorOpen}
               >
                 <Icon>settings</Icon>
-              </IconButton>
+              </IconButton> */}
               {/* <IconButton
                 size="small"
                 color="inherit"

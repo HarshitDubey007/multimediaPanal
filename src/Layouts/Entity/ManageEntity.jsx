@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import DynamicApiCall from "../../utils/function";
 
-export default function SendSms() {
+export default function ManageEntity() {
   const { userInfo } = useSelector((state) => state?.user?.value);
   const { userid, token } = userInfo;
   const [entityData, setEntityData] = useState("");
@@ -143,30 +143,40 @@ export default function SendSms() {
         placeholder: "Entity Id",
         validation: Yup.string().required("Entity Id is required"),
         type: "text",
+        fullWidth: true,
+
       },
       {
         name: "client_name",
         placeholder: "Client Name",
         validation: Yup.string().required("Client Name is required"),
         type: "text",
+        fullWidth: true,
+
       },
       {
         name: "client_code",
         placeholder: "Client Code",
         validation: Yup.string().required("Client Code is required"),
         type: "text",
+        fullWidth: true,
+
       },
       {
         name: "office_address",
         placeholder: "Office Address",
         // validation: Yup.string().required("Office Code is required"),
         type: "text",
+        fullWidth: true,
+
       },
       {
         name: "remarks",
         placeholder: "remarks",
         // validation: Yup.string().required("remarks is required"),
         type: "text",
+        fullWidth: true,
+
       },
     ],
     buttons: {
