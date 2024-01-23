@@ -15,7 +15,7 @@ import DynamicApiCall from "../../utils/function";
 export default function ManageCampaign() {
     const { userInfo } = useSelector((state) => state?.user?.value);
     const { userid, token } = userInfo;
-    const [entityData, setEntityData] = useState("");
+    const [campData, setCampData] = useState("");
     const [clientOptions, setClientOptions] = useState([]);
     const [clientOptionsLoading, setClientOptionsLoading] = useState(true);
     const [getrows, setrows] = useState(false);
@@ -31,6 +31,8 @@ export default function ManageCampaign() {
         status: "Y",
         userid: userid,
         action_name: "INSERT",
+
+
     });
 
 
@@ -39,7 +41,6 @@ export default function ManageCampaign() {
             try {
                 await fetchData()
                 const Info = await DynamicApiCall("multimedia/getcamplist", "get", token);
-                console.log("Info.results:: ", Info);
                 setrows(Info.data);
             } catch (error) {
                 console.error("Error fetching data:", error.message);
@@ -50,12 +51,12 @@ export default function ManageCampaign() {
 
     const fetchData = async () => {
         try {
-            const clientOptionsResponse = await DynamicApiCall("sms/getentity", "get", token);
-            console.log("clientOptionsResponse: : ", clientOptionsResponse)
+            const clientOptionsResponse = await DynamicApiCall("multimedia/getcamplist", "get", token);
             let clientdata = clientOptionsResponse.data.map((option) => ({
-                value: option.peid,
-                name: option.client_name,
+                value: option.camp_name,
+                name: option.peid,
             }))
+            // console.log("clientdata:: ", clientdata)
             setClientOptions(clientdata);
             setClientOptionsLoading(false);
         } catch (error) {
@@ -63,7 +64,6 @@ export default function ManageCampaign() {
         }
     };
 
-    console.log("clientOptions:: ", clientOptions)
 
     let columns = [
         {
@@ -139,17 +139,42 @@ export default function ManageCampaign() {
                     label="Edit"
                     onClick={() => {
                         params.row.action_name = "UPDATE";
-
+                        console.log("Parames row", params.row)
                         let editData = {
-                            ...params.row,
-                            status: params.row.is_active
+                            // action_name: "UPDATE",
+                            // camp_display_name: "",
+                            // camp_id: "",
+                            // camp_name: "",
+                            // client_name: "",
+                            // is_active: "",
+                            // peid: "",
+                            // remarks: "",
+                            // sno: "",
+
+                            campid: params.row.camp_id,
+                            campname: params.row.camp_name,
+                            clientname: params.row.peid,
+                            senderid: params.row.sender_id,
+                            campdisplay_name: params.row.camp_display_name,
+                            remarks: params.row.remarks,
+                            action_name: "UPDATE"
+
                         }
+                        console.log("params.row.action_name = UPDATE", editData, params.row)
+                        setCampData(editData)
 
 
-                        // delete editData.updated_on; delete editData.updated_by; delete editData.created_on;
-                        // delete editData.sno; delete editData.is_active
-                        // console.log("editData", editData)
-                        // setEntityData(editData);
+                        // setCampData(editData);
+
+                        // campid: "",
+                        // campname: "",
+                        // clientname: "",
+                        // senderid: "",
+                        // campdisplay_name: "",
+                        // remarks: "",
+
+
+                        // action_name: "UPDATE"camp_display_name: "TATAAI"camp_id: "111"camp_name: "TATA"client_name: "TATA"created_by: "P017002"created_on: "2024-01-22 15:52:20"is_active: "Y"peid: "PE12345"remarks: "TEST TATA"sender_id: "12132435t4"sno: 5
                     }}
                     showInMenu
                 />,
@@ -186,11 +211,25 @@ export default function ManageCampaign() {
 
             },
             {
+                multiple: false,
                 name: "clientname",
                 placeholder: "Client Name",
                 type: "multiSelect",
                 options: clientOptions,
                 validation: Yup.object().required("Client name is required"),
+
+
+                multiple: false,
+                name: "usergroup",
+                placeholder: "Select User Group",
+                type: "multiSelect",
+                options: [
+                    { value: "ADMIN", name: "ADMIN" },
+                    { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
+                    { value: "AGENT", name: "AGENT" },
+                    { value: "TEM-LEAD", name: "TEM-LEAD" },
+                ],
+                validation: Yup.object().required("User Group is required"),
             },
             {
                 name: "senderid",
@@ -225,12 +264,10 @@ export default function ManageCampaign() {
         const method = "post";
         // const modifiedValues = prepareFormValues(values);
         try {
-            console.log("values:: ", values)
             let client = values.clientname
             values.peid = client.value
             values.clientname = client.name
             const apiResponse = await DynamicApiCall(apiUrl, method, token, values);
-            console.log("API Response:", apiResponse);
         } catch (error) {
             console.error("API Error:", error);
         }
@@ -271,7 +308,7 @@ export default function ManageCampaign() {
                                 <Card style={{ padding: "10px" }}>
                                     <Grid container justifyContent="space-between" px={2} pt={1}>
                                         <Grid item>
-                                            {entityData ? entityData.action_name : "Add"} Campaign
+                                            {campData ? campData.action_name : "Add"} Campaign
                                         </Grid>
                                     </Grid>
                                     <hr
@@ -284,7 +321,7 @@ export default function ManageCampaign() {
 
                                     <DynamicForm
                                         submitfunction={formsubmit}
-                                        initialValues={entityData ? entityData : initial}
+                                        initialValues={campData ? campData : initial}
                                         fields={JsonFields}
                                     />
                                 </Card>
@@ -296,3 +333,34 @@ export default function ManageCampaign() {
         </>
     );
 }
+
+
+
+
+
+
+
+
+
+// [
+//     {
+//         "value": "1234567",
+//         "name": "TATA"
+//     },
+//     {
+//         "value": "12345677",
+//         "name": "TATA"
+//     },
+//     {
+//         "value": "333486455533",
+//         "name": "AIRTEL"
+//     },
+//     {
+//         "value": "123345",
+//         "name": "HDFC!"
+//     },
+//     {
+//         "value": "33344535533",
+//         "name": "INFO"
+//     }
+// ]

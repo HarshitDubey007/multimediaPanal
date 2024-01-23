@@ -13,6 +13,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
   const [switchValue, setSwitchValue] = useState(
     initialValues && initialValues.switchValue
   );
+  console.log("fields:: ", fields, initialValues)
   const validationSchema = Yup.object().shape(
     fields.data.reduce((schema, field) => {
       if (field.type === "text") {
@@ -41,7 +42,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
     formik.setValues(initialValues);
   }, [initialValues]);
 
-   const renderField = (field) => {
+  const renderField = (field) => {
     switch (field.type) {
       case "text":
         return (
@@ -81,13 +82,13 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
           fieldValues =
             field.multiple === true
               ? field.options?.filter((v) =>
-                  initialValues[field.name].includes(v.value)
-                )
+                initialValues[field.name].includes(v.value)
+              )
               : field.options?.find((v) =>
-                  initialValues[field.name].includes(v.value)
-                );
+                initialValues[field.name].includes(v.value)
+              );
         }
-
+        console.log("fieldValues:: ", fieldValues)
         return (
           <>
             <MultiSelect

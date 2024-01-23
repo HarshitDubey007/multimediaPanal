@@ -28,84 +28,75 @@ export default function UserCrud({ userData }) {
   const JsonFields = {
     data: [
       {
-        name: "userid",
-        placeholder: "User Id",
-        validation: Yup.string().required("user_id is required"),
+        name: "templateid",
+        placeholder: "template Id",
+        validation: Yup.string().required("Template Id is required"),
         type: "text",
+        fullWidth: true,
+
       },
       {
-        name: "username",
-        placeholder: "User Name",
-        validation: Yup.string().required("user_name is required"),
+        name: "templatename",
+        placeholder: "templatename Name",
+        validation: Yup.string().required("Client Name is required"),
         type: "text",
+        fullWidth: true,
+
       },
       {
-        multiple: false,
-        name: "usergroup",
-        placeholder: "Select User Group",
-        type: "multiSelect",
-        options: [
-          { value: "ADMIN", name: "ADMIN" },
-          { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
-          { value: "AGENT", name: "AGENT" },
-          { value: "TEM-LEAD", name: "TEM-LEAD" },
-        ],
-        validation: Yup.object().required("User Group is required"),
-      },
-      {
-        multiple: true,
-        name: "userright",
-        placeholder: "Select User Rights",
-        type: "multiSelect",
-        options: [
-          { value: "1", name: "READ" },
-          { value: "2", name: "WRITE" },
-          { value: "3", name: "DELETE" },
-        ],
-        validation: Yup.object().required("User Group is required"),
-      },
-      {
-        multiple: true,
-        name: "campaignids",
-        placeholder: "Select campaign",
-        type: "multiSelect",
-        options: [
-          { value: "110", name: "Kotak" },
-          { value: "101", name: "HDFC" },
-          { value: "102", name: "BIRLA" },
-        ],
-        validation: Yup.object().required("Campaign is required"),
-      },
-      {
-        name: "verifier",
-        placeholder: "verifier",
-        validation: Yup.string().required("verifier is required"),
+        name: "senderid",
+        placeholder: "Sender id",
+        validation: Yup.string().required("senderid Code is required"),
         type: "text",
+        fullWidth: true,
+
       },
       {
-        name: "lockstatus",
-        label: "lockstatus",
-        placeholder: "lockstatus",
-        type: "switch",
+        name: "tempbody",
+        placeholder: "tempbody",
+        validation: Yup.string().required("tempbody is required"),
+        type: "text",
+        fullWidth: true,
+
       },
       {
-        name: "loginstatus",
-        label: "loginstatus",
-        placeholder: "loginstatus",
-        type: "switch",
+        name: "tempbody",
+        placeholder: "tempbody",
+        validation: Yup.string().required("tempbody is required"),
+        type: "text",
+        fullWidth: true,
+
       },
       {
-        name: "active",
-        label: "active",
-        placeholder: "active",
-        type: "switch",
+        name: "tempbody",
+        placeholder: "tempbody",
+        validation: Yup.string().required("tempbody is required"),
+        type: "text",
+        fullWidth: true,
+
+      },
+      {
+        name: "tempbody",
+        placeholder: "tempbody",
+        validation: Yup.string().required("tempbody is required"),
+        type: "text",
+        fullWidth: true,
+
+      },
+      {
+        name: "remarks",
+        placeholder: "remarks",
+        // validation: Yup.string().required("remarks is required"),
+        type: "text",
+        fullWidth: true,
+
       },
     ],
     buttons: {
-      className: "flex-end",
+      className: "space-around",
       submitButton: {
         style: {},
-        label: "Create User",
+        label: "Save Template",
       },
       resetButton: {
         style: {},

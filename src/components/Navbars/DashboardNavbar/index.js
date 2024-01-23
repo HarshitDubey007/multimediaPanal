@@ -8,7 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
-
+import SettingsIcon from '@mui/icons-material/Settings';
 
 // Images
 import team2 from "../../../assets/images/team-2.jpg";
@@ -23,8 +23,8 @@ import {
 import { setMiniSidenav, setOpenConfigurator, setTransparentNavbar, useSoftUIController } from "../../../context";
 import SoftTypography from "../../SoftTypography";
 import SoftInput from "../../../assets/theme/components/SoftInput";
-import { login } from "../../../redux/User";
-
+import { logout } from "../../../redux/User";
+import { useNavigate } from "react-router-dom";
 
 
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -33,7 +33,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (fixedNavbar) {
@@ -97,12 +97,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   async function userLogout() {
     try {
-      // e.preventDefault();
-      // userLogout();
-      // localStorage.removeItem("support_user");
-      // localStorage.removeItem("currentcall");
-      // dispatch(logout());
-      dispatch(login());
+
+      dispatch(logout());
+      navigate("/", { replace: true });
+
+      // dispatch(login());
 
       // navigate("/", { replace: true });
       // window.history.go();
@@ -131,23 +130,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
               {/* <Link to="/authentication/sign-in"> */}
-                <IconButton sx={navbarIconButton} size="small">
-                  {/* <Icon
+              <IconButton sx={navbarIconButton} size="small">
+                {/* <Icon
                     sx={({ palette: { dark, white } }) => ({
                       color: light ? white.main : dark.main,
                     })}
                   >
                     account_circle
                   </Icon> */}
-                  <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
-                    onClick={userLogout}
-                  >
-                    Sign Out
-                  </SoftTypography>
-                </IconButton>
+                <SoftTypography
+                  variant="button"
+                  fontWeight="medium"
+                  color={light ? "white" : "dark"}
+                  onClick={userLogout}
+                >
+                  Sign Out
+                </SoftTypography>
+              </IconButton>
               {/* </Link> */}
               <IconButton
                 size="small"
@@ -159,14 +158,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   {miniSidenav ? "menu_open" : "menu"}
                 </Icon> */}
               </IconButton>
-              {/* <IconButton
+              <IconButton
                 size="small"
                 color="inherit"
                 sx={navbarIconButton}
                 onClick={handleConfiguratorOpen}
               >
-                <Icon>settings</Icon>
-              </IconButton> */}
+                {/* <<Icon>settings</Icon>> */}
+                <SettingsIcon />
+
+              </IconButton>
               {/* <IconButton
                 size="small"
                 color="inherit"

@@ -1,5 +1,5 @@
 import ManageSender from "./Layouts/smsmodule/ManageSender";
-import CreateTemplate from "./Layouts/smsmodule/CreateTemplete";
+// import CreateTemplate from "./Layouts/smsmodule/CreateTemplete";
 import ManageEntity from "./Layouts/Entity/ManageEntity";
 import Shop from "./components/Icons/Shop";
 import ManageUsers from "./Layouts/Users/ManageUsers";
@@ -7,6 +7,7 @@ import ManageParameter from "./Layouts/Parameter/ManageParameter";
 import ManageCampaign from "./Layouts/Campigin/ManageCampaign";
 import SignInSide from "./Layouts/auth/SignIn";
 import Dashboard from "./Layouts/Dashboard/Dashboard";
+import ManageTemplate from "./Layouts/smsTemplete/ManageTemplate";
 
 const routes = [
   {
@@ -62,7 +63,7 @@ const routes = [
     key: "createtemplete",
     route: "/createtemplete",
     icon: <Shop size="12px" />,
-    component: <CreateTemplate />,
+    component: <ManageTemplate />,
     noCollapse: true,
   },
 
