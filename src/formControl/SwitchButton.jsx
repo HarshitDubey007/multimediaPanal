@@ -19,7 +19,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
 const switchlabel = { inputProps: { 'aria-label': 'Color switch demo' } };
 
 export function ColorSwitch({ label, ...props }) {
-    console.log("ColorSwitch:: ", props)
+   
     return (
         <div style={{margin: "10px" }}>
             <PinkSwitch {...switchlabel} {...props} />

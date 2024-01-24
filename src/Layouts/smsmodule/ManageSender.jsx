@@ -36,7 +36,7 @@ export default function ManageSender() {
     (async () => {
       try {
 
-        const Info = await DynamicApiCall("sms/getsender", "get", token);
+        const Info = await DynamicApiCall("sms/getsender/ALL", "get", token);
         console.log("Info.results:: ", Info.data);
         setrows(Info.data);
       } catch (error) {
@@ -229,7 +229,7 @@ export default function ManageSender() {
                   <CustomTable
                     rows={getrows ? getrows : []}
                     columns={columns}
-                    uniquekey="peid"
+                    uniquekey="sno"
                   />
                 </Card>
               </SoftBox>

@@ -28,13 +28,14 @@ export default function TemplateCrud({ tempData }) {
         temptype: "",
         tempvariables: "",
         campid: "",
-        dlt_success: "",
         remarks: "",
+        dlt_success: "Y",
         status: "Y",
         userid: userid,
         action_name: "INSERT"
+
+
     });
-    console.log("tempData", tempData);
 
     const getPidData = async () => {
         try {
@@ -44,7 +45,6 @@ export default function TemplateCrud({ tempData }) {
                 name: option.camp_name,
                 peid: option.peid
             }))
-            // console.log("clientdata:: ", clientdata)
             setClientOptions(clientdata);
             setClientOptionsLoading(false);
         } catch (error) {
@@ -52,12 +52,12 @@ export default function TemplateCrud({ tempData }) {
         }
     };
 
-    const getSendarData = async () => {
+    const getSendarData = async (campid) => {
         try {
-            const clientOptionsResponse = await DynamicApiCall("sms/getsender", "get", token);
+            const clientOptionsResponse = await DynamicApiCall(`sms/getsender/${campid}`, "get", token);
             let clientdata = clientOptionsResponse.data.map((option) => ({
-                value: option.peid,
-                name: option.peid,
+                value: option.senderid,
+                name: option.senderid,
             }))
             // console.log("clientdata:: ", clientdata)
             setSendarOptions(clientdata);
@@ -72,7 +72,7 @@ export default function TemplateCrud({ tempData }) {
         (async () => {
             try {
                 await getPidData()
-                await getSendarData()
+                // await getSendarData()
             } catch (error) {
                 console.error("Error fetching data:", error.message);
             }
@@ -121,6 +121,12 @@ export default function TemplateCrud({ tempData }) {
                 placeholder: "Peid",
                 type: "text",
             },
+            temptype: {
+                name: "temptype",
+                placeholder: "Temp Type",
+                validation: Yup.string().required("Template type is required"),
+                type: "text",
+            },
             senderid: {
                 name: "senderid",
                 placeholder: "Sender id",
@@ -144,8 +150,9 @@ export default function TemplateCrud({ tempData }) {
             },
             dlt_success: {
                 name: "dlt_success",
+                label: "dlt_success",
                 placeholder: "dlt_success",
-                validation: Yup.string().required("dlt_success is required"),
+                // validation: Yup.boolian ().required("dlt_success is required"),
                 type: "text",
             },
             remarks: {
@@ -153,6 +160,12 @@ export default function TemplateCrud({ tempData }) {
                 placeholder: "remarks",
                 type: "text",
             },
+            status: {
+                name: "status",
+                label: "Status",
+                placeholder: "status",
+                type: "switch",
+            }
         },
         buttons: {
             className: "space-around",
@@ -199,18 +212,50 @@ export default function TemplateCrud({ tempData }) {
         };
     }
 
-    function peidOnFOrm() {
 
-    }
+
+
+    console.log("CAMPIDDDDDDDDDDDDDDDDDD::", JsonFields.data.campid.options?.find((v) =>
+        tempData.campid?.includes(v.value)))
+
+    console.log("SENDERRRRRRRRRRRRRRRRRRRRRRRR::", JsonFields.data.senderid?.options?.find((v) =>
+    tempData.senderid?.includes(v.value)))
+
 
     const formik = useFormik({
-        initialValues: JsonFields.initialValue,
+
+        initialValues: tempData ? {
+            ...tempData,
+            campid: JsonFields.data.campid.options?.find((v) =>
+                tempData.campid?.includes(v.value)),
+            senderid: JsonFields.data.senderid?.options?.find((v) =>
+                tempData.senderid?.includes(v.value)),
+        } : JsonFields.initialValue,
         // validationSchema: validationSchema,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             // submitfunction(values);
+            let modifiedValues = {
+                ...values,
+                campid: values.campid.value,
+                senderid: values.senderid.value,
+                dlt_success: values.dlt_success === true || values.dlt_success === "Y" ? "Y" : "N",
+                status: values.status === true || values.status === "Y" ? "Y" : "N"
+            }
+
+            console.log("onSubmit VALUES:: ", modifiedValues)
+
+            const apiUrl = "sms/managetemplate";
+            const method = "post";
+            // const modifiedValues = prepareFormValues(values);
+            try {
+                const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
+                console.log("API Response:", apiResponse);
+            } catch (error) {
+                console.error("API Error:", error);
+            }
         },
     });
-
+    console.log("tempData:: :", tempData, clientOptions)
     return (
         <>
             <SoftBox
@@ -229,10 +274,12 @@ export default function TemplateCrud({ tempData }) {
                     options={JsonFields.data.campid.options}
                     getOptionLabel={(option) => option.name}
                     placeholder={JsonFields.data.campid.placeholder}
-                    value={formik.values[JsonFields.data.campid.name]}
+                    value={formik.initialValues[JsonFields.data.campid.name]}
                     onChange={(event, value) => {
+                        console.log("value:: ", value)
                         formik.setFieldValue(JsonFields.data.campid.name, value)
                         formik.setFieldValue(JsonFields.data.peid.name, value ? value.peid : "")
+                        getSendarData(value ? value.peid : "ALL")
                     }
                     }
                 />
@@ -294,17 +341,16 @@ export default function TemplateCrud({ tempData }) {
 
 
                 <ValidatedTextField
-                    fullWidth={JsonFields.data.dlt_success.fullWidth ? JsonFields.data.dlt_success.fullWidth : false}
-                    value={formik.values[JsonFields.data.dlt_success.name]}
-                    onChange={(value) => formik.setFieldValue(JsonFields.data.dlt_success.name, value)}
-                    placeholder={JsonFields.data.dlt_success.placeholder || ""}
-                    onBlur={() => formik.setFieldTouched(JsonFields.data.dlt_success.name, true)}
-                    error={formik.touched[JsonFields.data.dlt_success.name] && !!formik.errors[JsonFields.data.dlt_success.name]}
+                    fullWidth={JsonFields.data.temptype.fullWidth ? JsonFields.data.temptype.fullWidth : false}
+                    value={formik.values[JsonFields.data.temptype.name]}
+                    onChange={(value) => formik.setFieldValue(JsonFields.data.temptype.name, value)}
+                    placeholder={JsonFields.data.temptype.placeholder || ""}
+                    onBlur={() => formik.setFieldTouched(JsonFields.data.temptype.name, true)}
+                    error={formik.touched[JsonFields.data.temptype.name] && !!formik.errors[JsonFields.data.temptype.name]}
                     helperText={
-                        formik.touched[JsonFields.data.dlt_success.name] && formik.errors[JsonFields.data.dlt_success.name]
+                        formik.touched[JsonFields.data.temptype.name] && formik.errors[JsonFields.data.temptype.name]
                     }
                 />
-
 
 
                 <ValidatedTextField
@@ -320,7 +366,7 @@ export default function TemplateCrud({ tempData }) {
                 />
 
                 <ValidatedTextArea
-                    fullWidth={JsonFields.data.tempbody.fullWidth}
+                    colSize={500}
                     value={formik.values[JsonFields.data.tempbody.name]}
                     onChange={(value) => formik.setFieldValue(JsonFields.data.tempbody.name, value)}
                     placeholder={JsonFields.data.tempbody.placeholder || ""}
@@ -330,6 +376,23 @@ export default function TemplateCrud({ tempData }) {
                         formik.touched[JsonFields.data.tempbody.name] && formik.errors[JsonFields.data.tempbody.name]
                     }
                 />
+
+                <ColorSwitch
+                    label={JsonFields.data.dlt_success.label || ""}
+                    checked={formik.values[JsonFields.data.dlt_success.name]}
+                    onChange={(event, value) => {
+                        formik.setFieldValue(JsonFields.data.dlt_success.name, value)
+                    }}
+                />
+
+                <ColorSwitch
+                    label={JsonFields.data.status.label || ""}
+                    checked={formik.values[JsonFields.data.status.name]}
+                    onChange={(event, value) => {
+                        formik.setFieldValue(JsonFields.data.status.name, value)
+                    }}
+                />
+
 
                 <Grid container my={2}>
                     <Grid container justifyContent={JsonFields.buttons.className}>

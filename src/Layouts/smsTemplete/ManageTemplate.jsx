@@ -17,6 +17,19 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import SoftTypography from "../../components/SoftTypography";
+
+
+function Function({ title }) {
+    return (
+        <SoftBox display="flex" flexDirection="column">
+            <SoftTypography variant="caption" fontWeight="medium" color="text">
+                {title}
+            </SoftTypography>
+        </SoftBox>
+    );
+}
+
 
 export default function ManageTemplate() {
     const { userInfo } = useSelector((state) => state?.user?.value);
@@ -68,19 +81,22 @@ export default function ManageTemplate() {
             renderCell: (params) =>
                 params.value && <MutedCell title={params.value} org="Organization" />,
         },
-        // {
-        //   field: "peid",
-        //   headerName: "Peid(Principal Template)",
-        //   minWidth: 200,
-        //   renderCell: (params) =>
-        //     params.value && <MutedCell title={params.value} org="Organization" />,
-        // },
         {
             field: "tempbody",
             headerName: "Tempplete body",
             minWidth: 200,
             renderCell: (params) =>
-                params.value && <MutedCell title={params.value} org="Organization" />,
+                params.value && (
+                    <Tooltip
+                        title={<Function title={params.value} />}
+                        color="inherit"
+                        placement="bottom-start"
+                    >
+                        <span>
+                            <Function title={params.value} />
+                        </span>
+                    </Tooltip>
+                ),
         },
         {
             field: "temptype",
@@ -96,13 +112,6 @@ export default function ManageTemplate() {
             renderCell: (params) =>
                 params.value && <MutedCell title={params.value} org="Organization" />,
         },
-        // {
-        //   field: "peid",
-        //   headerName: "Peid(Principal Template)",
-        //   minWidth: 200,
-        //   renderCell: (params) =>
-        //     params.value && <MutedCell title={params.value} org="Organization" />,
-        // },
         {
             field: "status",
             headerName: "Status",
@@ -159,13 +168,14 @@ export default function ManageTemplate() {
     useEffect(() => {
         (async () => {
             try {
-                const Info = await DaynmicApicall("user/getusers", "get", token);
+                const Info = await DaynmicApicall("sms/getmastertemp/ALL", "get", token);
                 setrows(Info.data);
             } catch (error) {
                 console.error("Error fetching data:", error.message);
             }
         })();
     }, []);
+
 
     return (
         <>
@@ -230,7 +240,7 @@ export default function ManageTemplate() {
                                 >
                                     <CloseIcon />
                                 </IconButton>
-                                <TemplateCrud userData={rowData} />
+                                <TemplateCrud tempData={rowData ? rowData : ""} />
                             </DialogContent>
                             {/* <DialogActions>
                 <SoftButton onClick={handleSendsmsModelClose}>
