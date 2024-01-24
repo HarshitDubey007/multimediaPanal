@@ -33,15 +33,13 @@ export default function TemplateCrud({ tempData }) {
         status: "Y",
         userid: userid,
         action_name: "INSERT"
-
-
     });
 
     const getPidData = async () => {
         try {
             const clientOptionsResponse = await DynamicApiCall("multimedia/getcamplist", "get", token);
             let clientdata = clientOptionsResponse.data.map((option) => ({
-                value: option.camp_id,
+                value: option.camp_id.toString(),
                 name: option.camp_name,
                 peid: option.peid
             }))
@@ -59,9 +57,7 @@ export default function TemplateCrud({ tempData }) {
                 value: option.senderid,
                 name: option.senderid,
             }))
-            // console.log("clientdata:: ", clientdata)
             setSendarOptions(clientdata);
-            // setClientOptionsLoading(false);
         } catch (error) {
             console.error("Error fetching client options:", error.message);
         }
@@ -180,60 +176,10 @@ export default function TemplateCrud({ tempData }) {
         },
     };
 
-    async function formsubmit(values) {
-        const apiUrl = "user/manageuser";
-        const method = "post";
-        const modifiedValues = prepareFormValues(values);
-        try {
-            const apiResponse = await DynamicApiCall(apiUrl, method, modifiedValues);
-            console.log("API Response:", apiResponse);
-        } catch (error) {
-            console.error("API Error:", error);
-        }
-    }
-
-    function prepareFormValues(values) {
-        const userRights = values.userright
-            .map((v) => parseInt(v.value))
-            .toString()
-            .replace(/,/g, "");
-        const campaignIds = JSON.stringify(
-            values.campaignids.map((v) => parseInt(v.value))
-        );
-
-        return {
-            ...values,
-            userright: userRights,
-            campaignids: campaignIds,
-            usergroup: values.usergroup.name,
-            lockstatus: values.lockstatus !== true ? 0 : 1,
-            loginstatus: values.loginstatus !== true ? 0 : 1,
-            active: values.active !== true ? "N" : "Y",
-        };
-    }
-
-
-
-
-    console.log("CAMPIDDDDDDDDDDDDDDDDDD::", JsonFields.data.campid.options?.find((v) =>
-        tempData.campid?.includes(v.value)))
-
-    console.log("SENDERRRRRRRRRRRRRRRRRRRRRRRR::", JsonFields.data.senderid?.options?.find((v) =>
-    tempData.senderid?.includes(v.value)))
-
 
     const formik = useFormik({
-
-        initialValues: tempData ? {
-            ...tempData,
-            campid: JsonFields.data.campid.options?.find((v) =>
-                tempData.campid?.includes(v.value)),
-            senderid: JsonFields.data.senderid?.options?.find((v) =>
-                tempData.senderid?.includes(v.value)),
-        } : JsonFields.initialValue,
-        // validationSchema: validationSchema,
+        initialValues: tempData ? tempData : JsonFields.initialValue ,
         onSubmit: async (values) => {
-            // submitfunction(values);
             let modifiedValues = {
                 ...values,
                 campid: values.campid.value,
@@ -241,12 +187,9 @@ export default function TemplateCrud({ tempData }) {
                 dlt_success: values.dlt_success === true || values.dlt_success === "Y" ? "Y" : "N",
                 status: values.status === true || values.status === "Y" ? "Y" : "N"
             }
-
-            console.log("onSubmit VALUES:: ", modifiedValues)
-
             const apiUrl = "sms/managetemplate";
             const method = "post";
-            // const modifiedValues = prepareFormValues(values);
+
             try {
                 const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
                 console.log("API Response:", apiResponse);
@@ -255,7 +198,7 @@ export default function TemplateCrud({ tempData }) {
             }
         },
     });
-    console.log("tempData:: :", tempData, clientOptions)
+
     return (
         <>
             <SoftBox
@@ -274,7 +217,7 @@ export default function TemplateCrud({ tempData }) {
                     options={JsonFields.data.campid.options}
                     getOptionLabel={(option) => option.name}
                     placeholder={JsonFields.data.campid.placeholder}
-                    value={formik.initialValues[JsonFields.data.campid.name]}
+                    value={formik.values[JsonFields.data.campid.name]}
                     onChange={(event, value) => {
                         console.log("value:: ", value)
                         formik.setFieldValue(JsonFields.data.campid.name, value)
