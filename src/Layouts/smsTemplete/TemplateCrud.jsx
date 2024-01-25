@@ -37,7 +37,7 @@ export default function TemplateCrud({ tempData }) {
         action_name: "INSERT"
     });
 
-    
+
     const JsonFields = {
         initialValue: {
             templateid: "",
@@ -157,15 +157,19 @@ export default function TemplateCrud({ tempData }) {
     const getSendarData = async (campid) => {
         try {
             const clientOptionsResponse = await DynamicApiCall(`sms/getsender/${campid}`, "get", token);
-            let clientdata = clientOptionsResponse.data.map((option) => ({
-                value: option.senderid,
+            const clientdata = clientOptionsResponse.data.map((option) => ({
+                value: option.senderid.toString(),
                 name: option.senderid,
-            }))
-            setSendarOptions(clientdata);
+            }));
+
+            await Promise.all([
+                setSendarOptions(clientdata),
+            ]);
         } catch (error) {
             console.error("Error fetching client options:", error.message);
         }
-    }
+    };
+
     const formik = useFormik({
         initialValues: tempData ? tempData : JsonFields.initialValue,
         onSubmit: async (values) => {
@@ -189,48 +193,37 @@ export default function TemplateCrud({ tempData }) {
     });
 
     useEffect(async () => {
+        if(tempData) {
+            await getSendarData(tempData.peid)
+            console.log("getSender.peid::: ", sendarOptions)
+        }
         await getPidData();
+
+        return () => {
+            console.log("Clear");
+        };
     }, [])
 
 
     useEffect(() => {
-
         (async () => {
             try {
-                formik.setValues((values) => ({
-                    ...values,
-                    ...tempData,
-                    campid: clientOptions.find(option => option.value === tempData.campid) || null,
-                    status: tempData.status === "Y",
-                    dlt_success: tempData.dlt_success === "Y",
-                }));
+                if (tempData) {
+                    formik.setValues((values) => ({
+                        ...values,
+                        ...tempData,
+                        campid: clientOptions.find(option => option.value === tempData.campid) || null,
+                        senderid: sendarOptions.find(option => option.value === tempData.senderid) || null,
+                        status: tempData.status === "Y",
+                        dlt_success: tempData.dlt_success === "Y",
+                    }));
+
+                }
             } catch (error) {
                 console.error("Error fetching data:", error.message);
             }
         })();
     }, [clientOptions]);
-
-    // const formik = useFormik({
-    //     initialValues: tempData ? tempData : JsonFields.initialValue,
-    //     onSubmit: async (values) => {
-    //         let modifiedValues = {
-    //             ...values,
-    //             campid: values.campid.value,
-    //             senderid: values.senderid.value,
-    //             dlt_success: values.dlt_success === true || values.dlt_success === "Y" ? "Y" : "N",
-    //             status: values.status === true || values.status === "Y" ? "Y" : "N"
-    //         }
-    //         const apiUrl = "sms/managetemplate";
-    //         const method = "post";
-
-    //         try {
-    //             const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
-    //             console.log("API Response:", apiResponse);
-    //         } catch (error) {
-    //             console.error("API Error:", error);
-    //         }
-    //     },
-    // });
 
     return (
         <>
@@ -314,8 +307,6 @@ export default function TemplateCrud({ tempData }) {
                     }
                 />
 
-
-
                 <ValidatedTextField
                     fullWidth={JsonFields.data.temptype.fullWidth ? JsonFields.data.temptype.fullWidth : false}
                     value={formik.values[JsonFields.data.temptype.name]}
@@ -327,7 +318,6 @@ export default function TemplateCrud({ tempData }) {
                         formik.touched[JsonFields.data.temptype.name] && formik.errors[JsonFields.data.temptype.name]
                     }
                 />
-
 
                 <ValidatedTextField
                     fullWidth={JsonFields.data.tempvariables.fullWidth ? JsonFields.data.tempvariables.fullWidth : false}

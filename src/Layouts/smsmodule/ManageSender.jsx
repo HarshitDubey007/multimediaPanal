@@ -35,9 +35,7 @@ export default function ManageSender() {
   useEffect(() => {
     (async () => {
       try {
-
         const Info = await DynamicApiCall("sms/getsender/ALL", "get", token);
-        console.log("Info.results:: ", Info.data);
         setrows(Info.data);
       } catch (error) {
         console.error("Error fetching data:", error.message);

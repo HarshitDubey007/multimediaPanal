@@ -13,7 +13,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
   const [switchValue, setSwitchValue] = useState(
     initialValues && initialValues.switchValue
   );
-  console.log("fields:: ", fields, initialValues)
   const validationSchema = Yup.object().shape(
     fields.data.reduce((schema, field) => {
       if (field.type === "text") {
@@ -88,7 +87,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
                 initialValues[field.name].includes(v.value)
               );
         }
-        console.log("fieldValues:: ", fieldValues)
         return (
           <>
             <MultiSelect

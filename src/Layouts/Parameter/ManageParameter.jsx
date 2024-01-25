@@ -129,7 +129,6 @@ export default function ManageParameter() {
       "get",
       token
     );
-    console.log("Info.results:: ", Info);
     setRowData(Info.data);
   }
 

@@ -34,9 +34,7 @@ export default function ManageEntity() {
   useEffect(() => {
     (async () => {
       try {
-
         const Info = await DynamicApiCall("sms/getentity", "get", token);
-        console.log("Info.results:: ", Info.data);
         setrows(Info.data);
       } catch (error) {
         console.error("Error fetching data:", error.message);

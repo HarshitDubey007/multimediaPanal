@@ -27,6 +27,10 @@ function MultiSelect(props) {
 MultiSelect.propTypes = {
   size: PropTypes.string,
   options: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      // Add other properties as needed
+    })
   ).isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
@@ -34,11 +38,11 @@ MultiSelect.propTypes = {
   multiple: PropTypes.bool, // Prop to control single or multi-select
 };
 
-// // Additional validation for non-empty options array
-// MultiSelect.propTypes.options.validate = (options) => {
-//   if (options.length === 0) {
-//     return new Error('Options array must not be empty.');
-//   }
-// };
+// Additional validation for non-empty options array
+MultiSelect.propTypes.options.validate = (options) => {
+  if (options.length === 0) {
+    return new Error('Options array must not be empty.');
+  }
+};
 
 export default MultiSelect;

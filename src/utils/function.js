@@ -19,11 +19,9 @@ export default async function DynamicApiCall(url, method, UserToken, parameter) 
             default:
                 throw new Error(`Unsupported method: ${method}`);
         }
-        console.log("apiResponse:::: ", apiResponse)
-        // Handle success
         if (apiResponse.data) {
             // Show different types of toasts based on conditions
-            if (apiResponse.data.status === true && apiResponse.status === 200) {
+            if (apiResponse.data.status === true && apiResponse.status === 200  && method.toUpperCase() !== 'GET') {
                 toast.success(apiResponse.data.message, { autoClose: 2000 });
             } else if (apiResponse.data.status === false && apiResponse.status === 200) {
                 toast.info(apiResponse.data.message, { autoClose: 2000 });
