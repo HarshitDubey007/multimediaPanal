@@ -23,7 +23,7 @@ import Stack from "@mui/material/Stack";
 import { gridClasses } from "@mui/material";
 import SoftBadge from "../../components/SoftBadge";
 import SoftTypography from "../../components/SoftTypography";
-import SendsmsModel from "./SendsmsModel";
+import SendsmsModel from "./SendsmsModelOld";
 import ValidatedTextArea from "../../formControl/ValidatedTextArea";
 import useForm from "../../helpers/HandelForm";
 import DynamicForm from "../../helpers/formikForm";

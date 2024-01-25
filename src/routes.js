@@ -1,4 +1,4 @@
-import ManageSender from "./Layouts/smsmodule/ManageSender";
+import ManageSender from "./Layouts/sender/ManageSender";
 // import CreateTemplate from "./Layouts/smsmodule/CreateTemplete";
 import ManageEntity from "./Layouts/Entity/ManageEntity";
 import Shop from "./components/Icons/Shop";
@@ -55,7 +55,7 @@ const routes = [
     component: <ManageSender />,
     noCollapse: true,
   },
-  { type: "title", title: "Account Pages", key: "account-pages" },
+  // { type: "title", title: "Account Pages", key: "account-pages" },
 
   {
     type: "collapse",

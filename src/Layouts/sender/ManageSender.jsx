@@ -16,7 +16,9 @@ import DynamicApiCall from "../../utils/function";
 export default function ManageSender() {
   const { userInfo } = useSelector((state) => state?.user?.value);
   const { userid, token } = userInfo;
-  const [entityData, setEntityData] = useState("");
+  const [senderData, setSenderData] = useState("");
+  const [clientOptions, setClientOptions] = useState([]);
+
   const [getrows, setrows] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -37,13 +39,53 @@ export default function ManageSender() {
       try {
         const Info = await DynamicApiCall("sms/getsender/ALL", "get", token);
         setrows(Info.data);
+        getPidData();
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }
     })();
   }, []);
 
+  const getPidData = async () => {
+    try {
+      const clientOptionsResponse = await DynamicApiCall("sms/getentity", "get", token);
+      let clientdata = clientOptionsResponse.data.map((option) => ({
+        value: option.peid.toString(),
+        name: option.client_name,
+      }))
+      setClientOptions(clientdata);
+    } catch (error) {
+      console.error("Error fetching client options:", error.message);
+    }
+  };
+
+
   let columns = [
+    {
+      field: "actions",
+      headerName: "Actions",
+      type: "actions",
+      minWidth: 80,
+      flex: 1,
+      getActions: (params) => [
+        <GridActionsCellItem
+          label="Edit"
+          onClick={() => {
+            params.row.action_name = "UPDATE";
+            let editData = {
+              ...params.row,
+              status: params.row.is_active
+            }
+            delete editData.updated_on; delete editData.updated_by; delete editData.created_on;
+            delete editData.sno; delete editData.is_active
+            console.log("editData", editData)
+            setSenderData(editData);
+          }}
+          showInMenu
+        />,
+        <GridActionsCellItem label="Delete" onClick={(e) => { }} showInMenu />,
+      ],
+    },
     {
       field: "peid",
       headerName: "Peid(Principal Entity)",
@@ -51,30 +93,23 @@ export default function ManageSender() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    // {
-    //   field: "peidName",
-    //   headerName: "Principal Entity name",
-    //   minWidth: 200,
-    //   flex: 1,
-    //   renderCell: (params) =>
-    //     params.value && <MutedCell title={params.value} org="Organization" />,
-    // },
     {
-      field: "client_name",
-      headerName: "Client name",
+      field: "senderid",
+      headerName: "Sender",
       minWidth: 200,
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "office_address",
-      headerName: "Office address",
+      field: "owner_name",
+      headerName: "Owner name",
       minWidth: 200,
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
+
     {
       field: "status",
       headerName: "Status",
@@ -99,40 +134,6 @@ export default function ManageSender() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    {
-      field: "is_active",
-      headerName: "Is Active",
-      minWidth: 150,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      type: "actions",
-      minWidth: 80,
-      flex: 1,
-      getActions: (params) => [
-        <GridActionsCellItem
-          label="Edit"
-          onClick={() => {
-            params.row.action_name = "UPDATE";
-            let editData = {
-              ...params.row,
-              status: params.row.is_active
-            }
-            delete editData.updated_on; delete editData.updated_by; delete editData.created_on;
-            delete editData.sno; delete editData.is_active
-            console.log("editData", editData)
-            setEntityData(editData);
-          }}
-          showInMenu
-        />,
-
-        <GridActionsCellItem label="Delete" onClick={(e) => { }} showInMenu />,
-      ],
-    },
   ];
 
   const JsonFields = {
@@ -154,11 +155,12 @@ export default function ManageSender() {
 
       },
       {
+        multiple: false,
         name: "peid",
-        placeholder: "peid",
-        validation: Yup.string().required("peid is required"),
-        type: "text",
-        fullWidth: true,
+        placeholder: "Peid",
+        type: "multiSelect",
+        options: clientOptions,
+        validation: Yup.object().required("Peid is required"),
 
       },
       {
@@ -182,7 +184,7 @@ export default function ManageSender() {
       className: "space-around",
       submitButton: {
         style: {},
-        label: "Save Entity",
+        label: "Save Sender",
       },
       resetButton: {
         style: {},
@@ -222,7 +224,7 @@ export default function ManageSender() {
                   }}
                 >
                   <Grid container justifyContent="space-between" px={2} py={1}>
-                    <Grid item>Manage Client Entity</Grid>
+                    <Grid item>Manage Sender</Grid>
                   </Grid>
                   <CustomTable
                     rows={getrows ? getrows : []}
@@ -239,7 +241,7 @@ export default function ManageSender() {
                 <Card style={{ padding: "10px" }}>
                   <Grid container justifyContent="space-between" px={2} pt={1}>
                     <Grid item>
-                      {entityData ? entityData.action_name : "Add"} User Entity
+                      {senderData ? senderData.action_name : "Add"} Sender
                     </Grid>
                   </Grid>
                   <hr
@@ -250,11 +252,13 @@ export default function ManageSender() {
                     }}
                   />
 
-                  <DynamicForm
-                    submitfunction={formsubmit}
-                    initialValues={entityData ? entityData : initial}
-                    fields={JsonFields}
-                  />
+                  {clientOptions.length > 0 && (
+                    <DynamicForm
+                      submitfunction={formsubmit}
+                      initialValues={senderData ? senderData : initial}
+                      fields={JsonFields}
+                    />
+                  )}
                 </Card>
               </SoftBox>
             </SoftBox>

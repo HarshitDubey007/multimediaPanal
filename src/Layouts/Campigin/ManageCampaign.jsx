@@ -53,10 +53,9 @@ export default function ManageCampaign() {
         try {
             const clientOptionsResponse = await DynamicApiCall("multimedia/getcamplist", "get", token);
             let clientdata = clientOptionsResponse.data.map((option) => ({
-                value: option.camp_name,
-                name: option.peid,
+                value: option.peid.toString(),
+                name: option.camp_name,
             }))
-            // console.log("clientdata:: ", clientdata)
             setClientOptions(clientdata);
             setClientOptionsLoading(false);
         } catch (error) {
@@ -141,16 +140,6 @@ export default function ManageCampaign() {
                         params.row.action_name = "UPDATE";
                         console.log("Parames row", params.row)
                         let editData = {
-                            // action_name: "UPDATE",
-                            // camp_display_name: "",
-                            // camp_id: "",
-                            // camp_name: "",
-                            // client_name: "",
-                            // is_active: "",
-                            // peid: "",
-                            // remarks: "",
-                            // sno: "",
-
                             campid: params.row.camp_id,
                             campname: params.row.camp_name,
                             clientname: params.row.peid,
@@ -158,23 +147,9 @@ export default function ManageCampaign() {
                             campdisplay_name: params.row.camp_display_name,
                             remarks: params.row.remarks,
                             action_name: "UPDATE"
-
                         }
                         console.log("params.row.action_name = UPDATE", editData, params.row)
                         setCampData(editData)
-
-
-                        // setCampData(editData);
-
-                        // campid: "",
-                        // campname: "",
-                        // clientname: "",
-                        // senderid: "",
-                        // campdisplay_name: "",
-                        // remarks: "",
-
-
-                        // action_name: "UPDATE"camp_display_name: "TATAAI"camp_id: "111"camp_name: "TATA"client_name: "TATA"created_by: "P017002"created_on: "2024-01-22 15:52:20"is_active: "Y"peid: "PE12345"remarks: "TEST TATA"sender_id: "12132435t4"sno: 5
                     }}
                     showInMenu
                 />,
@@ -216,20 +191,13 @@ export default function ManageCampaign() {
                 placeholder: "Client Name",
                 type: "multiSelect",
                 options: clientOptions,
+                // [
+                //     {
+                //         "value": "333486455533",
+                //         "name": "TATA"
+                //     }
+                // ]
                 validation: Yup.object().required("Client name is required"),
-
-
-                multiple: false,
-                name: "usergroup",
-                placeholder: "Select User Group",
-                type: "multiSelect",
-                options: [
-                    { value: "ADMIN", name: "ADMIN" },
-                    { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
-                    { value: "AGENT", name: "AGENT" },
-                    { value: "TEM-LEAD", name: "TEM-LEAD" },
-                ],
-                validation: Yup.object().required("User Group is required"),
             },
             {
                 name: "senderid",
@@ -262,7 +230,6 @@ export default function ManageCampaign() {
     async function formsubmit(values) {
         const apiUrl = "multimedia/managecamp";
         const method = "post";
-        // const modifiedValues = prepareFormValues(values);
         try {
             let client = values.clientname
             values.peid = client.value

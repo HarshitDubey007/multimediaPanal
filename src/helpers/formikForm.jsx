@@ -83,25 +83,26 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
               ? field.options?.filter((v) =>
                 initialValues[field.name].includes(v.value)
               )
-              : field.options?.find((v) =>
-                initialValues[field.name].includes(v.value)
-              );
+              : field.options?.find((v) => initialValues[field.name].includes(v.value));
         }
+        console.log("fieldValues:: ", fieldValues, initialValues, field.options, field.name)
+
+
         return (
           <>
             <MultiSelect
               key={field.name}
               multiple={field.multiple}
-              options={field.options}
+              options={field.options ? field.options : []}
               getOptionLabel={(option) => option.name}
               placeholder={field.placeholder}
-              value={fieldValues}
+              value={field.multiple ? fieldValues || [] : fieldValues}
               onChange={(event, value) =>
                 formik.setFieldValue(field.name, value)
               }
             />
             {formik.touched[field.name] && formik.errors[field.name] && (
-              <div style={{ color: "red" }}>{formik.errors[field.name]}</div>
+              <div style={{ color: "red", fontSize: "10px", fontWeight: "bolder" }}>{formik.errors[field.name]}</div>
             )}
           </>
         );
