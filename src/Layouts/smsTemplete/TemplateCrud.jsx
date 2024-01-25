@@ -192,16 +192,21 @@ export default function TemplateCrud({ tempData }) {
         },
     });
 
-    useEffect(async () => {
-        if(tempData) {
-            await getSendarData(tempData.peid)
-            console.log("getSender.peid::: ", sendarOptions)
-        }
-        await getPidData();
-
-        return () => {
-            console.log("Clear");
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (tempData) {
+                    await getSendarData(tempData.peid);
+                    console.log("getSender.peid::: ", sendarOptions);
+                }
+                await getPidData();
+            } catch (error) {
+                console.error("Error fetching data:", error.message);
+            }
         };
+
+        fetchData();
+
     }, [])
 
 
