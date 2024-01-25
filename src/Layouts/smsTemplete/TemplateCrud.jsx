@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DynamicForm from "../../helpers/formikForm";
 import SoftBox from "../../components/SoftBox";
 import DynamicApiCall from "../../utils/function";
@@ -19,6 +19,8 @@ export default function TemplateCrud({ tempData }) {
     const [clientOptionsLoading, setClientOptionsLoading] = useState(true);
     const [clientOptions, setClientOptions] = useState([]);
     const [sendarOptions, setSendarOptions] = useState([]);
+
+    const isFirstRender = useRef(true);
     const [initial, setinitial] = useState({
         templateid: "",
         templatename: "",
@@ -35,46 +37,7 @@ export default function TemplateCrud({ tempData }) {
         action_name: "INSERT"
     });
 
-    const getPidData = async () => {
-        try {
-            const clientOptionsResponse = await DynamicApiCall("multimedia/getcamplist", "get", token);
-            let clientdata = clientOptionsResponse.data.map((option) => ({
-                value: option.camp_id.toString(),
-                name: option.camp_name,
-                peid: option.peid
-            }))
-            setClientOptions(clientdata);
-            setClientOptionsLoading(false);
-        } catch (error) {
-            console.error("Error fetching client options:", error.message);
-        }
-    };
-
-    const getSendarData = async (campid) => {
-        try {
-            const clientOptionsResponse = await DynamicApiCall(`sms/getsender/${campid}`, "get", token);
-            let clientdata = clientOptionsResponse.data.map((option) => ({
-                value: option.senderid,
-                name: option.senderid,
-            }))
-            setSendarOptions(clientdata);
-        } catch (error) {
-            console.error("Error fetching client options:", error.message);
-        }
-    }
-
-
-    useEffect(() => {
-        (async () => {
-            try {
-                await getPidData()
-                // await getSendarData()
-            } catch (error) {
-                console.error("Error fetching data:", error.message);
-            }
-        })();
-    }, []);
-
+    
     const JsonFields = {
         initialValue: {
             templateid: "",
@@ -176,9 +139,35 @@ export default function TemplateCrud({ tempData }) {
         },
     };
 
+    const getPidData = async () => {
+        try {
+            const clientOptionsResponse = await DynamicApiCall("multimedia/getcamplist", "get", token);
+            let clientdata = clientOptionsResponse.data.map((option) => ({
+                value: option.camp_id.toString(),
+                name: option.camp_name,
+                peid: option.peid
+            }))
+            setClientOptions(clientdata);
+            setClientOptionsLoading(false);
+        } catch (error) {
+            console.error("Error fetching client options:", error.message);
+        }
+    };
 
+    const getSendarData = async (campid) => {
+        try {
+            const clientOptionsResponse = await DynamicApiCall(`sms/getsender/${campid}`, "get", token);
+            let clientdata = clientOptionsResponse.data.map((option) => ({
+                value: option.senderid,
+                name: option.senderid,
+            }))
+            setSendarOptions(clientdata);
+        } catch (error) {
+            console.error("Error fetching client options:", error.message);
+        }
+    }
     const formik = useFormik({
-        initialValues: tempData ? tempData : JsonFields.initialValue ,
+        initialValues: tempData ? tempData : JsonFields.initialValue,
         onSubmit: async (values) => {
             let modifiedValues = {
                 ...values,
@@ -199,6 +188,50 @@ export default function TemplateCrud({ tempData }) {
         },
     });
 
+    useEffect(async () => {
+        await getPidData();
+    }, [])
+
+
+    useEffect(() => {
+
+        (async () => {
+            try {
+                formik.setValues((values) => ({
+                    ...values,
+                    ...tempData,
+                    campid: clientOptions.find(option => option.value === tempData.campid) || null,
+                    status: tempData.status === "Y",
+                    dlt_success: tempData.dlt_success === "Y",
+                }));
+            } catch (error) {
+                console.error("Error fetching data:", error.message);
+            }
+        })();
+    }, [clientOptions]);
+
+    // const formik = useFormik({
+    //     initialValues: tempData ? tempData : JsonFields.initialValue,
+    //     onSubmit: async (values) => {
+    //         let modifiedValues = {
+    //             ...values,
+    //             campid: values.campid.value,
+    //             senderid: values.senderid.value,
+    //             dlt_success: values.dlt_success === true || values.dlt_success === "Y" ? "Y" : "N",
+    //             status: values.status === true || values.status === "Y" ? "Y" : "N"
+    //         }
+    //         const apiUrl = "sms/managetemplate";
+    //         const method = "post";
+
+    //         try {
+    //             const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
+    //             console.log("API Response:", apiResponse);
+    //         } catch (error) {
+    //             console.error("API Error:", error);
+    //         }
+    //     },
+    // });
+
     return (
         <>
             <SoftBox
@@ -215,7 +248,7 @@ export default function TemplateCrud({ tempData }) {
                     key={JsonFields.data.campid.name}
                     multiple={JsonFields.data.campid.multiple}
                     options={JsonFields.data.campid.options}
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) => option.name || ''}
                     placeholder={JsonFields.data.campid.placeholder}
                     value={formik.values[JsonFields.data.campid.name]}
                     onChange={(event, value) => {
@@ -246,7 +279,7 @@ export default function TemplateCrud({ tempData }) {
                     key={JsonFields.data.senderid.name}
                     multiple={JsonFields.data.senderid.multiple}
                     options={JsonFields.data.senderid.options}
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) => option.name || ''}
                     placeholder={JsonFields.data.senderid.placeholder}
                     value={formik.values[JsonFields.data.senderid.name]}
                     onChange={(event, value) =>

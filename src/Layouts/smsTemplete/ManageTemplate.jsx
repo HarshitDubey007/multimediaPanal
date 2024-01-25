@@ -212,7 +212,7 @@ export default function ManageTemplate() {
                                     <CustomTable
                                         rows={getrows ? getrows : []}
                                         columns={columns}
-                                        uniquekey="userid"
+                                        uniquekey="templateid"
                                     />
                                 </Card>
                             </SoftBox>
