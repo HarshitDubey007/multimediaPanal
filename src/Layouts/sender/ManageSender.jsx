@@ -198,8 +198,14 @@ export default function ManageSender() {
     const method = "post";
     // const modifiedValues = prepareFormValues(values);
     try {
-      console.log("values:: ", values)
-      const apiResponse = await DynamicApiCall(apiUrl, method, token, values);
+      const postData = {
+        ...values,
+        peid: values.peid.value,
+        status: "Y"
+      }
+      console.log("values:: ", postData)
+
+      const apiResponse = await DynamicApiCall(apiUrl, method, token, postData);
       console.log("API Response:", apiResponse);
     } catch (error) {
       console.error("API Error:", error);

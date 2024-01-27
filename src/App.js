@@ -14,7 +14,7 @@ import SoftBox from "./components/SoftBox";
 import DashboardNavbar from "./components/Navbars/DashboardNavbar";
 import DashboardLayout from "./components/LayoutContainers/DashboardLayout";
 import Sidenav from "./components/Sidenav";
-import SignIn from "./Layouts/auth/SignIn";
+import SignInSide from "./Layouts/auth/SignIn";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -23,7 +23,6 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-  
 
   // Cache for the rtl
   useMemo(() => {
@@ -35,7 +34,7 @@ export default function App() {
     setRtlCache(cacheRtl);
   }, []);
 
-  // Open sidenav when mouse enter on mini sidenav
+  // Open sidenav when mouse enters mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
@@ -43,7 +42,7 @@ export default function App() {
     }
   };
 
-  // Close sidenav when mouse leave mini sidenav
+  // Close sidenav when mouse leaves mini sidenav
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
       setMiniSidenav(dispatch, true);
@@ -101,56 +100,49 @@ export default function App() {
       </Icon>
     </SoftBox>
   );
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {/* {!isLoggedIn ? <SignIn /> : <> */}
-        <Sidenav
-          color={sidenavColor}
-          // brand={brand}
-          brandName="MultiMedia Panal"
-          routes={routes}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
-        />
-        <DashboardLayout>
-          <DashboardNavbar />
-          <SoftBox py={3}>
-            <Routes>
-              {getRoutes(routes)}
-              <Route path="*" element={<Navigate to={!isLoggedIn ? "/dashboard" : "/"} />} />
-            </Routes>
-            <div>
-              <Toaster position="bottom-right" toastOptions={{
-                success: {
-                  style: {
-                    background: '#05A677',
-                    color: "#fff"
-                  },
-                },
-                info: {
-                  style: {
-                    background: '#0948B3',
-                    color: "#fff"
-                  },
-                },
-                error: {
-                  style: {
-                    background: '#FA5252',
-                    color: "#fff"
-                  },
-                },
-              }} />
-            </div>
-          </SoftBox>
-        </DashboardLayout>
-
-      {/* </>} */}
-
-
+      {isLoggedIn ? (
+        <>
+          <Sidenav
+            color={sidenavColor}
+            brandName="MultiMedia Panal"
+            routes={routes}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+          <DashboardLayout>
+            <DashboardNavbar />
+            <SoftBox py={3}>
+              <Routes>
+                {getRoutes(routes)}
+                <Route path="*" element={<Navigate to="/dashboard" />} />
+              </Routes>
+              <div>
+                <Toaster
+                  position="bottom-right"
+                  toastOptions={{
+                    success: { style: { background: "#05A677", color: "#fff" } },
+                    info: { style: { background: "#0948B3", color: "#fff" } },
+                    error: { style: { background: "#FA5252", color: "#fff" } },
+                  }}
+                />
+              </div>
+            </SoftBox>
+          </DashboardLayout>
+        </>
+      ) : (
+        <Routes>
+          <Route path="/" element={<SignInSide />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      )}
     </ThemeProvider>
   );
 }
+
 
 
 

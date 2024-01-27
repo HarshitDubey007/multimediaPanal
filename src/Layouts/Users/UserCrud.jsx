@@ -3,8 +3,12 @@ import DynamicForm from "../../helpers/formikForm";
 import * as Yup from "yup";
 import SoftBox from "../../components/SoftBox";
 import DynamicApiCall from "../../utils/function";
+import { useSelector } from "react-redux";
+
 
 export default function UserCrud({ userData }) {
+  const { userInfo } = useSelector((state) => state?.user?.value);
+  const { userid, token } = userInfo;
   console.log("userData", userData);
 
   const [initial, setinitial] = useState({
@@ -20,7 +24,7 @@ export default function UserCrud({ userData }) {
     loginstatus: true,
     active: true,
     remarks: "",
-    createdby: "ADMIN",
+    createdby: userid,
     languagename: "ENGLISH",
     action_name: "INSERT",
   });
@@ -119,7 +123,7 @@ export default function UserCrud({ userData }) {
     const method = "post";
     const modifiedValues = prepareFormValues(values);
     try {
-      const apiResponse = await DynamicApiCall(apiUrl, method, modifiedValues);
+      const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
       console.log("API Response:", apiResponse);
     } catch (error) {
       console.error("API Error:", error);

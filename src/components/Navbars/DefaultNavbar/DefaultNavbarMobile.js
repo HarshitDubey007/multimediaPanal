@@ -1,17 +1,7 @@
- 
-
-// prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
-
-// @mui material components
 import Menu from "@mui/material/Menu";
-// import Grid from "@mui/material/Grid";
-
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
-
-// Soft UI Dashboard React examples
-import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
+import SoftBox from "../../SoftBox";
+import DefaultNavbarLink from "./DefaultNavbarLink";
 
 function DefaultNavbarMobile({ open, close }) {
   const { width } = open && open.getBoundingClientRect();

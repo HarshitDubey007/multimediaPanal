@@ -25,7 +25,7 @@ import SoftTypography from "../../SoftTypography";
 import SoftInput from "../../../assets/theme/components/SoftInput";
 import { logout } from "../../../redux/User";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from 'react-redux';
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -97,14 +97,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   async function userLogout() {
     try {
-
+const dispatch = useDispatch
       dispatch(logout());
-      navigate("/", { replace: true });
-
-      // dispatch(login());
-
       // navigate("/", { replace: true });
-      // window.history.go();
     } catch (error) {
 
     }

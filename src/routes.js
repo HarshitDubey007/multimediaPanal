@@ -8,6 +8,11 @@ import ManageCampaign from "./Layouts/Campigin/ManageCampaign";
 import SignInSide from "./Layouts/auth/SignIn";
 import Dashboard from "./Layouts/Dashboard/Dashboard";
 import ManageTemplate from "./Layouts/smsTemplete/ManageTemplate";
+import CampaignIcon from '@mui/icons-material/Campaign';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import OutboxIcon from '@mui/icons-material/Outbox';
+import FingerprintIcon from '@mui/icons-material/Fingerprint';
+import FenceIcon from '@mui/icons-material/Fence';
 
 const routes = [
   {
@@ -19,21 +24,21 @@ const routes = [
     component: <Dashboard />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Signin",
-    key: "signin",
-    route: "/",
-    icon: <Shop size="12px" />,
-    component: <SignInSide />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Signin",
+  //   key: "signin",
+  //   route: "/",
+  //   icon: <Shop size="12px" />,
+  //   component: <SignInSide />,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
     name: "manage Entites",
     key: "manageentites",
     route: "/manageentites",
-    icon: <Shop size="12px" />,
+    icon: <FingerprintIcon size="12px" />,
     component: <ManageEntity />,
     noCollapse: false,
   },
@@ -42,7 +47,7 @@ const routes = [
     name: "manage Campaign",
     key: "managecampaign",
     route: "/managecampaign",
-    icon: <Shop size="12px" />,
+    icon: <CampaignIcon size="12px" />,
     component: <ManageCampaign />,
     noCollapse: false,
   },
@@ -51,7 +56,7 @@ const routes = [
     name: "Managesender",
     key: "managesender",
     route: "/managesender",
-    icon: <Shop size="12px" />,
+    icon: <OutboxIcon size="12px" />,
     component: <ManageSender />,
     noCollapse: true,
   },
@@ -72,7 +77,7 @@ const routes = [
     name: "manage user",
     key: "manageusers",
     route: "/manageusers",
-    icon: <Shop size="12px" />,
+    icon: <ManageAccountsIcon size="12px" />,
     component: <ManageUsers />,
     noCollapse: false,
   },
@@ -81,7 +86,7 @@ const routes = [
     name: "Manage Parameter",
     key: "manageparameter",
     route: "/manageparameter",
-    icon: <Shop size="12px" />,
+    icon: <FenceIcon size="12px" />,
     component: <ManageParameter />,
     noCollapse: false,
   },

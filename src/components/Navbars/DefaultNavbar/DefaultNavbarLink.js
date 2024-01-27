@@ -12,7 +12,6 @@ import SoftBox from "../../SoftBox";
 import SoftTypography from "../../SoftTypography";
 
 
-
 function DefaultNavbarLink({ icon, name, route, light }) {
   return (
     <SoftBox

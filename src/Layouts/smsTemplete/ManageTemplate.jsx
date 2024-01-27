@@ -18,6 +18,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import SoftTypography from "../../components/SoftTypography";
+import SendSms from "./SendSms";
 
 
 function Function({ title }) {
@@ -36,6 +37,8 @@ export default function ManageTemplate() {
     const { userid, token } = userInfo;
     const [rowData, setRowData] = useState("");
     const [isModalOpen, setModalOpen] = useState(false);
+    // const [isSmsSendModelOpen, setSmsSendModelOpen] = useState(false);
+    const [isSendSmsModalOpen, setSendSmsModalOpen] = useState(false);
     const [getrows, setrows] = useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -45,9 +48,19 @@ export default function ManageTemplate() {
         setModalOpen(true);
     };
 
-    const handleSendsmsModelClose = () => {
+    const handleCreateTemplateModelClose = () => {
         setModalOpen(false);
     };
+
+    const handleSendsmsModelOpen = (row) => {
+        setRowData(row);
+        setSendSmsModalOpen(true)
+    };
+
+    const handleSendsmsModelClose = () => {
+        setSendSmsModalOpen(false)
+
+    }
 
     let columns = [
         {
@@ -160,6 +173,15 @@ export default function ManageTemplate() {
                     showInMenu
                 />,
 
+                <GridActionsCellItem
+                    label="Send Sms"
+                    onClick={() => {
+                        params.row.action_name = "UPDATE";
+                        handleSendsmsModelOpen(params.row);
+                    }}
+                    showInMenu
+                />,
+
                 <GridActionsCellItem label="Delete" onClick={(e) => { }} showInMenu />,
             ],
         },
@@ -222,12 +244,49 @@ export default function ManageTemplate() {
                         <Dialog
                             sx={{ mt: 2 }}
                             open={isModalOpen}
-                            onClose={handleSendsmsModelClose}
+                            onClose={handleCreateTemplateModelClose}
                             maxWidth="lg"
                             fullWidth
                         >
                             <DialogContent>
-                                {/* user crud */}
+                                {/* Template crud */}
+                                <IconButton
+                                    aria-label="close"
+                                    onClick={handleCreateTemplateModelClose}
+                                    sx={{
+                                        position: "absolute",
+                                        right: 8,
+                                        top: 8,
+                                        color: (theme) => theme.palette.grey[500],
+                                    }}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                                <TemplateCrud tempData={rowData ? rowData : ""} />
+                            </DialogContent>
+                        </Dialog>
+                    </Grid>
+
+
+
+
+
+
+
+
+
+
+                    {/* send live sms */}
+                    <Grid>
+                        <Dialog
+                            sx={{ mt: 2 }}
+                            open={isSendSmsModalOpen}
+                            onClose={handleSendsmsModelClose}
+                            maxWidth="md"
+                            fullWidth
+                        >
+                            <DialogContent>
+                                {/* Template crud */}
                                 <IconButton
                                     aria-label="close"
                                     onClick={handleSendsmsModelClose}
@@ -240,14 +299,15 @@ export default function ManageTemplate() {
                                 >
                                     <CloseIcon />
                                 </IconButton>
-                                <TemplateCrud tempData={rowData ? rowData : ""} />
+
+                                <h1>Send SMS</h1>
+
+                                <SendSms
+                                    tempData={rowData ? rowData : ""}
+                                />
                             </DialogContent>
-                            {/* <DialogActions>
-                <SoftButton onClick={handleSendsmsModelClose}>
-                  Cancel
-                </SoftButton>
-              </DialogActions> */}
                         </Dialog>
+
                     </Grid>
                 </Grid>
             </div>
