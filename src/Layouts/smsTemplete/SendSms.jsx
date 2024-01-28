@@ -5,9 +5,14 @@ import SoftBox from '../../components/SoftBox';
 import DynamicForm from '../../helpers/formikForm';
 import * as Yup from "yup";
 import SoftButton from '../../components/SoftButton';
+import DynamicApiCall from '../../utils/function';
+import { useSelector } from "react-redux";
+
 
 
 export default function SendSms({ tempData }) {
+    const { userInfo } = useSelector((state) => state?.user?.value);
+    const { userid, token } = userInfo;
     const [formValue, setFromValue] = useState({})
     const [finalApiBody, setFinalApiBody] = useState({})
     const JsonFields = {
@@ -60,7 +65,6 @@ export default function SendSms({ tempData }) {
         const apiUrl = "sms/manageentity";
         const method = "post";
         try {
-            console.log("values:: ", values)
             let regx = new RegExp(tempData.tempvariables, 'gi');
             let content = tempData.tempbody.replace(regx, function (match) {
                 return values[match]
@@ -74,6 +78,19 @@ export default function SendSms({ tempData }) {
             console.log("content:: ", content)
         } catch (error) {
             console.error("API Error:", error);
+        }
+    }
+
+
+
+    async function sendSms() {
+        try {
+            const apiUrl = "sms/send-sms";
+            const method = "post";
+            const apiResponse = await DynamicApiCall(apiUrl, method, token, {...finalApiBody, ...tempData});
+            console.log("API Response:", apiResponse);
+        } catch (error) {
+
         }
     }
     console.log("formValue::::", formValue)
@@ -124,6 +141,7 @@ export default function SendSms({ tempData }) {
                                             size="small"
                                             color="success"
                                             type="submit"
+                                            onClick={sendSms}
                                         >
                                             Final Send SMS
                                         </SoftButton>

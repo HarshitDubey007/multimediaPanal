@@ -57,6 +57,19 @@ export default function UserCrud({ userData }) {
         validation: Yup.object().required("User Group is required"),
       },
       {
+        multiple: false,
+        name: "userrole",
+        placeholder: "Select User role",
+        type: "multiSelect",
+        options: [
+          { value: "ADMIN", name: "ADMIN" },
+          { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
+          { value: "AGENT", name: "AGENT" },
+          { value: "TEM-LEAD", name: "TEM-LEAD" },
+        ],
+        validation: Yup.object().required("User role is required"),
+      },
+      {
         multiple: true,
         name: "userright",
         placeholder: "Select User Rights",
@@ -66,7 +79,7 @@ export default function UserCrud({ userData }) {
           { value: "2", name: "WRITE" },
           { value: "3", name: "DELETE" },
         ],
-        validation: Yup.object().required("User Group is required"),
+        // validation: Yup.array().required("User right is required"),
       },
       {
         multiple: true,
@@ -78,7 +91,7 @@ export default function UserCrud({ userData }) {
           { value: "101", name: "HDFC" },
           { value: "102", name: "BIRLA" },
         ],
-        validation: Yup.object().required("Campaign is required"),
+        // validation: Yup.object().required("Campaign is required"),
       },
       {
         name: "verifier",
@@ -123,8 +136,9 @@ export default function UserCrud({ userData }) {
     const method = "post";
     const modifiedValues = prepareFormValues(values);
     try {
-      const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
-      console.log("API Response:", apiResponse);
+      console.log("values::: ", modifiedValues)
+      // const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
+      // console.log("API Response:", apiResponse);
     } catch (error) {
       console.error("API Error:", error);
     }
@@ -138,9 +152,14 @@ export default function UserCrud({ userData }) {
     const campaignIds = JSON.stringify(
       values.campaignids.map((v) => parseInt(v.value))
     );
+    const userRole = values.userrole
+      .map((v) => parseInt(v.value))
+      .toString()
+      .replace(/,/g, "");
 
     return {
       ...values,
+      userrole: userRole,
       userright: userRights,
       campaignids: campaignIds,
       usergroup: values.usergroup.name,
