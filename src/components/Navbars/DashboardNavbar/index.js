@@ -27,13 +27,16 @@ import { logout } from "../../../redux/User";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 
+
+
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
-  const [controller, dispatch] = useSoftUIController();
+  const [controller, uidispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (fixedNavbar) {
@@ -43,15 +46,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
     }
 
     function handleTransparentNavbar() {
-      setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
+      setTransparentNavbar(uidispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
     }
     window.addEventListener("scroll", handleTransparentNavbar);
     handleTransparentNavbar();
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
-  }, [dispatch, fixedNavbar]);
+  }, [uidispatch, fixedNavbar]);
 
-  const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleMiniSidenav = () => setMiniSidenav(uidispatch, !miniSidenav);
+  const handleConfiguratorOpen = () => setOpenConfigurator(uidispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
 
@@ -95,15 +98,26 @@ function DashboardNavbar({ absolute, light, isMini }) {
   );
 
 
-  async function userLogout() {
-    try {
-const dispatch = useDispatch
-      dispatch(logout());
-      // navigate("/", { replace: true });
-    } catch (error) {
+  function Userlogout() {
 
+
+    try {
+      // uidispatch(logout());
+      dispatch(logout());
+
+      // Navigate to the home page
+      navigate("/", { replace: true });
+
+      // Reload the page to ensure a fresh state
+      window.location.reload();
+    } catch (error) {
+      console.log("")
     }
   }
+
+  // async function userLogout(e) {
+
+  // }
 
   return (
     <AppBar
@@ -137,7 +151,7 @@ const dispatch = useDispatch
                   variant="button"
                   fontWeight="medium"
                   color={light ? "white" : "dark"}
-                  onClick={userLogout}
+                  onClick={Userlogout}
                 >
                   Sign Out
                 </SoftTypography>

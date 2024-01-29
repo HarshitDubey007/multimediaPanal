@@ -6,6 +6,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 function MultiSelect(props) {
   const { size, options, label, placeholder, onChange, multiple, ...autocompleteProps } = props;
 
+  console.log("multiSelect:: ", placeholder)
+
   return (
     <div style={{ margin: '10px' }}>
       <Autocomplete

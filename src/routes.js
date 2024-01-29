@@ -13,6 +13,9 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import OutboxIcon from '@mui/icons-material/Outbox';
 import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import FenceIcon from '@mui/icons-material/Fence';
+import ManageClientApiJson from "./Layouts/ClientApiJSON/ManageClientApiJson";
+import ComponentJSON from "./Layouts/ComponentJSON/ComponentJSON";
+
 
 const routes = [
   {
@@ -88,6 +91,24 @@ const routes = [
     route: "/manageparameter",
     icon: <FenceIcon size="12px" />,
     component: <ManageParameter />,
+    noCollapse: false,
+  },
+  {
+    type: "collapse",
+    name: "Manage Client Api JSON",
+    key: "clientapijson",
+    route: "/clientapijson",
+    icon: <FenceIcon size="12px" />,
+    component: <ManageClientApiJson />,
+    noCollapse: false,
+  },
+  {
+    type: "collapse",
+    name: "Manage Component JSON",
+    key: "componentjson",
+    route: "/componentjson",
+    icon: <FenceIcon size="12px" />,
+    component: <ComponentJSON />,
     noCollapse: false,
   },
 ];

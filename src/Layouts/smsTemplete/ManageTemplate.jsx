@@ -19,6 +19,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import SoftTypography from "../../components/SoftTypography";
 import SendSms from "./SendSms";
+import SoftInput from "../../assets/theme/components/SoftInput";
 
 
 function Function({ title }) {
@@ -205,6 +206,53 @@ export default function ManageTemplate() {
                 <Grid container spacing={2} mt={2}>
                     <Grid item xs={12}>
                         <SoftBox mt={1}>
+                            <SoftBox display="flex" flexDirection="row" justifyContent="flex-start" my={2}>
+                                <Card style={{ width: "100%", padding: "10px" }}>
+                                    <SoftTypography variant="h3" fontWeight="bold" color="info" textGradient>
+                                        Template Upload
+                                    </SoftTypography>
+                                    <form>
+                                        <SoftBox display="flex" flexDirection="row" justifyContent="flex-start" my={3}>
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={12} md={3}>
+                                                    <SoftInput
+                                                        size="medium"
+                                                        icon={{ component: false, direction: "none" }}
+                                                        success={false}
+                                                        disabled={false}
+                                                        margin="normal"
+                                                        placeholder="Campid"
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={3} mx={3}>
+                                                    <SoftInput
+                                                        size="medium"
+                                                        icon={{ component: false, direction: "none" }}
+                                                        success={false}
+                                                        disabled={false}
+                                                        margin="normal"
+                                                        placeholder="Select a file"
+                                                        type="file"
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={3}>
+                                                    <SoftButton
+                                                        type="button"
+                                                        variant="gradient"
+                                                        color="info"
+                                                        // onClick={handleSubmit}
+                                                        ml={2}
+                                                    >
+                                                        Upload
+                                                    </SoftButton>
+                                                </Grid>
+                                            </Grid>
+
+                                        </SoftBox>
+                                    </form>
+                                </Card>
+                            </SoftBox>
+
                             <SoftBox mb={3}>
                                 <Card
                                     sx={{

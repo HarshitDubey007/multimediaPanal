@@ -86,6 +86,26 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
               formik.touched[field.name] && formik.errors[field.name]
             }
           />
+
+
+          // <SoftInput
+          //   fullWidth={field.fullWidth || false}
+          //   value={formik.values[field.name]}
+          //   onChange={(value) => formik.setFieldValue(field.name, value)}
+          //   placeholder={field.placeholder || ""}
+          //   onBlur={() => formik.setFieldTouched(field.name, true)}
+          //   error={formik.touched[field.name] && !!formik.errors[field.name]}
+          //   helperText={
+          //     formik.touched[field.name] && formik.errors[field.name]
+          //   }
+
+          //   size="medium"
+          //   icon={{ component: false, direction: "none" }}
+          //   success={false}
+          //   disabled={false}
+          //   margin="normal"
+          //   autoFocus
+          // />
         );
       case "textarea":
         return (
@@ -134,7 +154,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
             {field.label}
           </label>
         );
-        
+
       case "switch":
         return (
           <ColorSwitch
@@ -175,23 +195,28 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
       <Grid container my={2}>
         {fieldValueStatus && fields.data.map((field) => renderField(field))}
         <Grid container justifyContent={fields.buttons.className}>
-          <SoftButton
-            variant="contained"
-            size="small"
-            color="dark"
-            type="reset"
-            onClick={formik.resetForm}
-          >
-            {fields.buttons.resetButton.label}
-          </SoftButton>
-          <SoftButton
-            variant="contained"
-            size="small"
-            color="dark"
-            type="submit"
-          >
-            {fields.buttons.submitButton.label}
-          </SoftButton>
+          <Grid mx={2}>
+            <SoftButton
+              // variant="contained"
+              size="small"
+              // color="dark"
+              type="reset"
+              variant="gradient" color="info"
+              onClick={formik.resetForm}
+            >
+              {fields.buttons.resetButton.label}
+            </SoftButton>
+          </Grid>
+          <Grid>
+            <SoftButton
+              variant="contained"
+              size="small"
+              color="success"
+              type="submit"
+            >
+              {fields.buttons.submitButton.label}
+            </SoftButton>
+          </Grid>
         </Grid>
       </Grid>
     </form>

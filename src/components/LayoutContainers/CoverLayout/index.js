@@ -8,7 +8,7 @@ import Footer from "../Footer";
 
 function CoverLayout({ color, header, title, description, image, top, children }) {
   return (
-    <PageLayout background="white">
+    <PageLayout background="white" style={{ overflow: "hidden" }}>
       <DefaultNavbar
         action={{
           type: "external",

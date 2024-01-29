@@ -1,17 +1,29 @@
-import { forwardRef } from "react";
-
-// prop-types is a library for typechecking of props
+import { forwardRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-
-
-// import { useSoftUIController } from "context";
 import SoftInputWithIconRoot from "./SoftInputWithIconRoot";
 import SoftInputIconBoxRoot from "./SoftInputIconBoxRoot";
 import SoftInputIconRoot from "./SoftInputIconRoot";
 import SoftInputRoot from "./SoftInputRoot";
 import { useSoftUIController } from "../../../../context";
 
-const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest }, ref) => {
+const SoftInput = forwardRef(({ size, icon, error, success, disabled, value, onChange, ...rest }, ref) => {
+  const [inputValue, setInputValue] = useState(value || ''); // Use state to manage the input value
+
+  useEffect(() => {
+    // Update the internal state when the external value prop changes
+    setInputValue(value || '');
+  }, [value]);
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+
+    // Call the external onChange callback if provided
+    if (onChange) {
+      onChange(newValue);
+    }
+  };
+
   let template;
   const [controller] = useSoftUIController();
   const { direction } = controller;
@@ -28,6 +40,8 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
         <SoftInputRoot
           {...rest}
           ownerState={{ size, error, success, iconDirection, direction, disabled }}
+          value={inputValue} // Use the internal state as the input value
+          onChange={handleChange} // Pass the custom onChange handler
         />
       </SoftInputWithIconRoot>
     );
@@ -37,6 +51,8 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
         <SoftInputRoot
           {...rest}
           ownerState={{ size, error, success, iconDirection, direction, disabled }}
+          value={inputValue} // Use the internal state as the input value
+          onChange={handleChange} // Pass the custom onChange handler
         />
         <SoftInputIconBoxRoot ownerState={{ size }}>
           <SoftInputIconRoot fontSize="small" ownerState={{ size }}>
@@ -47,7 +63,13 @@ const SoftInput = forwardRef(({ size, icon, error, success, disabled, ...rest },
     );
   } else {
     template = (
-      <SoftInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} />
+      <SoftInputRoot
+        {...rest}
+        ref={ref}
+        ownerState={{ size, error, success, disabled }}
+        value={inputValue} // Use the internal state as the input value
+        onChange={handleChange} // Pass the custom onChange handler
+      />
     );
   }
 
@@ -64,6 +86,8 @@ SoftInput.defaultProps = {
   error: false,
   success: false,
   disabled: false,
+  value: '', // Provide a default value prop
+  onChange: undefined, // Provide a default onChange prop
 };
 
 // Typechecking props for the SoftInput
@@ -76,6 +100,8 @@ SoftInput.propTypes = {
   error: PropTypes.bool,
   success: PropTypes.bool,
   disabled: PropTypes.bool,
+  value: PropTypes.string, // Adjust the prop type based on your use case
+  onChange: PropTypes.func, // Adjust the prop type based on your use case
 };
 
 export default SoftInput;

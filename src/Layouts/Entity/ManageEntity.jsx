@@ -50,14 +50,7 @@ export default function ManageEntity() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    // {
-    //   field: "peidName",
-    //   headerName: "Principal Entity name",
-    //   minWidth: 200,
-    //   flex: 1,
-    //   renderCell: (params) =>
-    //     params.value && <MutedCell title={params.value} org="Organization" />,
-    // },
+  
     {
       field: "client_name",
       headerName: "Client name",

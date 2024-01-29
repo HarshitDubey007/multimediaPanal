@@ -203,7 +203,7 @@ export default function ManageSender() {
         peid: values.peid.value,
         status: "Y"
       }
-      console.log("values:: ", postData)
+      console.log("managesender values:: ", postData)
 
       const apiResponse = await DynamicApiCall(apiUrl, method, token, postData);
       console.log("API Response:", apiResponse);
