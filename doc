@@ -144,3 +144,12 @@ console.log('Step 3');
 In this example, even though setTimeout is asynchronous, the event loop ensures that the synchronous code runs first before processing the asynchronous task.
 
 While JavaScript's event loop enables asynchronous behavior, it's essential to recognize that the core execution of JavaScript code remains single-threaded. The asynchronicity is achieved through the event loop and the delegation of certain tasks (such as I/O operations or timers) to other parts of the runtime environment.
+
+
+
+
+
+
+
+
+<!-- Mongodb -->

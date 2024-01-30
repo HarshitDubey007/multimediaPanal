@@ -6,11 +6,10 @@ import DynamicApiCall from "../../utils/function";
 import { useSelector } from "react-redux";
 
 
-export default function UserCrud({ apiData }) {
+export default function ClientApiCrud({ apiData }) {
   const [clientOptions, setClientOptions] = useState([]);
   const { userInfo } = useSelector((state) => state?.user?.value);
   const { userid, token } = userInfo;
-  console.log("apiData", apiData);
 
   const [initial, setinitial] = useState({
     api_id: "",

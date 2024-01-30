@@ -10,13 +10,13 @@ import SoftButton from "../../components/SoftButton";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import UserCrud from "./ClientApiCrud";
 import { useSelector } from "react-redux";
 import DaynmicApicall from "../../utils/function";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import ClientApiCrud from "./ClientApiCrud";
 
 export default function ManageClientApiJson() {
   const { userInfo } = useSelector((state) => state?.user?.value);
@@ -124,12 +124,29 @@ export default function ManageClientApiJson() {
           label="Edit"
           onClick={() => {
             params.row.action_name = "UPDATE";
+            console.log("api_header_payload::: ", params.row)
+            const paramsRow = {
+              // api_id: "",
+              // apiurl: params.row.api_url,
+              // apitoken_enable: params.row.api_token_enable,
+              // apitoken: params.row.api_token,
+              // api_req_payload: params.row.api_reqbody_payload,
+              // api_header_payload: params.row.api_header_payload,
+              // notify_url: params.row.notify_url,
+              // campid: params.row.camp_id,
+              // entityid: params.row.entity_id,
+              // api_variables: params.row.api_variables,
+              // remarks: params.row.remarks,
+              // status: params.row.is_active,
+              // userid: userid,
+              // action_name: "INSERT",
+            }
             handleUserModel(params.row);
           }}
           showInMenu
         />,
 
-        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
+        <GridActionsCellItem label="Delete" onClick={(e) => { }} showInMenu />,
       ],
     },
   ];
@@ -208,7 +225,7 @@ export default function ManageClientApiJson() {
                 >
                   <CloseIcon />
                 </IconButton>
-                <UserCrud userData={rowData} />
+                <ClientApiCrud apiData={rowData} />
               </DialogContent>
               {/* <DialogActions>
                 <SoftButton onClick={handleSendsmsModelClose}>
