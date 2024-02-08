@@ -15,6 +15,7 @@ import DashboardNavbar from "./components/Navbars/DashboardNavbar";
 import DashboardLayout from "./components/LayoutContainers/DashboardLayout";
 import Sidenav from "./components/Sidenav";
 import SignInSide from "./Layouts/auth/SignIn";
+import MmIndex from "./Layouts/GustLogin/MmIndex";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -23,7 +24,8 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-
+  const searchParams = new URLSearchParams(document.location.search)
+  console.log("searchParams::: ", searchParams)
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -136,6 +138,7 @@ export default function App() {
       ) : (
         <Routes>
           <Route path="/" element={<SignInSide />} />
+          <Route path="/:renderkey" element={<MmIndex />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}

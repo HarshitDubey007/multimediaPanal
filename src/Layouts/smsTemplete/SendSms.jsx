@@ -15,6 +15,7 @@ export default function SendSms({ tempData }) {
     const { userid, token } = userInfo;
     const [formValue, setFromValue] = useState({})
     const [finalApiBody, setFinalApiBody] = useState({})
+    
     const JsonFields = {
         initialValues: { phone: "" },
         data: [
@@ -60,6 +61,7 @@ export default function SendSms({ tempData }) {
         }
 
     }, [tempData])
+
 
     async function formsubmit(values) {
         const apiUrl = "sms/manageentity";

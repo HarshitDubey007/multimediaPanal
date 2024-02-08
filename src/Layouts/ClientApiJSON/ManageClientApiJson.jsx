@@ -63,7 +63,7 @@ export default function ManageClientApiJson() {
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "api_url",
+      field: "apiurl",
       headerName: "API URL",
       minWidth: 150,
       flex: 1,
@@ -71,7 +71,7 @@ export default function ManageClientApiJson() {
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "api_token_enable",
+      field: "apitoken_enable",
       headerName: "Api Token Enable",
       minWidth: 150,
       flex: 1,
@@ -87,7 +87,7 @@ export default function ManageClientApiJson() {
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "api_reqbody_payload",
+      field: "api_req_payload",
       headerName: "Api Payload",
       minWidth: 200,
       flex: 1,
@@ -95,12 +95,12 @@ export default function ManageClientApiJson() {
       renderCell: (params) =>
         params.value && (
           <Tooltip
-            title={<MutedCell title={params.value} />}
+            title={<MutedCell title={JSON.stringify(params.value)} />}
             color="inherit"
             placement="bottom-start"
           >
             <span>
-              <MutedCell title={params.value} />
+              <MutedCell title={JSON.stringify(params.value)} />
             </span>
           </Tooltip>
         ),
@@ -125,22 +125,6 @@ export default function ManageClientApiJson() {
           onClick={() => {
             params.row.action_name = "UPDATE";
             console.log("api_header_payload::: ", params.row)
-            const paramsRow = {
-              // api_id: "",
-              // apiurl: params.row.api_url,
-              // apitoken_enable: params.row.api_token_enable,
-              // apitoken: params.row.api_token,
-              // api_req_payload: params.row.api_reqbody_payload,
-              // api_header_payload: params.row.api_header_payload,
-              // notify_url: params.row.notify_url,
-              // campid: params.row.camp_id,
-              // entityid: params.row.entity_id,
-              // api_variables: params.row.api_variables,
-              // remarks: params.row.remarks,
-              // status: params.row.is_active,
-              // userid: userid,
-              // action_name: "INSERT",
-            }
             handleUserModel(params.row);
           }}
           showInMenu

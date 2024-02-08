@@ -23,6 +23,7 @@ export default function ClientApiCrud({ apiData }) {
     entityid: "",
     api_variables: "",
     remarks: "",
+    smstype: "",
     status: "",
     userid: userid,
     action_name: "INSERT",
@@ -80,7 +81,13 @@ export default function ClientApiCrud({ apiData }) {
         type: "text",
         fullWidth: false,
       },
-
+      {
+        name: "smstype",
+        placeholder: "Sms type",
+        validation: Yup.string().required("smstype is required"),
+        type: "text",
+        fullWidth: false,
+      },
       {
         name: "api_variables",
         placeholder: "API Variables",
