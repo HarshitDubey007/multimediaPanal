@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-  baseURL:'http://localhost:5001/api/',
+  baseURL:'https://pzmmapi.a10s.in/api/',
   headers: { 'X-Requested-With': 'XMLHttpRequest' },
 });
 
