@@ -137,7 +137,11 @@ export default function ComponentJSON() {
   useEffect(() => {
     (async () => {
       try {
-        const Info = await DaynmicApicall("sms/getclientapijson/ALL", "get", token);
+        const Info = await DaynmicApicall(
+          "sms/getclientapijson/ALL",
+          "get",
+          token
+        );
         setrows(Info.data);
       } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -163,7 +167,7 @@ export default function ComponentJSON() {
                   }}
                 >
                   <Grid container justifyContent="space-between" px={2} py={1}>
-                    <Grid item>Client APi JSON</Grid>
+                    <Grid item>Component JSON</Grid>
                     <Grid item>
                       <SoftButton
                         variant="contained"
@@ -173,7 +177,7 @@ export default function ComponentJSON() {
                           handleUserModel(null);
                         }}
                       >
-                        Add Client API
+                        Add Component JSON
                       </SoftButton>
                     </Grid>
                   </Grid>

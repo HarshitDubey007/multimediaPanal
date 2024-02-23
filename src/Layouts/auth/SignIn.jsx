@@ -16,7 +16,6 @@ import { login } from "../../redux/User";
 import SoftInput from "../../assets/theme/components/SoftInput";
 import FormHelperText from "@mui/material/FormHelperText";
 
-
 function SignInSide() {
   const [rememberMe, setRememberMe] = useState(true);
 
@@ -39,22 +38,25 @@ function SignInSide() {
       const method = "post";
       try {
         console.log("VALUEEE:: ", values);
-        const apiResponse = await DynamicApiCall(apiUrl, method, "", values).then(
-          (data) => {
-            console.log("datadata", data);
-            if (data.status === true) {
-              const uData = {
-                isLoggedIn: true,
-                userInfo: data.data,
-              };
-              dispatch(login({ isLoggedIn: true, userInfo: data.data }));
-              navigate("/managesender", {
-                replace: true,
-              });
-              console.log("API Response:", data);
-            }
+        const apiResponse = await DynamicApiCall(
+          apiUrl,
+          method,
+          "",
+          values
+        ).then((data) => {
+          console.log("datadata", data);
+          if (data.status === true) {
+            const uData = {
+              isLoggedIn: true,
+              userInfo: data.data,
+            };
+            dispatch(login({ isLoggedIn: true, userInfo: data.data }));
+            navigate("/managesender", {
+              replace: true,
+            });
+            console.log("API Response:", data);
           }
-        );
+        });
       } catch (error) {
         console.error("API Error:", error);
       }
@@ -89,9 +91,7 @@ function SignInSide() {
                 onChange={(value) => formik.setFieldValue("userid", value)}
               />
               {formik.touched["userid"] && formik.errors["userid"] && (
-                <FormHelperText error>
-                  {formik.errors["userid"]}
-                </FormHelperText>
+                <FormHelperText error>{formik.errors["userid"]}</FormHelperText>
               )}
             </Grid>
             <Grid item xs={12}>
@@ -111,7 +111,9 @@ function SignInSide() {
                 type="password"
                 value={formik.values["password"]}
                 onBlur={() => formik.setFieldTouched("password", true)}
-                error={formik.touched["password"] && !!formik.errors["password"]}
+                error={
+                  formik.touched["password"] && !!formik.errors["password"]
+                }
                 onChange={(value) => formik.setFieldValue("password", value)}
               />
               {formik.touched["password"] && formik.errors["password"] && (
@@ -122,7 +124,12 @@ function SignInSide() {
             </Grid>
             <Grid item xs={12}>
               <SoftBox mt={4} mb={1}>
-                <SoftButton type="submit" variant="gradient" color="info" fullWidth>
+                <SoftButton
+                  type="submit"
+                  variant="gradient"
+                  color="info"
+                  fullWidth
+                >
                   Sign In
                 </SoftButton>
               </SoftBox>

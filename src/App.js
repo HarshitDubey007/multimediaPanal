@@ -9,7 +9,11 @@ import theme from "./assets/theme";
 import rtlPlugin from "stylis-plugin-rtl";
 import createCache from "@emotion/cache";
 import routes from "./routes";
-import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "./context";
+import {
+  useSoftUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from "./context";
 import SoftBox from "./components/SoftBox";
 import DashboardNavbar from "./components/Navbars/DashboardNavbar";
 import DashboardLayout from "./components/LayoutContainers/DashboardLayout";
@@ -20,12 +24,13 @@ import MmIndex from "./Layouts/GustLogin/MmIndex";
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
   const { userInfo, isLoggedIn } = useSelector((state) => state?.user?.value);
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
+  const { miniSidenav, direction, layout, openConfigurator, sidenavColor } =
+    controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-  const searchParams = new URLSearchParams(document.location.search)
-  console.log("searchParams::: ", searchParams)
+  const searchParams = new URLSearchParams(document.location.search);
+  console.log("searchParams::: ", searchParams);
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -53,7 +58,8 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -73,7 +79,14 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={route.component}
+            key={route.key}
+          />
+        );
       }
 
       return null;
@@ -126,7 +139,9 @@ export default function App() {
                 <Toaster
                   position="bottom-right"
                   toastOptions={{
-                    success: { style: { background: "#05A677", color: "#fff" } },
+                    success: {
+                      style: { background: "#05A677", color: "#fff" },
+                    },
                     info: { style: { background: "#0948B3", color: "#fff" } },
                     error: { style: { background: "#FA5252", color: "#fff" } },
                   }}
@@ -136,18 +151,27 @@ export default function App() {
           </DashboardLayout>
         </>
       ) : (
-        <Routes>
-          <Route path="/" element={<SignInSide />} />
-          <Route path="/:renderkey" element={<MmIndex />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <>
+          <Routes>
+            <Route path="/" element={<SignInSide />} />
+            <Route path="/:renderkey" element={<MmIndex />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+          <div>
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                success: { style: { background: "#05A677", color: "#fff" } },
+                info: { style: { background: "#0948B3", color: "#fff" } },
+                error: { style: { background: "#FA5252", color: "#fff" } },
+              }}
+            />
+          </div>
+        </>
       )}
     </ThemeProvider>
   );
 }
-
-
-
 
 // Reight side nevbar
 // direction === "rtl" ? (

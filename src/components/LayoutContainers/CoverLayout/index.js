@@ -12,7 +12,7 @@ function CoverLayout({ color, header, title, description, image, top, children }
       <DefaultNavbar
         action={{
           type: "external",
-          route: "https://creative-tim.com/product/soft-ui-dashboard-react",
+          route: "",
           label: "free download",
           color: "dark",
         }}
@@ -21,13 +21,13 @@ function CoverLayout({ color, header, title, description, image, top, children }
         container
         justifyContent="center"
         sx={{
-          minHeight: "75vh",
+          minHeight: "100%",
           margin: 0,
         }}
       >
-        <Grid item xs={11} sm={8} md={5} xl={3}>
+        <Grid item xs={11} sm={8} md={6} xl={3}>
           <SoftBox mt={top}>
-            <SoftBox pt={3} px={3}>
+            <SoftBox pt={1} px={3}>
               {!header ? (
                 <>
                   <SoftBox mb={1}>

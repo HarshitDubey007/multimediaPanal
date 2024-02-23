@@ -5,7 +5,6 @@ import SoftBox from "../../components/SoftBox";
 import DynamicApiCall from "../../utils/function";
 import { useSelector } from "react-redux";
 
-
 export default function UserCrud({ userData }) {
   const { userInfo } = useSelector((state) => state?.user?.value);
   const { userid, token } = userInfo;
@@ -87,9 +86,8 @@ export default function UserCrud({ userData }) {
         placeholder: "Select campaign",
         type: "multiSelect",
         options: [
-          { value: "110", name: "Kotak" },
-          { value: "101", name: "HDFC" },
-          { value: "102", name: "BIRLA" },
+          { value: "111", name: "TATA" },
+          { value: "112", name: "VEEDA" },
         ],
         // validation: Yup.object().required("Campaign is required"),
       },
@@ -136,7 +134,7 @@ export default function UserCrud({ userData }) {
     const method = "post";
     const modifiedValues = prepareFormValues(values);
     try {
-      console.log("values::: ", modifiedValues)
+      console.log("values::: ", modifiedValues);
       // const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
       // console.log("API Response:", apiResponse);
     } catch (error) {

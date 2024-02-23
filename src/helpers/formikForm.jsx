@@ -8,9 +8,8 @@ import SoftButton from "../components/SoftButton";
 import Grid from "@mui/material/Grid";
 import { ColorSwitch } from "../formControl/SwitchButton";
 
-
 const DynamicForm = ({ fields, submitfunction, initialValues }) => {
-  const [fieldValueStatus, setFieldValueStatus] = useState(false)
+  const [fieldValueStatus, setFieldValueStatus] = useState(false);
   const validationSchema = Yup.object().shape(
     fields.data.reduce((schema, field) => {
       switch (field.type) {
@@ -37,7 +36,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       submitfunction(values);
-      setFieldValueStatus(false)
+      setFieldValueStatus(false);
     },
   });
 
@@ -48,12 +47,11 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
       fields.data.forEach((field) => {
         // console.log("fieldName, field:: ", field)
         if (field.type === "multiSelect") {
-          const fieldValues =
-            field.multiple ?
-              field.options?.filter((v) =>
+          const fieldValues = field.multiple
+            ? field.options?.filter((v) =>
                 initialValues[field.name]?.includes(v.value)
-              ) :
-              field.options?.find((v) =>
+              )
+            : field.options?.find((v) =>
                 initialValues[field.name]?.includes(v.value)
               );
 
@@ -68,7 +66,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
         ...updatedValues,
       }));
     }
-    setFieldValueStatus(true)
+    setFieldValueStatus(true);
   }, [initialValues, fields, formik.setValues]);
 
   const renderField = (field) => {
@@ -82,11 +80,8 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
             placeholder={field.placeholder || ""}
             onBlur={() => formik.setFieldTouched(field.name, true)}
             error={formik.touched[field.name] && !!formik.errors[field.name]}
-            helperText={
-              formik.touched[field.name] && formik.errors[field.name]
-            }
+            helperText={formik.touched[field.name] && formik.errors[field.name]}
           />
-
 
           // <SoftInput
           //   fullWidth={field.fullWidth || false}
@@ -116,9 +111,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
             placeholder={field.placeholder || ""}
             onBlur={() => formik.setFieldTouched(field.name, true)}
             error={formik.touched[field.name] && !!formik.errors[field.name]}
-            helperText={
-              formik.touched[field.name] && formik.errors[field.name]
-            }
+            helperText={formik.touched[field.name] && formik.errors[field.name]}
           />
         );
       case "multiSelect":
@@ -187,7 +180,6 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
     });
   };
 
-
   // console.log("Formik.valuse         =====", formik.values)
 
   return (
@@ -195,13 +187,14 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
       <Grid container my={2}>
         {fieldValueStatus && fields.data.map((field) => renderField(field))}
         <Grid container justifyContent={fields.buttons.className}>
-          <Grid mx={2}>
+          <Grid>
             <SoftButton
               // variant="contained"
               size="small"
               // color="dark"
               type="reset"
-              variant="gradient" color="info"
+              variant="gradient"
+              color="info"
               onClick={formik.resetForm}
             >
               {fields.buttons.resetButton.label}

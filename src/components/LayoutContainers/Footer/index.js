@@ -11,7 +11,7 @@ import SoftTypography from "../../SoftTypography";
 
 function Footer() {
   return (
-    <SoftBox component="footer" py={6}>
+    <SoftBox component="footer" py={2}>
       <Grid container justifyContent="center">
         {/* <Grid item xs={10} lg={8}>
           <SoftBox display="flex" justifyContent="center" flexWrap="wrap" mb={3}>

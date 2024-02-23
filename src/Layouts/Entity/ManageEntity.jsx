@@ -28,7 +28,7 @@ export default function ManageEntity() {
     status: "Y",
     userid: userid,
     remarks: "",
-    action_name: "INSERT"
+    action_name: "INSERT",
   });
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function ManageEntity() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-  
+
     {
       field: "client_name",
       headerName: "Client name",
@@ -112,17 +112,20 @@ export default function ManageEntity() {
             params.row.action_name = "UPDATE";
             let editData = {
               ...params.row,
-              status: params.row.is_active
-            }
-            delete editData.updated_on; delete editData.updated_by; delete editData.created_on;
-            delete editData.sno; delete editData.is_active
-            console.log("editData", editData)
+              status: params.row.is_active,
+            };
+            delete editData.updated_on;
+            delete editData.updated_by;
+            delete editData.created_on;
+            delete editData.sno;
+            delete editData.is_active;
+            console.log("editData", editData);
             setEntityData(editData);
           }}
           showInMenu
         />,
 
-        <GridActionsCellItem label="Delete" onClick={(e) => { }} showInMenu />,
+        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
       ],
     },
   ];
@@ -135,7 +138,6 @@ export default function ManageEntity() {
         validation: Yup.string().required("Entity Id is required"),
         type: "text",
         fullWidth: true,
-
       },
       {
         name: "client_name",
@@ -143,7 +145,6 @@ export default function ManageEntity() {
         validation: Yup.string().required("Client Name is required"),
         type: "text",
         fullWidth: true,
-
       },
       {
         name: "client_code",
@@ -151,7 +152,6 @@ export default function ManageEntity() {
         validation: Yup.string().required("Client Code is required"),
         type: "text",
         fullWidth: true,
-
       },
       {
         name: "office_address",
@@ -159,7 +159,6 @@ export default function ManageEntity() {
         // validation: Yup.string().required("Office Code is required"),
         type: "text",
         fullWidth: true,
-
       },
       {
         name: "remarks",
@@ -167,7 +166,6 @@ export default function ManageEntity() {
         // validation: Yup.string().required("remarks is required"),
         type: "text",
         fullWidth: true,
-
       },
     ],
     buttons: {
@@ -188,7 +186,7 @@ export default function ManageEntity() {
     const method = "post";
     // const modifiedValues = prepareFormValues(values);
     try {
-      console.log("values:: ", values)
+      console.log("values:: ", values);
       const apiResponse = await DynamicApiCall(apiUrl, method, token, values);
       console.log("API Response:", apiResponse);
     } catch (error) {
@@ -205,7 +203,7 @@ export default function ManageEntity() {
               <SoftBox mb={3}>
                 <Card
                   sx={{
-                    height: 300,
+                    height: "100%",
                     width: "100%",
                     "& .table-header": {
                       fontWeight: "bold !important",
@@ -213,7 +211,7 @@ export default function ManageEntity() {
                     },
                   }}
                 >
-                  <Grid container justifyContent="space-between" px={2} py={1}>
+                  <Grid container justifyContent="space-between" px={2} py={2}>
                     <Grid item>Manage Client Entity</Grid>
                   </Grid>
                   <CustomTable

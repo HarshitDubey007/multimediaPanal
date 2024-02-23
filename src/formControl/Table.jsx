@@ -60,7 +60,13 @@ const CustomTable = ({ rows, columns, uniquekey }) => {
   const endIndex = startIndex + pageSize;
 
   return (
-    <div style={{ paddingRight: "10px", paddingLeft: "10px" }}>
+    <div
+      style={{
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        paddingBottom: "10px",
+      }}
+    >
       <DataGrid
         getRowId={(row) => row[uniquekey]} // Fix the syntax here
         rows={rows.slice(startIndex, endIndex)}

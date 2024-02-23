@@ -124,13 +124,13 @@ export default function ManageClientApiJson() {
           label="Edit"
           onClick={() => {
             params.row.action_name = "UPDATE";
-            console.log("api_header_payload::: ", params.row)
+            console.log("api_header_payload::: ", params.row);
             handleUserModel(params.row);
           }}
           showInMenu
         />,
 
-        <GridActionsCellItem label="Delete" onClick={(e) => { }} showInMenu />,
+        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
       ],
     },
   ];
@@ -138,7 +138,11 @@ export default function ManageClientApiJson() {
   useEffect(() => {
     (async () => {
       try {
-        const Info = await DaynmicApicall("sms/getclientapijson/ALL", "get", token);
+        const Info = await DaynmicApicall(
+          "sms/getclientapijson/ALL",
+          "get",
+          token
+        );
         setrows(Info.data);
       } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -164,7 +168,7 @@ export default function ManageClientApiJson() {
                   }}
                 >
                   <Grid container justifyContent="space-between" px={2} py={1}>
-                    <Grid item>Client APi JSON</Grid>
+                    <Grid item>Client API JSON</Grid>
                     <Grid item>
                       <SoftButton
                         variant="contained"
