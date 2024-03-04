@@ -42,6 +42,7 @@ export default function ManageCampaign() {
           "get",
           token
         );
+
         setrows(Info.data);
       } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -51,14 +52,19 @@ export default function ManageCampaign() {
 
   const fetchData = async () => {
     try {
+      // const clientOptionsResponse = await DynamicApiCall(
+      //   "multimedia/getcamplist",
+      //   "get",
+      //   token
+      // );
       const clientOptionsResponse = await DynamicApiCall(
-        "multimedia/getcamplist",
+        "sms/getentity",
         "get",
         token
       );
       let clientdata = clientOptionsResponse.data.map((option) => ({
         value: option.peid.toString(),
-        name: option.camp_name,
+        name: option.client_name,
       }));
       setClientOptions(clientdata);
       setClientOptionsLoading(false);
@@ -75,13 +81,13 @@ export default function ManageCampaign() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    {
-      field: "camp_id",
-      headerName: "Campaign Id",
-      width: 110,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
+    // {
+    //   field: "camp_id",
+    //   headerName: "Campaign Id",
+    //   width: 110,
+    //   renderCell: (params) =>
+    //     params.value && <MutedCell title={params.value} org="Organization" />,
+    // },
     {
       field: "camp_name",
       headerName: "Camp Name",
@@ -89,10 +95,17 @@ export default function ManageCampaign() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
+    // {
+    //   field: "client_name",
+    //   headerName: "Client Name",
+    //   width: 120,
+    //   renderCell: (params) =>
+    //     params.value && <MutedCell title={params.value} org="Organization" />,
+    // },
     {
-      field: "client_name",
-      headerName: "Client Name",
-      width: 120,
+      field: "peid",
+      headerName: "Pe.Id",
+      width: 110,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
@@ -110,13 +123,13 @@ export default function ManageCampaign() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    {
-      field: "created_on",
-      headerName: "Created On",
-      width: 120,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
+    // {
+    //   field: "created_on",
+    //   headerName: "Created On",
+    //   width: 120,
+    //   renderCell: (params) =>
+    //     params.value && <MutedCell title={params.value} org="Organization" />,
+    // },
     {
       field: "is_active",
       headerName: "Is Active",
@@ -134,7 +147,7 @@ export default function ManageCampaign() {
           label="Edit"
           onClick={() => {
             params.row.action_name = "UPDATE";
-            console.log("Parames row", params.row);
+            // console.log("Parames row", params.row);
             let editData = {
               campid: params.row.camp_id,
               campname: params.row.camp_name,
@@ -144,11 +157,11 @@ export default function ManageCampaign() {
               remarks: params.row.remarks,
               action_name: "UPDATE",
             };
-            console.log(
-              "params.row.action_name = UPDATE",
-              editData,
-              params.row
-            );
+            // console.log(
+            //   "params.row.action_name = UPDATE",
+            //   editData,
+            //   params.row
+            // );
             setCampData(editData);
           }}
           showInMenu
@@ -186,6 +199,7 @@ export default function ManageCampaign() {
         multiple: false,
         name: "clientname",
         placeholder: "Client Name",
+        type: "text",
         type: "multiSelect",
         options: clientOptions,
         // [

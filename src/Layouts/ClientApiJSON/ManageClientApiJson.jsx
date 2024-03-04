@@ -28,6 +28,7 @@ export default function ManageClientApiJson() {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleUserModel = (row) => {
+    console.log("ROW", row);
     setRowData(row);
     setModalOpen(true);
   };

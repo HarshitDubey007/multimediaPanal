@@ -1,15 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import React from "react";
+import PropTypes from "prop-types";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 function MultiSelect(props) {
-  const { size, options, label, placeholder, onChange, multiple, ...autocompleteProps } = props;
-
-  console.log("multiSelect:: ", placeholder)
+  const {
+    size,
+    options,
+    label,
+    placeholder,
+    onChange,
+    multiple,
+    ...autocompleteProps
+  } = props;
 
   return (
-    <div style={{ margin: '10px' }}>
+    <div style={{ margin: "10px" }}>
       <Autocomplete
         fullWidth
         id="size-small-outlined"
@@ -43,7 +49,7 @@ MultiSelect.propTypes = {
 // Additional validation for non-empty options array
 MultiSelect.propTypes.options.validate = (options) => {
   if (options.length === 0) {
-    return new Error('Options array must not be empty.');
+    return new Error("Options array must not be empty.");
   }
 };
 

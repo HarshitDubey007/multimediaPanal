@@ -15,6 +15,7 @@ import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import FenceIcon from '@mui/icons-material/Fence';
 import ManageClientApiJson from "./Layouts/ClientApiJSON/ManageClientApiJson";
 import ComponentJSON from "./Layouts/ComponentJSON/ComponentJSON";
+import ManageSendSms from "./Layouts/sendSMS/ManageSendSms";
 
 
 const routes = [
@@ -74,7 +75,15 @@ const routes = [
     component: <ManageTemplate />,
     noCollapse: true,
   },
-
+  {
+    type: "collapse",
+    name: "Send SMS",
+    key: "sendsms",
+    route: "/sendsms",
+    icon: <Shop size="12px" />,
+    component: <ManageSendSms/>,
+    noCollapse: true,
+  },
   {
     type: "collapse",
     name: "manage user",

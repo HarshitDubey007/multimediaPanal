@@ -64,6 +64,34 @@ export default function ManageTemplate() {
 
   let columns = [
     {
+      field: "actions",
+      headerName: "Actions",
+      type: "actions",
+      minWidth: 80,
+      flex: 1,
+      getActions: (params) => [
+        <GridActionsCellItem
+          label="Edit"
+          onClick={() => {
+            params.row.action_name = "UPDATE";
+            handleUserModel(params.row);
+          }}
+          showInMenu
+        />,
+
+        <GridActionsCellItem
+          label="Send Sms"
+          onClick={() => {
+            params.row.action_name = "UPDATE";
+            handleSendsmsModelOpen(params.row);
+          }}
+          showInMenu
+        />,
+
+        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
+      ],
+    },
+    {
       field: "templateid",
       headerName: "Template id",
       minWidth: 200,
@@ -96,7 +124,7 @@ export default function ManageTemplate() {
     },
     {
       field: "tempbody",
-      headerName: "Tempplete body",
+      headerName: "Template body",
       minWidth: 200,
       renderCell: (params) =>
         params.value && (
@@ -156,34 +184,6 @@ export default function ManageTemplate() {
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      type: "actions",
-      minWidth: 80,
-      flex: 1,
-      getActions: (params) => [
-        <GridActionsCellItem
-          label="Edit"
-          onClick={() => {
-            params.row.action_name = "UPDATE";
-            handleUserModel(params.row);
-          }}
-          showInMenu
-        />,
-
-        <GridActionsCellItem
-          label="Send Sms"
-          onClick={() => {
-            params.row.action_name = "UPDATE";
-            handleSendsmsModelOpen(params.row);
-          }}
-          showInMenu
-        />,
-
-        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
-      ],
     },
   ];
 

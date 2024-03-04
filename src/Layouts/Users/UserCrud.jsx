@@ -87,7 +87,7 @@ export default function UserCrud({ userData }) {
         type: "multiSelect",
         options: [
           { value: "111", name: "TATA" },
-          { value: "112", name: "VEEDA" },
+          { value: "808", name: "VEEDA" },
         ],
         // validation: Yup.object().required("Campaign is required"),
       },
@@ -135,14 +135,20 @@ export default function UserCrud({ userData }) {
     const modifiedValues = prepareFormValues(values);
     try {
       console.log("values::: ", modifiedValues);
-      // const apiResponse = await DynamicApiCall(apiUrl, method, token, modifiedValues);
-      // console.log("API Response:", apiResponse);
+      const apiResponse = await DynamicApiCall(
+        apiUrl,
+        method,
+        token,
+        modifiedValues
+      );
+      console.log("API Response:", apiResponse);
     } catch (error) {
       console.error("API Error:", error);
     }
   }
 
   function prepareFormValues(values) {
+    console.log("values", values);
     const userRights = values.userright
       .map((v) => parseInt(v.value))
       .toString()
@@ -150,14 +156,14 @@ export default function UserCrud({ userData }) {
     const campaignIds = JSON.stringify(
       values.campaignids.map((v) => parseInt(v.value))
     );
-    const userRole = values.userrole
-      .map((v) => parseInt(v.value))
-      .toString()
-      .replace(/,/g, "");
+    // const userRole = values.userrole
+    //   .map((v) => parseInt(v.value))
+    //   .toString()
+    //   .replace(/,/g, "");
 
     return {
       ...values,
-      userrole: userRole,
+      userrole: values.userrole.value,
       userright: userRights,
       campaignids: campaignIds,
       usergroup: values.usergroup.name,

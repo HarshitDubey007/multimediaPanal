@@ -38,6 +38,23 @@ export default function ManageUsers() {
 
   let columns = [
     {
+      field: "username",
+      headerName: "User name",
+      minWidth: 100,
+      renderCell: (params) =>
+        params.value && (
+          <Tooltip
+            title={<MutedCell title={params.value} />}
+            color="inherit"
+            placement="bottom-start"
+          >
+            <span>
+              <MutedCell title={params.value} />
+            </span>
+          </Tooltip>
+        ),
+    },
+    {
       field: "userid",
       headerName: "userid",
       minWidth: 100,

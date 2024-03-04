@@ -45,8 +45,8 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
       const updatedValues = {};
 
       fields.data.forEach((field) => {
-        // console.log("fieldName, field:: ", field)
         if (field.type === "multiSelect") {
+          console.log("fieldName, field:: ", field);
           const fieldValues = field.multiple
             ? field.options?.filter((v) =>
                 initialValues[field.name]?.includes(v.value)
@@ -129,7 +129,22 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
               }
             />
             {formik.touched[field.name] && formik.errors[field.name] && (
-              <div style={{ color: "red" }}>{formik.errors[field.name]}</div>
+              <div
+                style={{
+                  color: "red",
+                  fontFamily: "Roboto,Helvetica,Arial,sans-serif",
+                  fontSize: "0.75rem",
+                  fontWeight: "400",
+                  lineHeight: "1.25",
+                  letterSpacing: "0.03333em",
+                  textAlign: "left",
+                  marginRight: "14px",
+                  marginBottom: "0",
+                  marginLeft: "22px",
+                }}
+              >
+                {formik.errors[field.name]}
+              </div>
             )}
           </>
         );
