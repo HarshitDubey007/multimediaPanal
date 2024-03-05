@@ -43,7 +43,6 @@ export default function SendSms({ tempData }) {
   useEffect(() => {
     if (tempData) {
       let variables = tempData?.tempvariables?.split("|");
-      console.log("variables:: ", variables);
       let dynamicFields = variables.map((variable) => ({
         name: variable,
         placeholder: `Enter ${variable}`,
@@ -70,11 +69,10 @@ export default function SendSms({ tempData }) {
       let templete = {
         ...values,
         apiid: 2, //Need to remove
-        content: content,
+        textContent: content,
       };
 
       setFinalApiBody(templete);
-      console.log("content:: ", content);
     } catch (error) {
       console.error("API Error:", error);
     }
@@ -84,14 +82,13 @@ export default function SendSms({ tempData }) {
     try {
       const apiUrl = "sms/send-sms";
       const method = "post";
+
       const apiResponse = await DynamicApiCall(apiUrl, method, token, {
         ...finalApiBody,
         ...tempData,
       });
-      console.log("API Response:", apiResponse);
     } catch (error) {}
   }
-  console.log("formValue::::", formValue);
   return (
     <>
       <Grid container spacing={2} mt={2}>

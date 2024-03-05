@@ -126,7 +126,6 @@ export default function BulkSMS() {
       const formData = new FormData();
       formData.append("template", JSON.stringify(gettemp));
       formData.append("file", file);
-      console.log("formData", formData);
 
       try {
         const response = await DaynmicApicall(
@@ -136,9 +135,7 @@ export default function BulkSMS() {
           formData,
           { "Content-Type": "multipart/form-data" }
         );
-        console.log("API Response:", response);
       } catch (error) {
-        console.error("Error uploading file:", error.message);
         toast.error("Error uploading file", { autoClose: 2000 });
       }
     };
@@ -175,7 +172,6 @@ export default function BulkSMS() {
                   multiple={false}
                   options={getoptions}
                   onChange={(event, value) => {
-                    console.log("value", value);
                     settemp(value);
                     setvisible(true);
                   }}
