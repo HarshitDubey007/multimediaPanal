@@ -8,10 +8,10 @@ import { MutedCell } from "../../formControl/TableCellLayouts/tableCellLayouts";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import DynamicForm from "../../helpers/formikForm";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import DynamicApiCall from "../../utils/function";
+import DynamicSideForm from "../../helpers/formikSideForm";
 
 export default function ManageSender() {
   const { userInfo } = useSelector((state) => state?.user?.value);
@@ -25,13 +25,12 @@ export default function ManageSender() {
   const [initial, setinitial] = useState({
     senderid: "",
     sendername: "",
-    peid: "",
+    peid: { value: "", name: "" },
     owner_name: "",
     remarks: "",
     status: "Y",
     userid: userid,
-    action_name: "INSERT"
-
+    action_name: "INSERT",
   });
 
   useEffect(() => {
@@ -48,17 +47,20 @@ export default function ManageSender() {
 
   const getPidData = async () => {
     try {
-      const clientOptionsResponse = await DynamicApiCall("sms/getentity", "get", token);
+      const clientOptionsResponse = await DynamicApiCall(
+        "sms/getentity",
+        "get",
+        token
+      );
       let clientdata = clientOptionsResponse.data.map((option) => ({
         value: option.peid.toString(),
         name: option.client_name,
-      }))
+      }));
       setClientOptions(clientdata);
     } catch (error) {
       console.error("Error fetching client options:", error.message);
     }
   };
-
 
   let columns = [
     {
@@ -74,16 +76,19 @@ export default function ManageSender() {
             params.row.action_name = "UPDATE";
             let editData = {
               ...params.row,
-              status: params.row.is_active
-            }
-            delete editData.updated_on; delete editData.updated_by; delete editData.created_on;
-            delete editData.sno; delete editData.is_active
-            console.log("editData", editData)
+              status: params.row.is_active,
+            };
+            delete editData.updated_on;
+            delete editData.updated_by;
+            delete editData.created_on;
+            delete editData.sno;
+            delete editData.is_active;
+            console.log("editData", editData);
             setSenderData(editData);
           }}
           showInMenu
         />,
-        <GridActionsCellItem label="Delete" onClick={(e) => { }} showInMenu />,
+        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
       ],
     },
     {
@@ -113,14 +118,14 @@ export default function ManageSender() {
     {
       field: "status",
       headerName: "Status",
-      minWidth: 180,
+      minWidth: 80,
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
       field: "remarks",
-      headerName: "remarks",
+      headerName: "Remarks",
       minWidth: 180,
       flex: 1,
       renderCell: (params) =>
@@ -129,7 +134,7 @@ export default function ManageSender() {
     {
       field: "created_on",
       headerName: "Created On",
-      minWidth: 100,
+      minWidth: 150,
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
@@ -144,7 +149,6 @@ export default function ManageSender() {
         validation: Yup.string().required("Sender Id is required"),
         type: "text",
         fullWidth: true,
-
       },
       {
         name: "sendername",
@@ -152,7 +156,6 @@ export default function ManageSender() {
         validation: Yup.string().required("Sender name is required"),
         type: "text",
         fullWidth: true,
-
       },
       {
         multiple: false,
@@ -161,7 +164,6 @@ export default function ManageSender() {
         type: "multiSelect",
         options: clientOptions,
         validation: Yup.object().required("Peid is required"),
-
       },
       {
         name: "owner_name",
@@ -169,15 +171,13 @@ export default function ManageSender() {
         validation: Yup.string().required("Owner Code is required"),
         type: "text",
         fullWidth: true,
-
       },
       {
         name: "remarks",
-        placeholder: "remarks",
+        placeholder: "Remarks",
         // validation: Yup.string().required("remarks is required"),
         type: "text",
         fullWidth: true,
-
       },
     ],
     buttons: {
@@ -201,9 +201,9 @@ export default function ManageSender() {
       const postData = {
         ...values,
         peid: values.peid.value,
-        status: "Y"
-      }
-      console.log("managesender values:: ", postData)
+        status: "Y",
+      };
+      console.log("managesender values:: ", postData);
 
       const apiResponse = await DynamicApiCall(apiUrl, method, token, postData);
       console.log("API Response:", apiResponse);
@@ -221,7 +221,7 @@ export default function ManageSender() {
               <SoftBox mb={3}>
                 <Card
                   sx={{
-                    height: 300,
+                    height: "100%",
                     width: "100%",
                     "& .table-header": {
                       fontWeight: "bold !important",
@@ -259,10 +259,11 @@ export default function ManageSender() {
                   />
 
                   {clientOptions.length > 0 && (
-                    <DynamicForm
+                    <DynamicSideForm
                       submitfunction={formsubmit}
                       initialValues={senderData ? senderData : initial}
                       fields={JsonFields}
+                      setActionName={setSenderData}
                     />
                   )}
                 </Card>
@@ -274,288 +275,3 @@ export default function ManageSender() {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import { styled } from "@mui/material/styles";
-// import Box from "@mui/material/Box";
-// import Paper from "@mui/material/Paper";
-// import Grid from "@mui/material/Grid";
-// import Card from "@mui/material/Card";
-// import SoftTypography from "../../components/SoftTypography";
-// import SoftBox from "../../components/SoftBox";
-// import CustomTable from "../../formControl/Table";
-// import DynamicApiCall from "../../utils/function";
-// import DynamicForm from "../../helpers/formikForm";
-// import * as Yup from "yup";
-
-// const top100Films = [
-//   { title: "AIRTEL", year: 1994 },
-//   { title: "TATA", year: 1972 },
-// ];
-
-// const Entites = [
-//   { label: "112************3456", value: "112************3456" },
-//   { label: "112************3454", value: "112************3454" },
-//   { label: "112************3453", value: "112************3453" },
-//   { label: "112************3452", value: "112************3452" },
-// ];
-
-// let columns = [
-//   {
-//     field: "Peid",
-//     headerName: "Principal Entity Identifier",
-//     minWidth: 50,
-//     flex: 1,
-//   },
-//   { field: "Sender", headerName: "Sender", minWidth: 50, flex: 1 },
-//   { field: "Entity", headerName: "Entity", minWidth: 50, flex: 1 },
-//   { field: "ApprovedOn", headerName: "ApprovedOn", minWidth: 50, flex: 1 },
-//   { field: "Status", headerName: "Status", minWidth: 50, flex: 1 },
-//   { field: "action", headerName: "action", minWidth: 50, flex: 1 },
-// ];
-
-// // one Peid have multipaal sender ids
-// const rows = [
-//   {
-//     Peid: "2",
-//     Sender: "ICCSAZ",
-//     Entity: "120**********786",
-//     ApprovedOn: `${new Date().toISOString().split("T")[0]}`,
-//     Status: "Approved",
-//     action: "Edit",
-//   },
-//   {
-//     Peid: "3",
-//     Sender: "ICCSAZ",
-//     Entity: "120**********786",
-//     ApprovedOn: `${new Date().toISOString().split("T")[0]}`,
-//     Status: "Approved",
-//     action: "Edit",
-//   },
-// ];
-
-// function Author({ image, name, email }) {
-//   return (
-//     <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
-//       {/* <SoftBox mr={2}>
-//         <SoftAvatar src={image} alt={name} size="sm" variant="rounded" />
-//       </SoftBox> */}
-//       <SoftBox display="flex" flexDirection="column">
-//         <SoftTypography variant="button" fontWeight="medium">
-//           {name}
-//         </SoftTypography>
-//         {/* <SoftTypography variant="caption" color="secondary">
-//           {email}
-//         </SoftTypography> */}
-//       </SoftBox>
-//     </SoftBox>
-//   );
-// }
-
-// function Function({ job, org }) {
-//   return (
-//     <SoftBox display="flex" flexDirection="column">
-//       <SoftTypography variant="caption" fontWeight="medium" color="text">
-//         {job}
-//       </SoftTypography>
-//       {/* <SoftTypography variant="caption" color="secondary">
-//         {org}
-//       </SoftTypography> */}
-//     </SoftBox>
-//   );
-// }
-
-// const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: "center",
-//   color: theme.palette.text.secondary,
-// }));
-
-// // templateName: '',
-// // templateId: '',
-// // templateBody: '',
-// // pid: '',
-
-// export default function ManageSender() {
-//   const [initial, setinitial] = useState({
-//     peid: "",
-//     peidName: "",
-//     remarks: "",
-//   });
-
-//   async function formsubmit(values) {
-//     const apiUrl = "";
-//     const method = "post";
-//     // const modifiedValues = prepareFormValues(values);
-//     try {
-//       const apiResponse = await DynamicApiCall(apiUrl, method, initial);
-//       console.log("API Response:", apiResponse);
-//     } catch (error) {
-//       console.error("API Error:", error);
-//     }
-//   }
-
-//   const JsonFields = {
-//     data: [
-//       {
-//         multiple: false,
-//         name: "peid",
-//         placeholder: "Entity Id",
-//         type: "multiSelect",
-//         options: [
-//           { value: "ADMIN", name: "ADMIN" },
-//           { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
-//           { value: "AGENT", name: "AGENT" },
-//           { value: "TEM-LEAD", name: "TEM-LEAD" },
-//         ],
-//         validation: Yup.object().required("User Group is required"),
-//       },
-//       {
-//         multiple: false,
-//         name: "sender",
-//         placeholder: "Entity Id",
-//         type: "multiSelect",
-//         options: [
-//           { value: "ADMIN", name: "ADMIN" },
-//           { value: "SUPER-ADMIN", name: "SUPER-ADMIN" },
-//           { value: "AGENT", name: "AGENT" },
-//           { value: "TEM-LEAD", name: "TEM-LEAD" },
-//         ],
-//         validation: Yup.object().required("User Group is required"),
-//       },
-//     ],
-//     buttons: {
-//       className: "space-around",
-//       submitButton: {
-//         style: {},
-//         label: "Create Entity",
-//       },
-//       resetButton: {
-//         style: {},
-//         label: "Clear",
-//       },
-//     },
-//   };
-
-//   return (
-//     <Box sx={{ flexGrow: 1 }}>
-//       <Grid container spacing={2} mt={1} alignItems="center"></Grid>
-
-//       <Grid container spacing={2}>
-//         {/* tabel */}
-//         <Grid item xs={12} md={8}>
-//           <Card>
-//             <SoftBox>
-//               <SoftBox mb={3}>
-//                 <SoftBox
-//                   display="flex"
-//                   justifyContent="space-between"
-//                   alignItems="center"
-//                   p={3}
-//                 >
-//                   <SoftTypography variant="h6">Manage Sender</SoftTypography>
-//                 </SoftBox>
-//                 <SoftBox
-//                 // sx={{
-//                 //   "& .MuiTableRow-root:not(:last-child)": {
-//                 //     "& td": {
-//                 //       borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-//                 //         `${borderWidth[1]} solid ${borderColor}`,
-//                 //     },
-//                 //   },
-//                 // }}
-//                 >
-//                   <CustomTable rows={rows} columns={columns} uniquekey="Peid" />
-//                 </SoftBox>
-//               </SoftBox>
-//             </SoftBox>
-//           </Card>
-//         </Grid>
-
-//         {/* form */}
-//         <Grid item xs={12} md={4}>
-//           <Card>
-//             <SoftBox
-//               display="flex"
-//               justifyContent="space-between"
-//               alignItems="center"
-//               pt={2}
-//               px={2}
-//             >
-//               <h6>Add Sender</h6>
-//             </SoftBox>
-//             <Grid spacing={2} mt={2}>
-//               {/* <form onSubmit={handleSubmit}>
-
-//                 <ValidatedTextField
-//                   name="sender"
-//                   variant="outlined"
-//                   size="small"
-//                   placeholder="Principal Entity(PEID)"
-//                   value={formData.ttype}
-//                   onChange={(value) => handleInputChange('sender', value)}
-//                 />
-//                 <ValidatedTextField
-//                   name="sender"
-//                   variant="outlined"
-//                   size="small"
-//                   placeholder="Principal Entity Name"
-//                   value={formData.ttype}
-//                   onChange={(value) => handleInputChange('sender', value)}
-//                 />
-
-//                 <ValidatedTextField
-//                   name="sender"
-//                   variant="outlined"
-//                   size="small"
-//                   placeholder="Sender id"
-//                   value={formData.ttype}
-//                   onChange={(value) => handleInputChange('sender', value)}
-//                 />
-
-
-//                 <Grid item>
-//                   <Button type="submit" color="primary">
-//                     Submit
-//                   </Button>
-//                 </Grid>
-//               </form> */}
-//               <DynamicForm
-//                 submitfunction={formsubmit}
-//                 initialValues={initial}
-//                 fields={JsonFields}
-//               />
-//             </Grid>
-//           </Card>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// }

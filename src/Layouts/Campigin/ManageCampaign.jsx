@@ -7,10 +7,10 @@ import { MutedCell } from "../../formControl/TableCellLayouts/tableCellLayouts";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import DynamicForm from "../../helpers/formikForm";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import DynamicApiCall from "../../utils/function";
+import DynamicSideForm from "../../helpers/formikSideForm";
 
 export default function ManageCampaign() {
   const { userInfo } = useSelector((state) => state?.user?.value);
@@ -24,7 +24,7 @@ export default function ManageCampaign() {
   const [initial, setinitial] = useState({
     campid: "",
     campname: "",
-    clientname: "",
+    clientname: { value: "", name: "" },
     senderid: "",
     campdisplay_name: "",
     remarks: "",
@@ -81,13 +81,6 @@ export default function ManageCampaign() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    // {
-    //   field: "camp_id",
-    //   headerName: "Campaign Id",
-    //   width: 110,
-    //   renderCell: (params) =>
-    //     params.value && <MutedCell title={params.value} org="Organization" />,
-    // },
     {
       field: "camp_name",
       headerName: "Camp Name",
@@ -95,13 +88,6 @@ export default function ManageCampaign() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    // {
-    //   field: "client_name",
-    //   headerName: "Client Name",
-    //   width: 120,
-    //   renderCell: (params) =>
-    //     params.value && <MutedCell title={params.value} org="Organization" />,
-    // },
     {
       field: "peid",
       headerName: "Pe.Id",
@@ -123,13 +109,6 @@ export default function ManageCampaign() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    // {
-    //   field: "created_on",
-    //   headerName: "Created On",
-    //   width: 120,
-    //   renderCell: (params) =>
-    //     params.value && <MutedCell title={params.value} org="Organization" />,
-    // },
     {
       field: "is_active",
       headerName: "Is Active",
@@ -259,7 +238,7 @@ export default function ManageCampaign() {
               <SoftBox mb={3}>
                 <Card
                   sx={{
-                    height: 300,
+                    height: "100%",
                     width: "100%",
                     "& .table-header": {
                       fontWeight: "bold !important",
@@ -296,10 +275,11 @@ export default function ManageCampaign() {
                     }}
                   />
 
-                  <DynamicForm
+                  <DynamicSideForm
                     submitfunction={formsubmit}
                     initialValues={campData ? campData : initial}
                     fields={JsonFields}
+                    setActionName={setCampData}
                   />
                 </Card>
               </SoftBox>
@@ -310,26 +290,3 @@ export default function ManageCampaign() {
     </>
   );
 }
-
-// [
-//     {
-//         "value": "1234567",
-//         "name": "TATA"
-//     },
-//     {
-//         "value": "12345677",
-//         "name": "TATA"
-//     },
-//     {
-//         "value": "333486455533",
-//         "name": "AIRTEL"
-//     },
-//     {
-//         "value": "123345",
-//         "name": "HDFC!"
-//     },
-//     {
-//         "value": "33344535533",
-//         "name": "INFO"
-//     }
-// ]

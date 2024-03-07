@@ -13,6 +13,7 @@ import Stack from "@mui/material/Stack";
 import { gridClasses } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
+import "./Table.css";
 
 const CustomTable = ({ rows, columns, uniquekey }) => {
   const [pageSize, setPageSize] = useState(10);
@@ -74,7 +75,7 @@ const CustomTable = ({ rows, columns, uniquekey }) => {
         rowCount={rows.length}
         rowHeight={40}
         autoHeight={true}
-        className="bg-white"
+        className="bg-white deafultTable"
         density="compact"
         pagination
         pageSize={pageSize}

@@ -142,35 +142,27 @@ export default function ManageTemplate() {
     {
       field: "temptype",
       headerName: "Templete type",
-      minWidth: 200,
+      minWidth: 150,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
       field: "tempvariables",
-      headerName: "tempvariables",
+      headerName: "Temp. variables",
       minWidth: 200,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "status",
-      headerName: "Status",
-      minWidth: 180,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
       field: "remarks",
-      headerName: "remarks",
+      headerName: "Remarks",
       minWidth: 180,
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "created_on",
+      field: "entry_date",
       headerName: "Created On",
       minWidth: 100,
       flex: 1,
@@ -178,9 +170,9 @@ export default function ManageTemplate() {
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
     {
-      field: "is_active",
+      field: "status",
       headerName: "Is Active",
-      minWidth: 150,
+      minWidth: 80,
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
@@ -216,7 +208,7 @@ export default function ManageTemplate() {
         <Grid container spacing={2} mt={2}>
           <Grid item xs={12}>
             <SoftBox mt={1}>
-              <SoftBox
+              {/* <SoftBox
                 display="flex"
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -263,7 +255,7 @@ export default function ManageTemplate() {
                               getexceinfo(e.target.value);
                             }}
                           /> */}
-                          <ValidatedTextField
+              {/* <ValidatedTextField
                             size="medium"
                             icon={{ component: false, direction: "none" }}
                             success={false}
@@ -291,9 +283,8 @@ export default function ManageTemplate() {
                       </Grid>
                     </SoftBox>
                   </form>
-                </Card>
-              </SoftBox>
-
+                </Card> */}
+              {/* </SoftBox> */}
               <SoftBox mb={3}>
                 <Card
                   sx={{

@@ -8,7 +8,12 @@ import SoftButton from "../components/SoftButton";
 import Grid from "@mui/material/Grid";
 import { ColorSwitch } from "../formControl/SwitchButton";
 
-const DynamicForm = ({ fields, submitfunction, initialValues }) => {
+const DynamicSideForm = ({
+  fields,
+  submitfunction,
+  initialValues,
+  setActionName,
+}) => {
   const [fieldValueStatus, setFieldValueStatus] = useState(false);
   const validationSchema = Yup.object().shape(
     fields.data.reduce((schema, field) => {
@@ -43,6 +48,7 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
   useEffect(() => {
     if (initialValues.action_name === "UPDATE") {
       const updatedValues = {};
+      console.log("fields.data", fields.data);
 
       fields.data.forEach((field) => {
         if (field.type === "multiSelect") {
@@ -202,18 +208,23 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
       <Grid container my={2}>
         {fieldValueStatus && fields.data.map((field) => renderField(field))}
         <Grid container justifyContent={fields.buttons.className}>
-          <Grid item mr={1}>
+          <Grid>
             <SoftButton
+              // variant="contained"
               size="small"
+              // color="dark"
               type="reset"
               variant="gradient"
               color="info"
-              onClick={formik.resetForm}
+              onClick={() => {
+                formik.resetForm();
+                setActionName({ action_name: "Add" });
+              }}
             >
               {fields.buttons.resetButton.label}
             </SoftButton>
           </Grid>
-          <Grid item>
+          <Grid>
             <SoftButton
               variant="contained"
               size="small"
@@ -229,4 +240,4 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
   );
 };
 
-export default DynamicForm;
+export default DynamicSideForm;

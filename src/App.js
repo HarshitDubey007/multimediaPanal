@@ -30,7 +30,6 @@ export default function App() {
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
   const searchParams = new URLSearchParams(document.location.search);
-  console.log("searchParams::: ", searchParams);
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({

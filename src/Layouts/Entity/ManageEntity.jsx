@@ -8,10 +8,10 @@ import { MutedCell } from "../../formControl/TableCellLayouts/tableCellLayouts";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import DynamicForm from "../../helpers/formikForm";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import DynamicApiCall from "../../utils/function";
+import DynamicSideForm from "../../helpers/formikSideForm";
 
 export default function ManageEntity() {
   const { userInfo } = useSelector((state) => state?.user?.value);
@@ -77,7 +77,7 @@ export default function ManageEntity() {
     },
     {
       field: "remarks",
-      headerName: "remarks",
+      headerName: "Remarks",
       minWidth: 180,
       flex: 1,
       renderCell: (params) =>
@@ -240,10 +240,11 @@ export default function ManageEntity() {
                     }}
                   />
 
-                  <DynamicForm
+                  <DynamicSideForm
                     submitfunction={formsubmit}
                     initialValues={entityData ? entityData : initial}
                     fields={JsonFields}
+                    setActionName={setEntityData}
                   />
                 </Card>
               </SoftBox>

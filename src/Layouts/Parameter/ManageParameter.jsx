@@ -7,12 +7,12 @@ import Card from "@mui/material/Card";
 import SoftTypography from "../../components/SoftTypography";
 import SoftBox from "../../components/SoftBox";
 import CustomTable from "../../formControl/Table";
-import DynamicForm from "../../helpers/formikForm";
 import * as Yup from "yup";
 import DynamicApiCall from "../../utils/function";
 import { useSelector } from "react-redux";
 import MultiSelect from "../../formControl/MultiSelect";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import DynamicSideForm from "../../helpers/formikSideForm";
 
 const top100Films = [
   { title: "AIRTEL", year: 1994 },
@@ -192,10 +192,11 @@ export default function ManageParameter() {
           label="Edit"
           onClick={() => {
             params.row.action_name = console.log("params.row.:", params.row);
+            params.row.action_name = "UPDATE";
             let obj = {
               ...params.row,
               isactive: params.row.active_status,
-              action_name: "Update",
+              action_name: "UPDATE",
             };
             delete obj.active_status;
             setUpdateRow(obj);
@@ -282,10 +283,11 @@ export default function ManageParameter() {
                       width: "100%",
                     }}
                   />
-                  <DynamicForm
+                  <DynamicSideForm
                     submitfunction={formsubmit}
                     initialValues={updateRow ? updateRow : initial}
                     fields={JsonFields}
+                    setActionName={setUpdateRow}
                   />
                 </Card>
               </SoftBox>

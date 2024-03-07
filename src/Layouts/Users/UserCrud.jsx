@@ -13,10 +13,10 @@ export default function UserCrud({ userData }) {
   const [initial, setinitial] = useState({
     userid: "",
     username: "",
-    usergroup: "",
+    usergroup: { value: "", name: "" },
     userright: "",
     campaignids: "",
-    userrole: "",
+    userrole: { value: "", name: "" },
     verifier: "",
     lockstatus: true,
     keypointer: "",

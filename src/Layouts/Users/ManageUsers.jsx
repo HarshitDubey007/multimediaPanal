@@ -171,7 +171,7 @@ export default function ManageUsers() {
               <SoftBox mb={3}>
                 <Card
                   sx={{
-                    height: 300,
+                    height: "100%",
                     width: "100%",
                     "& .table-header": {
                       fontWeight: "bold !important",
@@ -212,7 +212,6 @@ export default function ManageUsers() {
               fullWidth
             >
               <DialogContent>
-                {/* user crud */}
                 <IconButton
                   aria-label="close"
                   onClick={handleSendsmsModelClose}
@@ -227,11 +226,6 @@ export default function ManageUsers() {
                 </IconButton>
                 <UserCrud userData={rowData} />
               </DialogContent>
-              {/* <DialogActions>
-                <SoftButton onClick={handleSendsmsModelClose}>
-                  Cancel
-                </SoftButton>
-              </DialogActions> */}
             </Dialog>
           </Grid>
         </Grid>
