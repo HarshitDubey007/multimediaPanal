@@ -133,7 +133,7 @@ export default function App() {
               <Routes>
                 {getRoutes(routes)}
                 {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
-                <Route path="*" element={<Navigate to="/dashboard" />} />
+                <Route path="*" element={<Navigate to="/manageentites" />} />
               </Routes>
               <div>
                 <Toaster
