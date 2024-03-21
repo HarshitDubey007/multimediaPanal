@@ -12,7 +12,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import ComponentJsonCrud from "./ComponentJsonCrud";
 import { useSelector } from "react-redux";
-import DaynmicApicall from "../../utils/function";
+import DaynamicApicall from "../../utils/function";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import IconButton from "@mui/material/IconButton";
@@ -23,24 +23,31 @@ export default function ComponentJSON() {
   const { userid, token } = userInfo;
   const [rowData, setRowData] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
-  const [getrows, setrows] = useState(false);
+  const [getrows, setrows] = useState([]);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const handleUserModel = (row) => {
-    setRowData(row);
+  const handleComponentModel = (row) => {
+    const rowData = {
+      ...row,
+      comp_json: JSON.stringify(row?.comp_json),
+      is_active: row?.is_active === "N" ? false : true,
+    };
+    setRowData(rowData);
     setModalOpen(true);
   };
 
-  const handleSendsmsModelClose = () => {
+  const handleComponentModelClose = () => {
     setModalOpen(false);
+    setRowData("");
+    getComponentJson();
   };
 
   let columns = [
     {
-      field: "api_id",
-      headerName: "Api Id",
-      minWidth: 100,
+      field: "object_name",
+      headerName: "S.No.",
+      width: 60,
       renderCell: (params) =>
         params.value && (
           <Tooltip
@@ -55,43 +62,9 @@ export default function ComponentJSON() {
         ),
     },
     {
-      field: "camp_id:",
-      headerName: "Campaign",
-      minWidth: 100,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "api_url",
-      headerName: "API URL",
-      minWidth: 150,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "api_token_enable",
-      headerName: "Api Token Enable",
-      minWidth: 150,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "api_token",
-      headerName: "API Token",
-      minWidth: 150,
-      flex: 1,
-      renderCell: (params) =>
-        params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "api_reqbody_payload",
-      headerName: "Api Payload",
-      minWidth: 200,
-      flex: 1,
-      headerClassName: "table-header",
+      field: "menu_id",
+      headerName: "Menu ID",
+      width: 190,
       renderCell: (params) =>
         params.value && (
           <Tooltip
@@ -106,25 +79,109 @@ export default function ComponentJSON() {
         ),
     },
     {
-      field: "notify_url",
-      headerName: "Notify URL",
-      minWidth: 100,
-      flex: 1,
+      field: "menu_name",
+      headerName: "Menu Name",
+      width: 180,
+      renderCell: (params) =>
+        params.value && (
+          <Tooltip
+            title={<MutedCell title={params.value} />}
+            color="inherit"
+            placement="bottom-start"
+          >
+            <span>
+              <MutedCell title={params.value} />
+            </span>
+          </Tooltip>
+        ),
+    },
+    {
+      field: "menu_display_name",
+      headerName: "Menu Display Name",
+      width: 180,
+      renderCell: (params) =>
+        params.value && (
+          <Tooltip
+            title={<MutedCell title={params.value} />}
+            color="inherit"
+            placement="bottom-start"
+          >
+            <span>
+              <MutedCell title={params.value} />
+            </span>
+          </Tooltip>
+        ),
+    },
+    {
+      field: "parent_id",
+      headerName: "Menu Parent",
+      width: 110,
+      renderCell: (params) =>
+        params.value && (
+          <Tooltip
+            title={<MutedCell title={params.value} />}
+            color="inherit"
+            placement="bottom-start"
+          >
+            <span>
+              <MutedCell title={params.value} />
+            </span>
+          </Tooltip>
+        ),
+    },
+    {
+      field: "menu_type",
+      headerName: "Menu Type",
+      width: 100,
+      renderCell: (params) =>
+        params.value && (
+          <Tooltip
+            title={<MutedCell title={params.value} />}
+            color="inherit"
+            placement="bottom-start"
+          >
+            <span>
+              <MutedCell title={params.value} />
+            </span>
+          </Tooltip>
+        ),
+    },
+    {
+      field: "url",
+      headerName: "Image URL",
+      width: 100,
+      renderCell: (params) =>
+        params.value && (
+          <Tooltip
+            title={<MutedCell title={params.value} />}
+            color="inherit"
+            placement="bottom-start"
+          >
+            <span>
+              <MutedCell title={params.value} />
+            </span>
+          </Tooltip>
+        ),
+    },
+    {
+      field: "is_active",
+      headerName: "Active",
+      width: 60,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
+
     {
       field: "actions",
       headerName: "Actions",
       type: "actions",
-      minWidth: 80,
-      flex: 1,
+      width: 80,
       getActions: (params) => [
         <GridActionsCellItem
           label="Edit"
           onClick={() => {
             params.row.action_name = "UPDATE";
-            handleUserModel(params.row);
+            handleComponentModel(params.row);
           }}
           showInMenu
         />,
@@ -134,19 +191,21 @@ export default function ComponentJSON() {
     },
   ];
 
+  const getComponentJson = async () => {
+    try {
+      const Info = await DaynamicApicall(
+        "multimedia/getallmenumaster",
+        "get",
+        token
+      );
+      setrows(Info.data);
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const Info = await DaynmicApicall(
-          "sms/getclientapijson/ALL",
-          "get",
-          token
-        );
-        setrows(Info.data);
-      } catch (error) {
-        console.error("Error fetching data:", error.message);
-      }
-    })();
+    getComponentJson();
   }, []);
 
   return (
@@ -158,7 +217,7 @@ export default function ComponentJSON() {
               <SoftBox mb={3}>
                 <Card
                   sx={{
-                    height: 300,
+                    height: "100%",
                     width: "100%",
                     "& .table-header": {
                       fontWeight: "bold !important",
@@ -174,7 +233,7 @@ export default function ComponentJSON() {
                         size="small"
                         color="dark"
                         onClick={() => {
-                          handleUserModel(null);
+                          setModalOpen(true);
                         }}
                       >
                         Add Component JSON
@@ -184,7 +243,7 @@ export default function ComponentJSON() {
                   <CustomTable
                     rows={getrows ? getrows : []}
                     columns={columns}
-                    uniquekey="api_id"
+                    uniquekey="object_name"
                   />
                 </Card>
               </SoftBox>
@@ -194,7 +253,7 @@ export default function ComponentJSON() {
             <Dialog
               sx={{ mt: 2 }}
               open={isModalOpen}
-              onClose={handleSendsmsModelClose}
+              onClose={handleComponentModelClose}
               maxWidth="lg"
               fullWidth
             >
@@ -202,7 +261,7 @@ export default function ComponentJSON() {
                 {/* user crud */}
                 <IconButton
                   aria-label="close"
-                  onClick={handleSendsmsModelClose}
+                  onClick={handleComponentModelClose}
                   sx={{
                     position: "absolute",
                     right: 8,
@@ -212,10 +271,14 @@ export default function ComponentJSON() {
                 >
                   <CloseIcon />
                 </IconButton>
-                <ComponentJsonCrud userData={rowData} />
+                <ComponentJsonCrud
+                  compData={rowData}
+                  setModalOpen={handleComponentModelClose}
+                  menuParent={getrows}
+                />
               </DialogContent>
               {/* <DialogActions>
-                <SoftButton onClick={handleSendsmsModelClose}>
+                <SoftButton onClick={handleComponentModelClose}>
                   Cancel
                 </SoftButton>
               </DialogActions> */}

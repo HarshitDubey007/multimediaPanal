@@ -16,7 +16,7 @@ import Box from "@mui/material/Box";
 import "./Table.css";
 
 const CustomTable = ({ rows, columns, uniquekey }) => {
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
 
   // Handle pagination change

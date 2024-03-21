@@ -44,13 +44,41 @@ export default function ManageEntity() {
 
   let columns = [
     {
+      field: "actions",
+      headerName: "Actions",
+      type: "actions",
+      minWidth: 80,
+      flex: 1,
+      getActions: (params) => [
+        <GridActionsCellItem
+          label="Edit"
+          onClick={() => {
+            params.row.action_name = "UPDATE";
+            let editData = {
+              ...params.row,
+              status: params.row.is_active,
+            };
+            delete editData.updated_on;
+            delete editData.updated_by;
+            delete editData.created_on;
+            delete editData.sno;
+            delete editData.is_active;
+            console.log("editData", editData);
+            setEntityData(editData);
+          }}
+          showInMenu
+        />,
+
+        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
+      ],
+    },
+    {
       field: "peid",
       headerName: "Peid(Principal Entity)",
       minWidth: 200,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-
     {
       field: "client_name",
       headerName: "Client name",
@@ -99,35 +127,6 @@ export default function ManageEntity() {
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
     },
-    {
-      field: "actions",
-      headerName: "Actions",
-      type: "actions",
-      minWidth: 80,
-      flex: 1,
-      getActions: (params) => [
-        <GridActionsCellItem
-          label="Edit"
-          onClick={() => {
-            params.row.action_name = "UPDATE";
-            let editData = {
-              ...params.row,
-              status: params.row.is_active,
-            };
-            delete editData.updated_on;
-            delete editData.updated_by;
-            delete editData.created_on;
-            delete editData.sno;
-            delete editData.is_active;
-            console.log("editData", editData);
-            setEntityData(editData);
-          }}
-          showInMenu
-        />,
-
-        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
-      ],
-    },
   ];
 
   const JsonFields = {
@@ -162,7 +161,7 @@ export default function ManageEntity() {
       },
       {
         name: "remarks",
-        placeholder: "remarks",
+        placeholder: "Remarks",
         // validation: Yup.string().required("remarks is required"),
         type: "text",
         fullWidth: true,

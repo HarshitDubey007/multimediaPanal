@@ -38,6 +38,25 @@ export default function ManageUsers() {
 
   let columns = [
     {
+      field: "actions",
+      headerName: "Actions",
+      type: "actions",
+      minWidth: 80,
+      flex: 1,
+      getActions: (params) => [
+        <GridActionsCellItem
+          label="Edit"
+          onClick={() => {
+            params.row.action_name = "UPDATE";
+            handleUserModel(params.row);
+          }}
+          showInMenu
+        />,
+
+        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
+      ],
+    },
+    {
       field: "username",
       headerName: "User name",
       minWidth: 100,
@@ -129,25 +148,6 @@ export default function ManageUsers() {
       flex: 1,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      type: "actions",
-      minWidth: 80,
-      flex: 1,
-      getActions: (params) => [
-        <GridActionsCellItem
-          label="Edit"
-          onClick={() => {
-            params.row.action_name = "UPDATE";
-            handleUserModel(params.row);
-          }}
-          showInMenu
-        />,
-
-        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
-      ],
     },
   ];
 

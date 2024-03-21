@@ -75,6 +75,39 @@ export default function ManageCampaign() {
 
   let columns = [
     {
+      field: "actions",
+      headerName: "Actions",
+      type: "actions",
+      width: 80,
+      getActions: (params) => [
+        <GridActionsCellItem
+          label="Edit"
+          onClick={() => {
+            params.row.action_name = "UPDATE";
+            // console.log("Parames row", params.row);
+            let editData = {
+              campid: params.row.camp_id,
+              campname: params.row.camp_name,
+              clientname: params.row.peid,
+              senderid: params.row.sender_id,
+              campdisplay_name: params.row.camp_display_name,
+              remarks: params.row.remarks,
+              action_name: "UPDATE",
+            };
+            // console.log(
+            //   "params.row.action_name = UPDATE",
+            //   editData,
+            //   params.row
+            // );
+            setCampData(editData);
+          }}
+          showInMenu
+        />,
+
+        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
+      ],
+    },
+    {
       field: "sno",
       headerName: "S.No",
       width: 50,
@@ -115,39 +148,6 @@ export default function ManageCampaign() {
       width: 100,
       renderCell: (params) =>
         params.value && <MutedCell title={params.value} org="Organization" />,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      type: "actions",
-      width: 80,
-      getActions: (params) => [
-        <GridActionsCellItem
-          label="Edit"
-          onClick={() => {
-            params.row.action_name = "UPDATE";
-            // console.log("Parames row", params.row);
-            let editData = {
-              campid: params.row.camp_id,
-              campname: params.row.camp_name,
-              clientname: params.row.peid,
-              senderid: params.row.sender_id,
-              campdisplay_name: params.row.camp_display_name,
-              remarks: params.row.remarks,
-              action_name: "UPDATE",
-            };
-            // console.log(
-            //   "params.row.action_name = UPDATE",
-            //   editData,
-            //   params.row
-            // );
-            setCampData(editData);
-          }}
-          showInMenu
-        />,
-
-        <GridActionsCellItem label="Delete" onClick={(e) => {}} showInMenu />,
-      ],
     },
   ];
 
@@ -191,14 +191,14 @@ export default function ManageCampaign() {
       },
       {
         name: "senderid",
-        placeholder: "senderid",
+        placeholder: "Senderid",
         validation: Yup.string().required("sender Id is required"),
         type: "text",
         fullWidth: true,
       },
       {
         name: "remarks",
-        placeholder: "remarks",
+        placeholder: "Remarks",
         // validation: Yup.string().required("remarks is required"),
         type: "text",
       },

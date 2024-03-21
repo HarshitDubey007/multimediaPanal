@@ -16,30 +16,36 @@ import FenceIcon from '@mui/icons-material/Fence';
 import ManageClientApiJson from "./Layouts/ClientApiJSON/ManageClientApiJson";
 import ComponentJSON from "./Layouts/ComponentJSON/ComponentJSON";
 import ManageSendSms from "./Layouts/sendSMS/ManageSendSms";
+import ManageMenumap from "./Layouts/Menumapping/ManageMenumap";
 
 
 const routes = [
-  {
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    route: "/dashboard",
-    icon: <Shop size="12px" />,
-    component: <Dashboard />,
-    noCollapse: true,
-  },
   // {
   //   type: "collapse",
-  //   name: "Signin",
-  //   key: "signin",
-  //   route: "/",
+  //   name: "Dashboard",
+  //   key: "dashboard",
   //   icon: <Shop size="12px" />,
-  //   component: <SignInSide />,
   //   noCollapse: true,
+  //   collapse:[{
+  //     type: "collapse",
+  //     name: "Dashboard2",
+  //     key: "dashboard2",
+  //     icon: <Shop size="12px" />,
+  //     noCollapse: true,
+  //     collapse:[{
+  //       type: "collapse",
+  //       name: "Dashboard",
+  //       key: "dashboard",
+  //       route: "/dashboard",
+  //       icon: <Shop size="12px" />,
+  //       component: <Dashboard />,
+  //       noCollapse: false,
+  //     }]
+  //   }]
   // },
   {
     type: "collapse",
-    name: "manage Entites",
+    name: "Manage Entites",
     key: "manageentites",
     route: "/manageentites",
     icon: <FingerprintIcon size="12px" />,
@@ -48,7 +54,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "manage Campaign",
+    name: "Manage Campaign",
     key: "managecampaign",
     route: "/managecampaign",
     icon: <CampaignIcon size="12px" />,
@@ -57,15 +63,13 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Managesender",
+    name: "Manage Sender",
     key: "managesender",
     route: "/managesender",
     icon: <OutboxIcon size="12px" />,
     component: <ManageSender />,
     noCollapse: true,
   },
-  // { type: "title", title: "Account Pages", key: "account-pages" },
-
   {
     type: "collapse",
     name: "Create Templete",
@@ -86,11 +90,20 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "manage user",
+    name: "Manage User",
     key: "manageusers",
     route: "/manageusers",
     icon: <ManageAccountsIcon size="12px" />,
     component: <ManageUsers />,
+    noCollapse: false,
+  },
+  {
+    type: "collapse",
+    name: "Manage Menu Map",
+    key: "managemenumap",
+    route: "/managemenumap",
+    icon: <ManageAccountsIcon size="12px" />,
+    component: <ManageMenumap />,
     noCollapse: false,
   },
   {
@@ -102,24 +115,24 @@ const routes = [
     component: <ManageParameter />,
     noCollapse: false,
   },
-  {
-    type: "collapse",
-    name: "Manage Client Api JSON",
-    key: "clientapijson",
-    route: "/clientapijson",
-    icon: <FenceIcon size="12px" />,
-    component: <ManageClientApiJson />,
-    noCollapse: false,
-  },
-  {
-    type: "collapse",
-    name: "Manage Component JSON",
-    key: "componentjson",
-    route: "/componentjson",
-    icon: <FenceIcon size="12px" />,
-    component: <ComponentJSON />,
-    noCollapse: false,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Manage Client Api JSON",
+  //   key: "clientapijson",
+  //   route: "/clientapijson",
+  //   icon: <FenceIcon size="12px" />,
+  //   component: <ManageClientApiJson />,
+  //   noCollapse: false,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Manage Component JSON",
+  //   key: "componentjson",
+  //   route: "/componentjson",
+  //   icon: <FenceIcon size="12px" />,
+  //   component: <ComponentJSON />,
+  //   noCollapse: false,
+  // },
 ];
 
 export default routes;

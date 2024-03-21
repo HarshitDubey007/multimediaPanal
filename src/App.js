@@ -132,6 +132,7 @@ export default function App() {
             <SoftBox py={3}>
               <Routes>
                 {getRoutes(routes)}
+                {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
                 <Route path="*" element={<Navigate to="/dashboard" />} />
               </Routes>
               <div>
@@ -171,31 +172,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-
-// Reight side nevbar
-// direction === "rtl" ? (
-//   <CacheProvider value={rtlCache}>
-//     <ThemeProvider theme={themeRTL}>
-//       <CssBaseline />
-//       {layout === "dashboard" && (
-//         <>
-//           <Sidenav
-//             color={sidenavColor}
-//             brand={brand}
-//             brandName="Soft UI Dashboard"
-//             routes={routes}
-//             onMouseEnter={handleOnMouseEnter}
-//             onMouseLeave={handleOnMouseLeave}
-//           />
-//           <Configurator />
-//           {configsButton}
-//         </>
-//       )}
-//       {layout === "vr" && <Configurator />}
-//       <Routes>
-//         {getRoutes(routes)}
-//         <Route path="*" element={<Navigate to="/dashboard" />} />
-//       </Routes>
-//     </ThemeProvider>
-//   </CacheProvider>
-// ) :

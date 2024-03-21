@@ -15,6 +15,8 @@ const DynamicForm = ({ fields, submitfunction, initialValues }) => {
       switch (field.type) {
         case "text":
           return { ...schema, [field.name]: field.validation || Yup.string() };
+
+        // return { ...schema, [field.name]: Yup.string().required("") };
         case "multiSelect":
           return {
             ...schema,
