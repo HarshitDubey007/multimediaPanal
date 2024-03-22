@@ -17,7 +17,7 @@ import SoftBox from "../SoftBox";
 function SidenavCollapse({ color, icon, name, children, active, noCollapse, open, ...rest }) {
   const [controller] = useSoftUIController();
   const { miniSidenav, transparentSidenav } = controller;
-
+  console.log("typeof icon",typeof icon,icon,active)
   return (
     <>
       <ListItem component="li">

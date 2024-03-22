@@ -1,113 +1,101 @@
-import { makeStyles } from "@mui/styles";
+import { useTheme } from '@mui/material/styles';
+import { css } from '@emotion/react';
 
-export default makeStyles(
-  ({ palette, typography, boxShadows, transitions, breakpoints, functions }) => {
+const useStyles = ({ palette = {}, typography = {}, boxShadows = {}, transitions = {}, breakpoints = {}, functions = {} }) => {
+    const theme = useTheme();
     const sidebarWidth = 250;
-    const { white, transparent } = palette;
-    const { fontWeightMedium } = typography;
-    const { xxl } = boxShadows;
-    const { pxToRem } = functions;
+    const transparentColor = palette && palette.transparent ? palette.transparent.main : 'transparent';
+    const fontWeightMedium = typography && typography.fontWeightMedium ? typography.fontWeightMedium : 'normal';
+    const xxl = boxShadows && boxShadows.xxl ? boxShadows.xxl : 'none';
+    const easing = transitions && transitions.easing ? transitions.easing : {};
+    const duration = transitions && transitions.duration ? transitions.duration : {};
 
     return {
-      sidenav: {
+      sidenav: css({
         boxShadow: xxl,
         border: "none",
 
-        [breakpoints.up("xl")]: {
-          backgroundColor: ({ transparentSidenav }) =>
-            transparentSidenav ? transparent.main : white.main,
-          boxShadow: ({ transparentSidenav }) => (transparentSidenav ? "none" : xxl),
-          marginBottom: ({ transparentSidenav }) => (transparentSidenav ? 0 : "inherit"),
-          left: "0",
+        [theme.breakpoints.up("xl")]: {
+            backgroundColor: ({ transparentSidenav }) =>
+                transparentSidenav ? transparentColor : (palette ? palette.common.white : 'white'),
+            boxShadow: ({ transparentSidenav }) => (transparentSidenav ? "none" : xxl),
+            marginBottom: ({ transparentSidenav }) => (transparentSidenav ? 0 : "inherit"),
+            left: "0",
         },
-      },
+    }),
 
-      sidenav_header: {
-        paddingTop: "15px" ,
-        paddingLeft: "20px" ,
-        paddingRight: "20px" ,
-        paddingBottom: "10px" ,
+    sidenav_header: css({
+        paddingTop: "15px",
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        paddingBottom: "10px",
         textAlign: "center",
 
         "& a": {
-          display: "flex",
-          alignItems: "center",
-          textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            textDecoration: "none",
         },
-      },
+    }),
 
-      sidenav_logo: {
-        width: pxToRem(32),
-      },
-
-      sidenav_logoLabel: {
-        marginLeft: pxToRem(4),
-        fontWeight: fontWeightMedium,
-        wordSpacing: pxToRem(-1),
-        transition: transitions.create("opacity", {
-          easing: transitions.easing.easeInOut,
-          duration: transitions.duration.standard,
+        sidenav_logo: css({
+            width: "2rem",
         }),
 
-        [breakpoints.up("xl")]: {
-          opacity: ({ miniSidenav }) => (miniSidenav ? 0 : 1),
-        },
-      },
+        sidenav_logoLabel: css({
+          marginLeft: "0.25rem",
+          fontWeight: fontWeightMedium,
+          wordSpacing: "0.25rem",
+          transition: `opacity ${easing.easeInOut || 'ease-in-out'} ${duration.standard || '0.3s'}`,
 
-      sidenav_title: {
-        display: "block",
-        opacity: 0.6,
-        paddingLeft: pxToRem(24),
-        margin: `${pxToRem(16)} 0 ${pxToRem(8)} ${pxToRem(8)}`,
-      },
+          [theme.breakpoints.up("xl")]: {
+              opacity: ({ miniSidenav }) => (miniSidenav ? 0 : 1),
+          },
+      }),
 
-      marginTopNone: {
-        marginTop: 0,
-      },
-
-      sidenav_footer: {
-        margin: `auto ${pxToRem(16)} ${pxToRem(16)}`,
-        paddingTop: pxToRem(16),
-      },
-
-      sidenav_open: {
-        transform: "translateX(0)",
-        transition: transitions.create("transform", {
-          easing: transitions.easing.sharp,
-          duration: transitions.duration.shorter,
+        sidenav_title: css({
+            display: "block",
+            opacity: 0.6,
+            paddingLeft: "1.5rem",
+            margin: "1rem 0 0.5rem 0.5rem",
         }),
 
-        [breakpoints.up("xl")]: {
-          width: sidebarWidth,
-          transform: "translateX(0)",
-          transition: transitions.create(["width", "background-color"], {
-            easing: transitions.easing.sharp,
-            duration: transitions.duration.enteringScreen,
-          }),
-        },
-      },
-
-      sidenav_close: {
-        transform: `translateX(${pxToRem(-320)})`,
-        transition: transitions.create("transform", {
-          easing: transitions.easing.sharp,
-          duration: transitions.duration.shorter,
+        marginTopNone: css({
+            marginTop: 0,
         }),
 
-        [breakpoints.up("xl")]: {
-          width: pxToRem(96),
-          overflowX: "hidden",
-          transform: "translateX(0)",
-          transition: transitions.create(["width", "background-color"], {
-            easing: transitions.easing.sharp,
-            duration: transitions.duration.shorter,
-          }),
-        },
-      },
+        sidenav_footer: css({
+            margin: "auto 1rem 1rem",
+            paddingTop: "1rem",
+        }),
 
-      sidenav_navlink: {
-        textDecoration: "none",
-      },
+        sidenav_open: css({
+            transform: "translateX(0)",
+            // transition: `transform ${transitions.easing.sharp} ${transitions.duration.shorter}`,
+
+            [theme.breakpoints.up("xl")]: {
+                width: sidebarWidth,
+                transform: "translateX(0)",
+                // transition: `width ${transitions.easing.sharp} ${transitions.duration.enteringScreen}`,
+            },
+        }),
+
+        sidenav_close: css({
+            transform: "translateX(-20rem)",
+            // transition: `transform ${transitions.easing.sharp} ${transitions.duration.shorter}`,
+
+            [theme.breakpoints.up("xl")]: {
+                width: "6rem",
+                overflowX: "hidden",
+                transform: "translateX(0)",
+                // transition: `width ${transitions.easing.sharp} ${transitions.duration.shorter}`,
+            },
+        }),
+
+        sidenav_navlink: css({
+            textDecoration: "none",
+        }),
     };
-  }
-);
+};
+
+export default useStyles;

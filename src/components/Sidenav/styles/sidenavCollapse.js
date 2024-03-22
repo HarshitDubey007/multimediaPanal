@@ -8,6 +8,8 @@ function collapseItem(theme, ownerState) {
   const { borderRadius } = borders;
   const { pxToRem } = functions;
 
+  console.log("ACTIVE",active)
+
   return {
     background: active && transparentSidenav ? white.main : transparent.main,
     color: active ? dark.main : text.main,
@@ -90,7 +92,7 @@ function collapseIconBox(theme, ownerState) {
 }
 
 const collapseIcon = ({ palette: { white, gradients } }, { active }) => ({
-  color: active ? white.main : gradients.dark.state,
+  color: active ? white.main : "#21BBFD",
 });
 
 function collapseText(theme, ownerState) {
